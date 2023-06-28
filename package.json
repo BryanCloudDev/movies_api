@@ -1,0 +1,22 @@
+{
+  "name": "movies",
+  "version": "0.0.1",
+  "description": "This is the code challenge using NodeJS",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BryanCloudDev/movies_api.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "Bryan Portillo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BryanCloudDev/movies_api/issues"
+  },
+  "homepage": "https://github.com/BryanCloudDev/movies_api#readme"
+}
