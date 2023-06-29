@@ -1,6 +1,7 @@
-import { Entity, Column, ManyToOne } from 'typeorm'
+import { Entity, Column, ManyToOne, OneToMany } from 'typeorm'
 import { BaseModel } from './BaseModel'
 import { Role } from './Role'
+import { LikedMovie } from './LikedMovies'
 
 @Entity()
 export class User extends BaseModel {
@@ -30,4 +31,7 @@ export class User extends BaseModel {
 
   @Column({ default: 'https://avatars.githubusercontent.com/u/2693364' })
     profilePhoto: string
+
+  @OneToMany(() => LikedMovie, (likedMovie) => likedMovie.user)
+    movie: LikedMovie[]
 }

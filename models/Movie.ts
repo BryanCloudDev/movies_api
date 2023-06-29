@@ -1,5 +1,6 @@
-import { Entity, Column } from 'typeorm'
+import { Entity, Column, OneToMany } from 'typeorm'
 import { BaseModel } from './BaseModel'
+import { LikedMovie } from './LikedMovies'
 
 @Entity()
 export class Movie extends BaseModel {
@@ -35,4 +36,7 @@ export class Movie extends BaseModel {
 
   @Column()
     status: boolean
+
+  @OneToMany(() => LikedMovie, (likedMovie) => likedMovie.movie)
+    movie: LikedMovie[]
 }
