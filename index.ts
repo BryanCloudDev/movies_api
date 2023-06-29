@@ -1,1 +1,5 @@
-console.log('Hola como estas?')
+import Server from './server'
+
+const server = new Server()
+
+server.listener()
