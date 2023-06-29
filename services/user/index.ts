@@ -1,9 +1,9 @@
 import { type User } from '../../models'
 import { userRepository } from '../../repositories'
 
-const existsUserById = async (id: number): Promise<void> => {
+const existsUserById = (id: number): void => {
   const user = getUserbyIdService(id)
-  if (user !== null) throw new Error(`The user with the id ${id} does not exist`)
+  if (user === null) throw new Error(`The user with the id ${id} does not exist`)
 }
 
 const getUserbyIdService = async (id: number): Promise<User | null> => {
@@ -11,7 +11,13 @@ const getUserbyIdService = async (id: number): Promise<User | null> => {
   return user
 }
 
+const emailExists = async (email: string): Promise<void> => {
+  const user = await userRepository.findOne({ where: { email } })
+  if (user === null) throw new Error(`The email ${email} is already registered in DB`)
+}
+
 export {
   existsUserById,
-  getUserbyIdService
+  getUserbyIdService,
+  emailExists
 }
