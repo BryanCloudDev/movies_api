@@ -13,7 +13,7 @@ const getUserbyIdService = async (id: number): Promise<User | null> => {
 
 const emailExists = async (email: string): Promise<void> => {
   const user = await userRepository.findOne({ where: { email } })
-  if (user === null) throw new Error(`The email ${email} is already registered in DB`)
+  if (user !== null) throw new Error(`The email ${email} is already registered in DB`)
 }
 
 export {
