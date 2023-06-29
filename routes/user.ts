@@ -1,9 +1,10 @@
 import { Router } from 'express'
 import { body, param } from 'express-validator'
 import { emailExists, existsUserById } from '../services/user'
-import { validateFields } from '../middlewares/validateFields'
+import { validateEmailInChange, validateFields } from '../middlewares/validateFields'
 import { createUser, getUserbyId } from '../controllers'
 import { isRolevalid } from '../services/role'
+import { updateUser } from '../controllers/user'
 
 const userRouter = Router()
 
@@ -25,5 +26,13 @@ userRouter.post('/',
     body('roleId').custom(isRolevalid),
     validateFields
   ], createUser)
+
+userRouter.patch('/:id', [
+  param('id').isNumeric(),
+  param('id').custom(existsUserById),
+  validateEmailInChange,
+  body('roleId').custom(isRolevalid),
+  validateFields
+], updateUser)
 
 export default userRouter

@@ -1,11 +1,10 @@
 import { type IUserRequest } from '../../dto/user/IUserRequest'
-import { User } from '../../models'
+import { type Role, type User } from '../../models'
 import { userRepository } from '../../repositories'
 import { encrypt } from '../auth'
-import { getRoleByIdService } from '../role'
 
-const existsUserById = (id: number): void => {
-  const user = getUserbyIdService(id)
+const existsUserById = async (id: number): Promise<void> => {
+  const user = await getUserbyIdService(id)
   if (user === null) throw new Error(`The user with the id ${id} does not exist`)
 }
 
@@ -14,15 +13,10 @@ const getUserbyIdService = async (id: number): Promise<User | null> => {
   return user
 }
 
-const createUserInstanceService = async (userRequest: IUserRequest, roleId: number): Promise<User> => {
-  const role = await getRoleByIdService(roleId)
-
-  if (role !== null) {
-    userRequest.password = await encrypt(userRequest.password)
-    const user = userRepository.create({ ...userRequest, role })
-    return user
-  }
-  return new User()
+const createUserInstanceService = async (userRequest: IUserRequest, role: Role): Promise<User> => {
+  userRequest.password = await encrypt(userRequest.password)
+  const user = userRepository.create({ ...userRequest, role })
+  return user
 }
 
 const createUserService = async (user: User): Promise<User> => {
