@@ -12,7 +12,7 @@ export class User extends BaseModel {
     lastName: string
 
   @Column({ unique: true })
-    email: number
+    email: string
 
   @Column()
     password: string
