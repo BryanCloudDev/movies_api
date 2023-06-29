@@ -2,6 +2,7 @@ import { Entity, Column, ManyToOne, OneToMany } from 'typeorm'
 import { BaseModel } from './BaseModel'
 import { Role } from './Role'
 import { LikedMovie } from './LikedMovies'
+import { Status } from '../dto/enums/status'
 
 @Entity()
 export class User extends BaseModel {
@@ -23,7 +24,7 @@ export class User extends BaseModel {
   @ManyToOne(() => Role, (role) => role.user)
     role: Role
 
-  @Column({ default: 1 })
+  @Column({ default: Status.ACTIVE })
     status: number
 
   @Column({ default: null })
