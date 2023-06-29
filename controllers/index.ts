@@ -1,5 +1,6 @@
-import { getUserbyId } from './user'
+import { createUser, getUserbyId } from './user'
 
 export {
+  createUser,
   getUserbyId
 }
