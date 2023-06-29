@@ -1,6 +1,7 @@
 import express, { Router } from 'express'
 import { makeDBConnection } from '../database'
 import 'dotenv/config'
+import { userRouter } from '../routes'
 
 export default class Server {
   constructor (
@@ -26,6 +27,7 @@ export default class Server {
   }
 
   private routes (): void {
+    this._apiRouter.use(this._userRoute, userRouter)
     this._app.use(this._apiRoute, this._apiRouter)
   }
 
