@@ -4,6 +4,7 @@ import { type IUserRequest } from '../dto/user/IUserRequest'
 import Roles from '../dto/enums/roles'
 import { getRoleByIdService } from '../services/role'
 import { userRepository } from '../repositories'
+import { Status } from '../dto/enums/status'
 
 const getUserbyId = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -14,6 +15,18 @@ const getUserbyId = async (req: Request, res: Response): Promise<Response> => {
   } catch (error: any) {
     return res.status(500).json({
       error: 'error in get user by id'
+    })
+  }
+}
+
+const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const users = await userRepository.find()
+
+    return res.json(users)
+  } catch (error: any) {
+    return res.status(500).json({
+      error: 'error in get all users'
     })
   }
 }
@@ -67,8 +80,26 @@ const updateUser = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
+const deleteUser = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id = parseInt(req.params.id)
+
+    await userRepository.update(id, {
+      status: Status.INACTIVE
+    })
+
+    return res.status(204).json({})
+  } catch (error: any) {
+    return res.status(500).json({
+      error: 'error in delete user'
+    })
+  }
+}
+
 export {
   getUserbyId,
   createUser,
-  updateUser
+  updateUser,
+  deleteUser,
+  getAllUsers
 }

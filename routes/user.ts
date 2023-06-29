@@ -4,7 +4,7 @@ import { emailExists, existsUserById } from '../services/user'
 import { validateEmailInChange, validateFields } from '../middlewares/validateFields'
 import { createUser, getUserbyId } from '../controllers'
 import { isRolevalid } from '../services/role'
-import { updateUser } from '../controllers/user'
+import { deleteUser, getAllUsers, updateUser } from '../controllers/user'
 
 const userRouter = Router()
 
@@ -34,5 +34,13 @@ userRouter.patch('/:id', [
   body('roleId').custom(isRolevalid),
   validateFields
 ], updateUser)
+
+userRouter.delete('/:id', [
+  param('id').isNumeric(),
+  param('id').custom(existsUserById),
+  validateFields
+], deleteUser)
+
+userRouter.get('/', getAllUsers)
 
 export default userRouter
