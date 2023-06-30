@@ -5,6 +5,7 @@ import Roles from '../dto/enums/roles'
 import { getRoleByIdService } from '../services/role'
 import { userRepository } from '../repositories'
 import { Status } from '../dto/enums/status'
+import { type User } from '../models'
 
 const getUserbyId = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -44,12 +45,14 @@ const createUser = async (req: Request, res: Response): Promise<Response> => {
     }
 
     const userInstance = await createUserInstanceService(userRequest, role)
-    const user = await createUserService(userInstance)
+    await createUserService(userInstance)
 
-    return res.json(user)
+    return res.json({
+      message: 'Successfully created'
+    })
   } catch (error: any) {
     return res.status(500).json({
-      error: 'error in create user admin'
+      error: 'error in create user'
     })
   }
 }
@@ -96,10 +99,20 @@ const deleteUser = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
+const getUserProfile = async (req: Request, res: Response): Promise<Response> => {
+  const { lastLogin, updatedOn, password, role, ...user }: User = req.user as User
+  const { id } = role
+  return res.json({
+    ...user,
+    roleId: id
+  })
+}
+
 export {
-  getUserbyId,
   createUser,
-  updateUser,
   deleteUser,
-  getAllUsers
+  getAllUsers,
+  getUserProfile,
+  getUserbyId,
+  updateUser
 }

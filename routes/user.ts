@@ -4,10 +4,15 @@ import { emailExists, existsUserById } from '../services/user'
 import { validateEmailInChange, validateFields } from '../middlewares/validateFields'
 import { createUser, getUserbyId } from '../controllers'
 import { isRolevalid } from '../services/role'
-import { deleteUser, getAllUsers, updateUser } from '../controllers/user'
+import { deleteUser, getAllUsers, getUserProfile, updateUser } from '../controllers/user'
 import { validateJWT } from '../middlewares/validateJWT'
 
 const userRouter = Router()
+
+userRouter.get('/profile',
+  [
+    validateJWT
+  ], getUserProfile)
 
 userRouter.get('/:id',
   [
