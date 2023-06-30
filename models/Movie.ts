@@ -1,6 +1,7 @@
 import { Entity, Column, OneToMany } from 'typeorm'
 import { BaseModel } from './BaseModel'
 import { LikedMovie } from './LikedMovies'
+import { Status } from '../dto/enums/status'
 
 @Entity()
 export class Movie extends BaseModel {
@@ -34,7 +35,7 @@ export class Movie extends BaseModel {
   @Column()
     poster: string
 
-  @Column()
+  @Column({ default: Status.ACTIVE })
     status: boolean
 
   @OneToMany(() => LikedMovie, (likedMovie) => likedMovie.movie)
