@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { body, param } from 'express-validator'
-import { emailExists, existsUserById } from '../services/user'
+import { existsUserById, userValidationRules } from '../services/user'
 import { validateEmailInChange, validateFields } from '../middlewares/validateFields'
 import { createUser, getUserbyId } from '../controllers'
 import { isRolevalid } from '../services/role'
@@ -28,12 +28,15 @@ userRouter.get('/:id',
 
 userRouter.post('/',
   [
-    body('email', 'The email is not valid').isEmail().trim(),
-    body('email').custom(emailExists),
-    body('firstName', 'The first name is mandatory').not().isEmpty().trim(),
-    body('lastName', 'The last name is mandatory').not().isEmpty().trim(),
-    body('password', 'The password is mandatory and more than 6 characters').isLength({ min: 6 }).trim(),
-    body('birthDate', 'The birthdate is mandatory').not().isEmpty(),
+    ...userValidationRules,
+    validateFields
+  ], createUser)
+
+userRouter.post('/admin',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN]),
+    ...userValidationRules,
     body('roleId').custom(isRolevalid),
     validateFields
   ], createUser)
