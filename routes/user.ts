@@ -5,6 +5,7 @@ import { validateEmailInChange, validateFields } from '../middlewares/validateFi
 import { createUser, getUserbyId } from '../controllers'
 import { isRolevalid } from '../services/role'
 import { deleteUser, getAllUsers, updateUser } from '../controllers/user'
+import { validateJWT } from '../middlewares/validateJWT'
 
 const userRouter = Router()
 
@@ -36,6 +37,7 @@ userRouter.patch('/:id', [
 ], updateUser)
 
 userRouter.delete('/:id', [
+  validateJWT,
   param('id').isNumeric(),
   param('id').custom(existsUserById),
   validateFields
