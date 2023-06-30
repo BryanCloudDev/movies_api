@@ -1,3 +1,4 @@
+import { body } from 'express-validator'
 import { type IUserRequest } from '../../dto/user/IUserRequest'
 import { type Role, type User } from '../../models'
 import { userRepository } from '../../repositories'
@@ -29,10 +30,19 @@ const emailExists = async (email: string): Promise<void> => {
   if (user !== null) throw new Error(`The email ${email} is already registered in DB`)
 }
 
+const userValidationRules = [
+  body('email', 'The email is not valid').isEmail().trim().custom(emailExists),
+  body('firstName', 'The first name is mandatory').not().isEmpty().trim(),
+  body('lastName', 'The last name is mandatory').not().isEmpty().trim(),
+  body('password', 'The password is mandatory and must have at least 6 characters').isLength({ min: 6 }).trim(),
+  body('birthDate', 'The birthdate is mandatory').not().isEmpty()
+]
+
 export {
   existsUserById,
   getUserbyIdService,
   createUserInstanceService,
   createUserService,
-  emailExists
+  emailExists,
+  userValidationRules
 }
