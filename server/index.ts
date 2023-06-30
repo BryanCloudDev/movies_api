@@ -1,7 +1,7 @@
 import express, { Router } from 'express'
 import { makeDBConnection } from '../database'
 import 'dotenv/config'
-import { userRouter } from '../routes'
+import { authRouter, userRouter } from '../routes'
 
 export default class Server {
   constructor (
@@ -10,7 +10,8 @@ export default class Server {
     readonly _port = Number(process.env.PORT),
     readonly _apiRoute = '/api',
     readonly _userRoute = '/user',
-    readonly _movieRoute = '/movie'
+    readonly _movieRoute = '/movie',
+    readonly _loginRoute = '/login'
   ) {
     void this.connectToDB()
     this.middleware()
@@ -28,6 +29,7 @@ export default class Server {
 
   private routes (): void {
     this._apiRouter.use(this._userRoute, userRouter)
+    this._apiRouter.use(this._loginRoute, authRouter)
     this._app.use(this._apiRoute, this._apiRouter)
   }
 
