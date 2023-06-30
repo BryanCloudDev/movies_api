@@ -88,7 +88,7 @@ const deleteUser = async (req: Request, res: Response): Promise<Response> => {
       status: Status.INACTIVE
     })
 
-    return res.status(204).json({})
+    return res.status(204).json()
   } catch (error: any) {
     return res.status(500).json({
       error: 'error in delete user'

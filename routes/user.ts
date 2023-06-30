@@ -36,12 +36,13 @@ userRouter.patch('/:id', [
   validateFields
 ], updateUser)
 
-userRouter.delete('/:id', [
-  validateJWT,
-  param('id').isNumeric(),
-  param('id').custom(existsUserById),
-  validateFields
-], deleteUser)
+userRouter.delete('/:id',
+  [
+    validateJWT,
+    param('id').isNumeric(),
+    param('id').custom(existsUserById),
+    validateFields
+  ], deleteUser)
 
 userRouter.get('/', getAllUsers)
 
