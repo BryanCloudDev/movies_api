@@ -30,6 +30,10 @@ const emailExists = async (email: string): Promise<void> => {
   if (user !== null) throw new Error(`The email ${email} is already registered in DB`)
 }
 
+const checkIfRoleIsSent = async (role: number): Promise<void> => {
+  if (role !== undefined) throw new Error('You are not allowed to perform this action')
+}
+
 const userValidationRules = [
   body('email', 'The email is not valid').isEmail().trim().custom(emailExists),
   body('firstName', 'The first name is mandatory').not().isEmpty().trim(),
@@ -44,5 +48,6 @@ export {
   createUserInstanceService,
   createUserService,
   emailExists,
-  userValidationRules
+  userValidationRules,
+  checkIfRoleIsSent
 }

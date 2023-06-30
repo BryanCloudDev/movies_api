@@ -35,7 +35,9 @@ const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
 const createUser = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { ...userRequest }: IUserRequest = req.body
+
     const roleSent = userRequest.roleId ?? Roles.USER
+
     const role = await getRoleByIdService(roleSent)
 
     if (role === null) {
@@ -51,6 +53,8 @@ const createUser = async (req: Request, res: Response): Promise<Response> => {
       message: 'Successfully created'
     })
   } catch (error: any) {
+    console.log(error.message)
+
     return res.status(500).json({
       error: 'error in create user'
     })

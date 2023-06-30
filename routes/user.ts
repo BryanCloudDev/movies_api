@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { body, param } from 'express-validator'
-import { existsUserById, userValidationRules } from '../services/user'
+import { checkIfRoleIsSent, existsUserById, userValidationRules } from '../services/user'
 import { validateEmailInChange, validateFields } from '../middlewares/validateFields'
 import { createUser, getUserbyId } from '../controllers'
 import { isRolevalid } from '../services/role'
@@ -29,6 +29,7 @@ userRouter.get('/:id',
 userRouter.post('/',
   [
     ...userValidationRules,
+    body('roleId').custom(checkIfRoleIsSent),
     validateFields
   ], createUser)
 
