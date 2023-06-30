@@ -2,6 +2,7 @@ import { type Request, type Response } from 'express'
 import { type IMovieRequest } from '../dto/movie/IMovieRequest'
 import { createMovieInstanceService, createMovieService } from '../services/movie'
 import { movieRepository } from '../repositories'
+import { Status } from '../dto/enums/status'
 
 const createMovie = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -37,7 +38,24 @@ const updateMovie = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
+const deleteMovie = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id = parseInt(req.params.id)
+
+    await movieRepository.update(id, {
+      status: Status.INACTIVE
+    })
+
+    return res.status(204).json()
+  } catch (error: any) {
+    return res.status(500).json({
+      error: 'error in delete movie'
+    })
+  }
+}
+
 export {
   createMovie,
+  deleteMovie,
   updateMovie
 }

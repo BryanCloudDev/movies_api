@@ -36,7 +36,7 @@ export class Movie extends BaseModel {
     poster: string
 
   @Column({ default: Status.ACTIVE })
-    status: boolean
+    status: number
 
   @OneToMany(() => LikedMovie, (likedMovie) => likedMovie.movie)
     movie: LikedMovie[]

@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createMovie, updateMovie } from '../controllers/movie'
+import { createMovie, deleteMovie, updateMovie } from '../controllers/movie'
 import { param } from 'express-validator'
 import { validateFields } from '../middlewares/validateFields'
 
@@ -18,6 +18,14 @@ movieRouter.patch('/:id',
     validateFields
   ],
   updateMovie
+)
+
+movieRouter.delete('/:id',
+  [
+    param('id').isNumeric(),
+    validateFields
+  ],
+  deleteMovie
 )
 
 export default movieRouter
