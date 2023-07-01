@@ -5,6 +5,7 @@ import { movieRepository } from '../repositories'
 import { Status } from '../dto/enums/status'
 import { type User } from '../models'
 import { createLikedMovieInstanceService, createLikedMovieService } from '../services/likedMovie'
+import { type ICustomRequest } from '../dto/request/ICustomRequest'
 
 const createMovie = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -67,17 +68,11 @@ const getAllMovies = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-const likeAMovie = async (req: Request, res: Response): Promise<Response> => {
+const likeAMovie = async (req: ICustomRequest, res: Response): Promise<Response> => {
   try {
     const user = req.user as User
-    const id = parseInt(req.body.id)
-    const movie = await movieRepository.findOne({ where: { id } })
+    const movie = req.movie
 
-    if (movie === null) {
-      return res.json({
-        message: `Movie with id ${id} not found`
-      })
-    }
     const likedMovieInstance = createLikedMovieInstanceService(movie, user)
 
     await createLikedMovieService(likedMovieInstance)
