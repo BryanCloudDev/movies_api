@@ -7,6 +7,7 @@ import { likedMoviesRepository, userRepository } from '../repositories'
 import { Status } from '../dto/enums/status'
 import { User } from '../models'
 import createFilter from '../services/createFilter'
+import { type IUserResponse } from '../dto/user/IUSerResponse'
 
 const getUserbyId = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -29,8 +30,19 @@ const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
       return res.json(response)
     }
 
-    const users = await userRepository.find()
-    return res.json(users)
+    const users = await userRepository.find({ relations: { role: true } })
+
+    const usersFiltered = users.map(user => {
+      const { password, role, ...userResponse } = user
+
+      const result: IUserResponse = {
+        ...userResponse,
+        roleId: role.id
+      }
+
+      return result
+    })
+    return res.json(usersFiltered)
   } catch (error: any) {
     console.log(error.message)
 
