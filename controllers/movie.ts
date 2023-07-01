@@ -54,8 +54,20 @@ const deleteMovie = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
+const getAllMovies = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const movies = await movieRepository.find()
+    return res.json(movies)
+  } catch (error) {
+    return res.status(500).json({
+      message: 'error in get all movies'
+    })
+  }
+}
+
 export {
   createMovie,
   deleteMovie,
-  updateMovie
+  updateMovie,
+  getAllMovies
 }

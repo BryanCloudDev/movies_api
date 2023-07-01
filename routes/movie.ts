@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createMovie, deleteMovie, updateMovie } from '../controllers/movie'
+import { createMovie, deleteMovie, getAllMovies, updateMovie } from '../controllers/movie'
 import { body, param } from 'express-validator'
 import { validateFields } from '../middlewares/validateFields'
 import { validateJWT } from '../middlewares/validateJWT'
@@ -48,6 +48,14 @@ movieRouter.delete('/:id',
     validateFields
   ],
   deleteMovie
+)
+
+movieRouter.get('/',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN, Roles.USER])
+  ],
+  getAllMovies
 )
 
 export default movieRouter
