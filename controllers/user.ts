@@ -114,7 +114,7 @@ const getUserProfile = async (req: Request, res: Response): Promise<Response> =>
 
 const getMoviesLikedByUser = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { id }: User = req.user as User
+    const id = parseInt(req.params.id)
     const movies = await likedMoviesRepository.find({ where: { user: { id } }, relations: { movie: true } })
 
     return res.json(movies)

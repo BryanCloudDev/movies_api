@@ -71,7 +71,10 @@ userRouter.get('/',
 userRouter.get('/:id/movie',
   [
     validateJWT,
-    validateRole([Roles.ADMIN])
+    validateRole([Roles.ADMIN]),
+    param('id').isNumeric(),
+    param('id').custom(existsUserById),
+    validateFields
   ], getMoviesLikedByUser)
 
 export default userRouter
