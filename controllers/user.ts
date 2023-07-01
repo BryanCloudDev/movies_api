@@ -5,7 +5,8 @@ import Roles from '../dto/enums/roles'
 import { getRoleByIdService } from '../services/role'
 import { likedMoviesRepository, userRepository } from '../repositories'
 import { Status } from '../dto/enums/status'
-import { type User } from '../models'
+import { User } from '../models'
+import createFilter from '../services/createFilter'
 
 const getUserbyId = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -22,10 +23,17 @@ const getUserbyId = async (req: Request, res: Response): Promise<Response> => {
 
 const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const users = await userRepository.find()
+    const reqFilter = req.query.filter as string
+    if (reqFilter !== undefined) {
+      const response = await createFilter(reqFilter, new User(), userRepository)
+      return res.json(response)
+    }
 
+    const users = await userRepository.find()
     return res.json(users)
   } catch (error: any) {
+    console.log(error.message)
+
     return res.status(500).json({
       error: 'error in get all users'
     })
