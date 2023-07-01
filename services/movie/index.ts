@@ -12,13 +12,7 @@ const createMovieService = async (movie: Movie): Promise<Movie> => {
   return createdUser
 }
 
-const existsMovieById = async (id: number): Promise<void> => {
-  const movie = await movieRepository.findOne({ where: { id } })
-  if (movie === null) throw new Error(`The movie with the id ${id} does not exist`)
-}
-
 export {
   createMovieInstanceService,
-  createMovieService,
-  existsMovieById
+  createMovieService
 }
