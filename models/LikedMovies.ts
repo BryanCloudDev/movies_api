@@ -5,9 +5,9 @@ import { BaseModel } from './BaseModel'
 
 @Entity()
 export class LikedMovie extends BaseModel {
-  @ManyToOne(() => Movie, (movie) => movie.movie)
+  @ManyToOne(() => Movie, (movie) => movie.likes)
     movie: Movie
 
-  @ManyToOne(() => User, (user) => user.movie)
+  @ManyToOne(() => User, (user) => user.likes)
     user: User
 }
