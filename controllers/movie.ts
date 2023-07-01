@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express'
 import { type IMovieRequest } from '../dto/movie/IMovieRequest'
-import { createMovieInstanceService, createMovieService } from '../services/movie'
+import { createMovieInstanceService, createMovieService, getLikeCountService } from '../services/movie'
 import { movieRepository } from '../repositories'
 import { Status } from '../dto/enums/status'
 import { type User } from '../models'
@@ -87,10 +87,23 @@ const likeAMovie = async (req: ICustomRequest, res: Response): Promise<Response>
   }
 }
 
+const getLikeCountForMovies = async (req: ICustomRequest, res: Response): Promise<Response> => {
+  try {
+    const movies = await movieRepository.find({ relations: { likes: true } })
+
+    return res.json(getLikeCountService(movies))
+  } catch (error) {
+    return res.json({
+      message: 'error in get like count controller'
+    })
+  }
+}
+
 export {
   createMovie,
   deleteMovie,
-  updateMovie,
   getAllMovies,
-  likeAMovie
+  getLikeCountForMovies,
+  likeAMovie,
+  updateMovie
 }
