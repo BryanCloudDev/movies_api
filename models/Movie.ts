@@ -39,5 +39,5 @@ export class Movie extends BaseModel {
     status: number
 
   @OneToMany(() => LikedMovie, (likedMovie) => likedMovie.movie)
-    movie: LikedMovie[]
+    likes: LikedMovie[]
 }

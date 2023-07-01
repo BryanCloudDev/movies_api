@@ -34,5 +34,5 @@ export class User extends BaseModel {
     profilePhoto: string
 
   @OneToMany(() => LikedMovie, (likedMovie) => likedMovie.user)
-    movie: LikedMovie[]
+    likes: LikedMovie[]
 }
