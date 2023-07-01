@@ -3,7 +3,7 @@ import { createUserInstanceService, createUserService, getUserbyIdService } from
 import { type IUserRequest } from '../dto/user/IUserRequest'
 import Roles from '../dto/enums/roles'
 import { getRoleByIdService } from '../services/role'
-import { userRepository } from '../repositories'
+import { likedMoviesRepository, userRepository } from '../repositories'
 import { Status } from '../dto/enums/status'
 import { type User } from '../models'
 
@@ -112,11 +112,25 @@ const getUserProfile = async (req: Request, res: Response): Promise<Response> =>
   })
 }
 
+const getMoviesLikedByUser = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { id }: User = req.user as User
+    const movies = await likedMoviesRepository.find({ where: { user: { id } }, relations: { movie: true } })
+
+    return res.json(movies)
+  } catch (error) {
+    return res.status(500).json({
+      message: 'error in get movies liked by user'
+    })
+  }
+}
+
 export {
   createUser,
   deleteUser,
   getAllUsers,
   getUserProfile,
+  getMoviesLikedByUser,
   getUserbyId,
   updateUser
 }

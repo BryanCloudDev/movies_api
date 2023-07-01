@@ -4,7 +4,7 @@ import { checkIfRoleIsSent, existsUserById, userValidationRules } from '../servi
 import { validateEmailInChange, validateFields } from '../middlewares/validateFields'
 import { createUser, getUserbyId } from '../controllers'
 import { isRolevalid } from '../services/role'
-import { deleteUser, getAllUsers, getUserProfile, updateUser } from '../controllers/user'
+import { deleteUser, getAllUsers, getMoviesLikedByUser, getUserProfile, updateUser } from '../controllers/user'
 import { validateJWT } from '../middlewares/validateJWT'
 import validateRole from '../middlewares/validateRole'
 import Roles from '../dto/enums/roles'
@@ -65,8 +65,13 @@ userRouter.delete('/:id',
 userRouter.get('/',
   [
     validateJWT,
-    validateRole([Roles.ADMIN]),
-    validateFields
+    validateRole([Roles.ADMIN])
   ], getAllUsers)
+
+userRouter.get('/:id/movie',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN])
+  ], getMoviesLikedByUser)
 
 export default userRouter
