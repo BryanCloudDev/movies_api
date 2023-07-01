@@ -1,7 +1,7 @@
-import { type FindOptionsSelect, type FindManyOptions } from 'typeorm'
+import { type FindOptionsSelect, type FindOptionsWhere } from 'typeorm'
 
 export interface IFilter<T> {
-  where: FindManyOptions<T>
+  where: FindOptionsWhere<T> | Array<FindOptionsWhere<T>> | undefined
   limit: number
   offset: number
   select: FindOptionsSelect<T>
