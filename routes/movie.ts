@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createMovie, deleteMovie, getAllMovies, updateMovie } from '../controllers/movie'
+import { createMovie, deleteMovie, getAllMovies, likeAMovie, updateMovie } from '../controllers/movie'
 import { body, param } from 'express-validator'
 import { validateFields } from '../middlewares/validateFields'
 import { validateJWT } from '../middlewares/validateJWT'
@@ -56,6 +56,18 @@ movieRouter.get('/',
     validateRole([Roles.ADMIN, Roles.USER])
   ],
   getAllMovies
+)
+
+movieRouter.post('/like',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN, Roles.USER]),
+    body('id', 'The id of the movie is mandatory').notEmpty(),
+    body('id').isNumeric(),
+    body('id').custom(existsMovieById),
+    validateFields
+  ],
+  likeAMovie
 )
 
 export default movieRouter

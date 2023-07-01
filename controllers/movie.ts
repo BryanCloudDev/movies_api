@@ -3,6 +3,8 @@ import { type IMovieRequest } from '../dto/movie/IMovieRequest'
 import { createMovieInstanceService, createMovieService } from '../services/movie'
 import { movieRepository } from '../repositories'
 import { Status } from '../dto/enums/status'
+import { type User } from '../models'
+import { createLikedMovieInstanceService, createLikedMovieService } from '../services/likedMovie'
 
 const createMovie = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -65,9 +67,35 @@ const getAllMovies = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
+const likeAMovie = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const user = req.user as User
+    const id = parseInt(req.body.id)
+    const movie = await movieRepository.findOne({ where: { id } })
+
+    if (movie === null) {
+      return res.json({
+        message: `Movie with id ${id} not found`
+      })
+    }
+    const likedMovieInstance = createLikedMovieInstanceService(movie, user)
+
+    await createLikedMovieService(likedMovieInstance)
+
+    return res.json({
+      message: 'Successfully created'
+    })
+  } catch (error) {
+    return res.json({
+      message: 'error in like movie controller'
+    })
+  }
+}
+
 export {
   createMovie,
   deleteMovie,
   updateMovie,
-  getAllMovies
+  getAllMovies,
+  likeAMovie
 }
