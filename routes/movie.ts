@@ -5,7 +5,7 @@ import { validateFields } from '../middlewares/validateFields'
 import { validateJWT } from '../middlewares/validateJWT'
 import validateRole from '../middlewares/validateRole'
 import Roles from '../dto/enums/roles'
-import { existsMovieById } from '../services/movie'
+import validateIdMovie from '../middlewares/validateIdMovie'
 
 const movieRouter = Router()
 
@@ -33,7 +33,7 @@ movieRouter.patch('/:id',
     validateJWT,
     validateRole([Roles.ADMIN]),
     param('id').isNumeric(),
-    param('id').custom(existsMovieById),
+    validateIdMovie,
     validateFields
   ],
   updateMovie
@@ -44,7 +44,7 @@ movieRouter.delete('/:id',
     validateJWT,
     validateRole([Roles.ADMIN]),
     param('id').isNumeric(),
-    param('id').custom(existsMovieById),
+    validateIdMovie,
     validateFields
   ],
   deleteMovie
@@ -64,7 +64,7 @@ movieRouter.post('/like',
     validateRole([Roles.ADMIN, Roles.USER]),
     body('id', 'The id of the movie is mandatory').notEmpty(),
     body('id').isNumeric(),
-    body('id').custom(existsMovieById),
+    validateIdMovie,
     validateFields
   ],
   likeAMovie
