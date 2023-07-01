@@ -12,7 +12,34 @@ const createMovieService = async (movie: Movie): Promise<Movie> => {
   return createdUser
 }
 
+const getLikeCountService = (movies: Movie[]): Array<{
+  likes: number
+  name: string
+  description: string
+  director: string
+  genre: string
+  releaseDate: Date
+  duration: number
+  rating: number
+  countryOrigin: string
+  language: string
+  poster: string
+  status: number
+  id: number
+}> => {
+  const likedMovies = movies.map(movie => {
+    const { createdOn, updatedOn, likes, ...movieRest } = movie
+    return {
+      ...movieRest,
+      likes: likes.length
+    }
+  })
+
+  return likedMovies
+}
+
 export {
   createMovieInstanceService,
-  createMovieService
+  createMovieService,
+  getLikeCountService
 }
