@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createMovie, deleteMovie, getAllMovies, likeAMovie, updateMovie } from '../controllers/movie'
+import { createMovie, deleteMovie, getAllMovies, getLikeCountForMovies, likeAMovie, updateMovie } from '../controllers/movie'
 import { body, param } from 'express-validator'
 import { validateFields } from '../middlewares/validateFields'
 import { validateJWT } from '../middlewares/validateJWT'
@@ -68,6 +68,14 @@ movieRouter.post('/like',
     validateFields
   ],
   likeAMovie
+)
+
+movieRouter.get('/like/count',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN, Roles.USER])
+  ],
+  getLikeCountForMovies
 )
 
 export default movieRouter
