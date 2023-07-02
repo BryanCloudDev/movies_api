@@ -1,7 +1,7 @@
 import express, { Router } from 'express'
 import { makeDBConnection } from '../database'
 import 'dotenv/config'
-import { authRouter, movieRouter, userRouter } from '../routes'
+import { authRouter, explorerRouter, movieRouter, userRouter } from '../routes'
 import cors from 'cors'
 
 export default class Server {
@@ -12,7 +12,8 @@ export default class Server {
     readonly _apiRoute = '/api',
     readonly _userRoute = '/users',
     readonly _movieRoute = '/movies',
-    readonly _loginRoute = '/login'
+    readonly _loginRoute = '/login',
+    readonly _explorerRoute = '/explorer'
   ) {
     void this.connectToDB()
     this.middleware()
@@ -36,6 +37,7 @@ export default class Server {
     this._apiRouter.use(this._loginRoute, authRouter)
     this._apiRouter.use(this._movieRoute, movieRouter)
     this._apiRouter.use(this._userRoute, userRouter)
+    this._apiRouter.use(this._explorerRoute, explorerRouter)
 
     // API route
     this._app.use(this._apiRoute, this._apiRouter)
