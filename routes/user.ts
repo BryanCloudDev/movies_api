@@ -2,10 +2,9 @@ import { Router } from 'express'
 import { body, param } from 'express-validator'
 import { checkIfRoleIsSent, existsUserById, userValidationRules } from '../services/user'
 import { createUser, getUserbyId } from '../controllers'
-import { isRolevalid } from '../services/role'
 import { deleteUser, getAllUsers, getMoviesLikedByUser, getUserProfile, updateUser } from '../controllers/user'
 import Roles from '../dto/enums/roles'
-import { validateJWT, validateRole, validateFields, validateEmailInChange, validateQuery } from '../middlewares'
+import { validateJWT, validateRole, validateFields, validateEmailInChange, validateQuery, validateRoleOnCreate } from '../middlewares'
 
 const userRouter = Router()
 
@@ -30,7 +29,8 @@ userRouter.post('/',
   [
     ...userValidationRules,
     body('roleId').custom(checkIfRoleIsSent),
-    validateFields
+    validateFields,
+    validateRoleOnCreate
   ],
   createUser)
 
@@ -39,7 +39,8 @@ userRouter.post('/admin',
     validateJWT,
     validateRole([Roles.ADMIN]),
     ...userValidationRules,
-    body('roleId').custom(isRolevalid),
+    body('roleId').isNumeric(),
+    validateRoleOnCreate,
     validateFields
   ],
   createUser)
@@ -51,7 +52,8 @@ userRouter.patch('/:id',
     param('id').isNumeric(),
     param('id').custom(existsUserById),
     validateEmailInChange,
-    body('roleId').custom(isRolevalid),
+    body('roleId').isNumeric(),
+    validateRoleOnCreate,
     validateFields
   ],
   updateUser)
