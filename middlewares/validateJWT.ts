@@ -2,6 +2,7 @@ import { type NextFunction, type Request, type Response } from 'express'
 import { Status } from '../dto/enums/status'
 import { passport } from '../services/passport/localStrategy'
 import { type User } from '../models'
+import errorMessageHandler from '../services/errorMessage'
 
 const validateJWT = (req: Request, res: Response, next: NextFunction): void => {
   passport.authenticate('jwt', async (err: Error | null, user: User | false, info: any) => {
@@ -13,13 +14,13 @@ const validateJWT = (req: Request, res: Response, next: NextFunction): void => {
       }
 
       if (user.status === Status.INACTIVE) {
-        return res.status(401).json({
+        return res.status(403).json({
           message: 'User has been deleted'
         })
       }
 
       if (user.status === Status.BANNED) {
-        return res.status(401).json({
+        return res.status(403).json({
           message: 'User has been banned'
         })
       }
@@ -31,10 +32,9 @@ const validateJWT = (req: Request, res: Response, next: NextFunction): void => {
       })
     } catch (error) {
       next(error)
+      return res.status(500).json(errorMessageHandler(error, 'Error in jwt verification'))
     }
   })(req, res, next)
 }
 
-export {
-  validateJWT
-}
+export default validateJWT

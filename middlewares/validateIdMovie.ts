@@ -1,6 +1,7 @@
 import { type Response, type NextFunction } from 'express'
 import type ICustomRequest from '../dto/request/ICustomRequest'
 import { movieRepository } from '../repositories'
+import errorMessageHandler from '../services/errorMessage'
 
 const validateIdMovie = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
   try {
@@ -9,7 +10,7 @@ const validateIdMovie = async (req: ICustomRequest, res: Response, next: NextFun
     const movie = await movieRepository.findOne({ where: { id } })
 
     if (movie === null) {
-      return res.json({
+      return res.status(404).json({
         message: `The movie with the id ${id} does not exist`
       })
     }
@@ -18,7 +19,7 @@ const validateIdMovie = async (req: ICustomRequest, res: Response, next: NextFun
 
     next()
   } catch (error) {
-
+    return res.status(500).json(errorMessageHandler(error, 'Error in validate id movie'))
   }
 }
 
