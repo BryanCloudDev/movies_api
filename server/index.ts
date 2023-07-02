@@ -2,6 +2,7 @@ import express, { Router } from 'express'
 import { makeDBConnection } from '../database'
 import 'dotenv/config'
 import { authRouter, movieRouter, userRouter } from '../routes'
+import cors from 'cors'
 
 export default class Server {
   constructor (
@@ -25,6 +26,10 @@ export default class Server {
   private middleware (): void {
     // JSON PARSER
     this._app.use(express.json())
+
+    this._app.use(cors({
+      origin: 'http://127.0.0.1:5500'
+    }))
   }
 
   private routes (): void {
