@@ -3,7 +3,7 @@ import type IMovieRequest from '../dto/movie/IMovieRequest'
 import { createMovieInstanceService, createMovieService, getLikeCountService } from '../services/movie'
 import { movieRepository } from '../repositories'
 import { Status } from '../dto/enums/status'
-import { Movie, type User } from '../models'
+import { LikedMovie, Movie, type User } from '../models'
 import { createLikedMovieInstanceService, createLikedMovieService } from '../services/likedMovie'
 import type ICustomRequest from '../dto/request/ICustomRequest'
 import createFilter from '../services/createFilter'
@@ -14,6 +14,13 @@ const createMovie = async (req: Request, res: Response): Promise<Response> => {
     const movieRequest: IMovieRequest = req.body
 
     const movieInstance = await createMovieInstanceService(movieRequest)
+
+    if (!(movieInstance instanceof Movie)) {
+      return res.status(500).json({
+        message: movieInstance?.message
+      })
+    }
+
     await createMovieService(movieInstance)
 
     return res.status(201).json({
@@ -73,6 +80,12 @@ const likeAMovie = async (req: ICustomRequest, res: Response): Promise<Response>
     const movie = req.movie
 
     const likedMovieInstance = createLikedMovieInstanceService(movie, user)
+
+    if (!(likedMovieInstance instanceof LikedMovie)) {
+      return res.status(500).json({
+        message: likedMovieInstance?.message
+      })
+    }
 
     await createLikedMovieService(likedMovieInstance)
 
