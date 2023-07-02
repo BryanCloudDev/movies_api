@@ -4,11 +4,11 @@ import { type BaseModel } from '../models/BaseModel'
 
 const createFilter = async (reqFilter: string, model: BaseModel, repository: Repository<typeof model>): Promise<any> => {
   const { where, limit, offset, select }: IFilter<typeof model> = JSON.parse(reqFilter)
-  const repositoryPromise = repository.find({ where, skip: offset, take: limit, select })
-  console.log({ where, skip: offset, take: limit, select })
-  const countPromise = repository.count({ where })
-  const selectArray = Object.entries(select).map(entry => entry[1])
 
+  const repositoryPromise = repository.find({ where, skip: offset, take: limit, select })
+  const countPromise = repository.count({ where })
+
+  const selectArray = Object.entries(select).map(entry => entry[1])
   const [response, count] = await Promise.all([repositoryPromise, countPromise])
 
   return {
