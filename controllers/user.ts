@@ -1,14 +1,13 @@
 import { type Request, type Response } from 'express'
 import { createUserInstanceService, createUserService, getUserbyIdService } from '../services/user'
 import type IUserRequest from '../dto/user/IUserRequest'
-import Roles from '../dto/enums/roles'
-import { getRoleByIdService } from '../services/role'
 import { likedMoviesRepository, userRepository } from '../repositories'
 import { Status } from '../dto/enums/status'
 import { User } from '../models'
 import createFilter from '../services/createFilter'
 import type IUserResponse from '../dto/user/IUSerResponse'
 import errorMessageHandler from '../services/errorMessage'
+import type ICustomRequest from '../dto/request/ICustomRequest'
 
 const getUserbyId = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -47,19 +46,11 @@ const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-const createUser = async (req: Request, res: Response): Promise<Response> => {
+const createUser = async (req: ICustomRequest, res: Response): Promise<Response> => {
   try {
     const { ...userRequest }: IUserRequest = req.body
 
-    const roleSent = userRequest.roleId ?? Roles.USER
-
-    const role = await getRoleByIdService(roleSent)
-
-    if (role === null) {
-      return res.status(404).json({
-        message: `Role with id ${roleSent} not found`
-      })
-    }
+    const role = req.role
 
     const userInstance = await createUserInstanceService(userRequest, role)
     await createUserService(userInstance)
@@ -72,18 +63,12 @@ const createUser = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-const updateUser = async (req: Request, res: Response): Promise<Response> => {
+const updateUser = async (req: ICustomRequest, res: Response): Promise<Response> => {
   try {
     const { roleId, password, ...userRequest }: IUserRequest = req.body
     const id = parseInt(req.params.id)
 
-    const role = await getRoleByIdService(roleId)
-
-    if (role === null) {
-      return res.status(404).json({
-        message: `Role with id ${roleId} not found`
-      })
-    }
+    const role = req.role
 
     await userRepository.update(id, {
       role,
