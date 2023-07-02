@@ -1,13 +1,13 @@
 import { type Request, type Response } from 'express'
 import { createUserInstanceService, createUserService, getUserbyIdService } from '../services/user'
 import type IUserRequest from '../dto/user/IUserRequest'
-import { likedMoviesRepository, userRepository } from '../repositories'
+import { userRepository } from '../repositories'
 import { Status } from '../dto/enums/status'
-import { User } from '../models'
 import createFilter from '../services/createFilter'
 import type IUserResponse from '../dto/user/IUSerResponse'
 import errorMessageHandler from '../services/errorMessage'
 import type ICustomRequest from '../dto/request/ICustomRequest'
+import { User } from '../models'
 
 const getUserbyId = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -109,22 +109,10 @@ const getUserProfile = async (req: Request, res: Response): Promise<Response> =>
   }
 }
 
-const getMoviesLikedByUser = async (req: Request, res: Response): Promise<Response> => {
-  try {
-    const id = parseInt(req.params.id)
-    const movies = await likedMoviesRepository.find({ where: { user: { id } }, relations: { movie: true } })
-
-    return res.status(200).json(movies)
-  } catch (error: any) {
-    return res.status(500).json(errorMessageHandler(error, 'Error in get movies liked by user'))
-  }
-}
-
 export {
   createUser,
   deleteUser,
   getAllUsers,
-  getMoviesLikedByUser,
   getUserProfile,
   getUserbyId,
   updateUser
