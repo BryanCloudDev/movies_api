@@ -13,7 +13,8 @@ userRouter.get('/profile',
   [
     validateJWT,
     validateRole([Roles.ADMIN, Roles.USER])
-  ], getUserProfile)
+  ],
+  getUserProfile)
 
 userRouter.get('/:id',
   [
@@ -22,14 +23,16 @@ userRouter.get('/:id',
     param('id').isNumeric(),
     param('id').custom(existsUserById),
     validateFields
-  ], getUserbyId)
+  ],
+  getUserbyId)
 
 userRouter.post('/',
   [
     ...userValidationRules,
     body('roleId').custom(checkIfRoleIsSent),
     validateFields
-  ], createUser)
+  ],
+  createUser)
 
 userRouter.post('/admin',
   [
@@ -38,7 +41,8 @@ userRouter.post('/admin',
     ...userValidationRules,
     body('roleId').custom(isRolevalid),
     validateFields
-  ], createUser)
+  ],
+  createUser)
 
 userRouter.patch('/:id',
   [
@@ -49,7 +53,8 @@ userRouter.patch('/:id',
     validateEmailInChange,
     body('roleId').custom(isRolevalid),
     validateFields
-  ], updateUser)
+  ],
+  updateUser)
 
 userRouter.delete('/:id',
   [
@@ -58,14 +63,16 @@ userRouter.delete('/:id',
     param('id').isNumeric(),
     param('id').custom(existsUserById),
     validateFields
-  ], deleteUser)
+  ],
+  deleteUser)
 
 userRouter.get('/',
   [
     validateJWT,
     validateRole([Roles.ADMIN]),
     validateQuery
-  ], getAllUsers)
+  ],
+  getAllUsers)
 
 userRouter.get('/:id/movie',
   [
@@ -74,6 +81,7 @@ userRouter.get('/:id/movie',
     param('id').isNumeric(),
     param('id').custom(existsUserById),
     validateFields
-  ], getMoviesLikedByUser)
+  ],
+  getMoviesLikedByUser)
 
 export default userRouter
