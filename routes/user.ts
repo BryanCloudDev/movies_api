@@ -74,7 +74,7 @@ userRouter.get('/',
   ],
   getAllUsers)
 
-userRouter.get('/:id/movie',
+userRouter.get('/:id/movies',
   [
     validateJWT,
     validateRole([Roles.ADMIN]),
