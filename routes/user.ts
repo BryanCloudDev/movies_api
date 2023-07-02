@@ -2,9 +2,10 @@ import { Router } from 'express'
 import { body, param } from 'express-validator'
 import { checkIfRoleIsSent, existsUserById, userValidationRules } from '../services/user'
 import { createUser, getUserbyId } from '../controllers'
-import { deleteUser, getAllUsers, getMoviesLikedByUser, getUserProfile, updateUser } from '../controllers/user'
+import { deleteUser, getAllUsers, getUserProfile, updateUser } from '../controllers/user'
 import Roles from '../dto/enums/roles'
 import { validateJWT, validateRole, validateFields, validateEmailInChange, validateQuery, validateRoleOnCreate } from '../middlewares'
+import { getMoviesLikedByUser } from '../controllers/movie'
 
 const userRouter = Router()
 
