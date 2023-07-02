@@ -13,24 +13,15 @@ const createMovieService = async (movie: Movie): Promise<Movie> => {
 }
 
 const getLikeCountService = (movies: Movie[]): Array<{
+  id: number
   likes: number
   name: string
-  description: string
-  director: string
-  genre: string
-  releaseDate: Date
-  duration: number
-  rating: number
-  countryOrigin: string
-  language: string
-  poster: string
-  status: number
-  id: number
 }> => {
   const likedMovies = movies.map(movie => {
-    const { createdOn, updatedOn, likes, ...movieRest } = movie
+    const { id, name, likes } = movie
     return {
-      ...movieRest,
+      id,
+      name,
       likes: likes.length
     }
   })
