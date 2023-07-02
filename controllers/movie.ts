@@ -3,9 +3,10 @@ import { type IMovieRequest } from '../dto/movie/IMovieRequest'
 import { createMovieInstanceService, createMovieService, getLikeCountService } from '../services/movie'
 import { movieRepository } from '../repositories'
 import { Status } from '../dto/enums/status'
-import { type User } from '../models'
+import { Movie, type User } from '../models'
 import { createLikedMovieInstanceService, createLikedMovieService } from '../services/likedMovie'
 import { type ICustomRequest } from '../dto/request/ICustomRequest'
+import createFilter from '../services/createFilter'
 
 const createMovie = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -59,6 +60,12 @@ const deleteMovie = async (req: Request, res: Response): Promise<Response> => {
 
 const getAllMovies = async (req: Request, res: Response): Promise<Response> => {
   try {
+    const reqFilter = req.query.filter as string
+    if (reqFilter !== undefined) {
+      const movies = await createFilter(reqFilter, new Movie(), movieRepository)
+      return res.json(movies)
+    }
+
     const movies = await movieRepository.find()
     return res.json(movies)
   } catch (error) {
