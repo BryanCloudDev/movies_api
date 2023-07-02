@@ -1,6 +1,6 @@
 import { type Repository } from 'typeorm'
 import type IFilter from '../dto/filter/IFilterUser'
-import { type BaseModel } from '../models/BaseModel'
+import type BaseModel from '../models/BaseModel'
 
 const createFilter = async (reqFilter: string, model: BaseModel, repository: Repository<typeof model>): Promise<any> => {
   const { where, limit, offset, select, order }: IFilter<typeof model> = JSON.parse(reqFilter)

@@ -1,10 +1,10 @@
 import { Entity, Column, OneToMany } from 'typeorm'
-import { BaseModel } from './BaseModel'
-import { LikedMovie } from './LikedMovies'
+import BaseModel from './BaseModel'
 import { Status } from '../dto/enums/status'
+import LikedMovie from './LikedMovies'
 
 @Entity()
-export class Movie extends BaseModel {
+export default class Movie extends BaseModel {
   @Column()
     name: string
 

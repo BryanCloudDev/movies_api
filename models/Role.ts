@@ -1,9 +1,9 @@
 import { Entity, Column, OneToMany } from 'typeorm'
-import { BaseModel } from './BaseModel'
-import { User } from './User'
+import BaseModel from './BaseModel'
+import User from './User'
 
 @Entity()
-export class Role extends BaseModel {
+export default class Role extends BaseModel {
   @Column()
     name: string
 
