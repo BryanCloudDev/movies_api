@@ -8,6 +8,7 @@ import { deleteUser, getAllUsers, getMoviesLikedByUser, getUserProfile, updateUs
 import { validateJWT } from '../middlewares/validateJWT'
 import validateRole from '../middlewares/validateRole'
 import Roles from '../dto/enums/roles'
+import validateQuery from '../middlewares/validateQuery'
 
 const userRouter = Router()
 
@@ -65,7 +66,8 @@ userRouter.delete('/:id',
 userRouter.get('/',
   [
     validateJWT,
-    validateRole([Roles.ADMIN])
+    validateRole([Roles.ADMIN]),
+    validateQuery
   ], getAllUsers)
 
 userRouter.get('/:id/movie',
