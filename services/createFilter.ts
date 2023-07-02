@@ -5,9 +5,9 @@ import errorMessageHandler from './errorMessage'
 
 const createFilter = async (reqFilter: string, model: BaseModel, repository: Repository<typeof model>): Promise<any> => {
   try {
-    const { where, limit, offset, select, order }: IFilter<typeof model> = JSON.parse(reqFilter)
+    const { where, limit, offset, select, order, relations }: IFilter<typeof model> = JSON.parse(reqFilter)
 
-    const repositoryPromise = repository.find({ where, skip: offset, take: limit, select, order })
+    const repositoryPromise = repository.find({ where, skip: offset, take: limit, select, order, relations })
     const countPromise = repository.count({ where })
 
     const selectArray = Object.entries(select).map(entry => entry[1])
@@ -47,7 +47,7 @@ const createFilter = async (reqFilter: string, model: BaseModel, repository: Rep
       }
     }
   } catch (error) {
-    errorMessageHandler(error, `Error in filter ${model.constructor.name}`)
+    return errorMessageHandler(error, `Error in filter ${model.constructor.name}`)
   }
 }
 
