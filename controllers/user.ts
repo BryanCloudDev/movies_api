@@ -8,17 +8,16 @@ import { Status } from '../dto/enums/status'
 import { User } from '../models'
 import createFilter from '../services/createFilter'
 import { type IUserResponse } from '../dto/user/IUSerResponse'
+import errorMessageHandler from '../services/errorMessage'
 
 const getUserbyId = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id = parseInt(req.params.id)
     const user = await getUserbyIdService(id)
 
-    return res.json(user)
+    return res.status(200).json(user)
   } catch (error: any) {
-    return res.status(500).json({
-      error: 'error in get user by id'
-    })
+    return res.status(500).json(errorMessageHandler(error, 'Error in get user by id'))
   }
 }
 
@@ -26,8 +25,8 @@ const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
     const reqFilter = req.query.filter as string
     if (reqFilter !== undefined) {
-      const response = await createFilter(reqFilter, new User(), userRepository)
-      return res.json(response)
+      const users = await createFilter(reqFilter, new User(), userRepository)
+      return res.status(200).json(users)
     }
 
     const users = await userRepository.find({ relations: { role: true } })
@@ -44,11 +43,7 @@ const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
     })
     return res.json(usersFiltered)
   } catch (error: any) {
-    console.log(error.message)
-
-    return res.status(500).json({
-      error: 'error in get all users'
-    })
+    return res.status(500).json(errorMessageHandler(error, 'Error in get all users'))
   }
 }
 
@@ -61,23 +56,19 @@ const createUser = async (req: Request, res: Response): Promise<Response> => {
     const role = await getRoleByIdService(roleSent)
 
     if (role === null) {
-      return res.json({
-        error: `role with id ${roleSent} not found`
+      return res.status(404).json({
+        message: `Role with id ${roleSent} not found`
       })
     }
 
     const userInstance = await createUserInstanceService(userRequest, role)
     await createUserService(userInstance)
 
-    return res.json({
+    return res.status(201).json({
       message: 'Successfully created'
     })
   } catch (error: any) {
-    console.log(error.message)
-
-    return res.status(500).json({
-      error: 'error in create user'
-    })
+    return res.status(500).json(errorMessageHandler(error, 'Error in user create'))
   }
 }
 
@@ -89,8 +80,8 @@ const updateUser = async (req: Request, res: Response): Promise<Response> => {
     const role = await getRoleByIdService(roleId)
 
     if (role === null) {
-      return res.json({
-        error: `role with id ${roleId} not found`
+      return res.status(404).json({
+        message: `Role with id ${roleId} not found`
       })
     }
 
@@ -101,9 +92,7 @@ const updateUser = async (req: Request, res: Response): Promise<Response> => {
 
     return res.status(204).json({})
   } catch (error: any) {
-    return res.status(500).json({
-      error: 'error in patch user'
-    })
+    return res.status(500).json(errorMessageHandler(error, 'Error in user update by id'))
   }
 }
 
@@ -115,21 +104,24 @@ const deleteUser = async (req: Request, res: Response): Promise<Response> => {
       status: Status.INACTIVE
     })
 
-    return res.status(204).json()
+    return res.status(204).json({})
   } catch (error: any) {
-    return res.status(500).json({
-      error: 'error in delete user'
-    })
+    return res.status(500).json(errorMessageHandler(error, 'Error in delete user by id'))
   }
 }
 
 const getUserProfile = async (req: Request, res: Response): Promise<Response> => {
-  const { lastLogin, updatedOn, password, role, ...user }: User = req.user as User
-  const { id } = role
-  return res.json({
-    ...user,
-    roleId: id
-  })
+  try {
+    const { lastLogin, updatedOn, password, role, ...user }: User = req.user as User
+    const { id } = role
+
+    return res.status(200).json({
+      ...user,
+      roleId: id
+    })
+  } catch (error: any) {
+    return res.status(500).json(errorMessageHandler(error, 'Error in get user profile'))
+  }
 }
 
 const getMoviesLikedByUser = async (req: Request, res: Response): Promise<Response> => {
@@ -137,11 +129,9 @@ const getMoviesLikedByUser = async (req: Request, res: Response): Promise<Respon
     const id = parseInt(req.params.id)
     const movies = await likedMoviesRepository.find({ where: { user: { id } }, relations: { movie: true } })
 
-    return res.json(movies)
-  } catch (error) {
-    return res.status(500).json({
-      message: 'error in get movies liked by user'
-    })
+    return res.status(200).json(movies)
+  } catch (error: any) {
+    return res.status(500).json(errorMessageHandler(error, 'Error in get movies liked by user'))
   }
 }
 
@@ -149,8 +139,8 @@ export {
   createUser,
   deleteUser,
   getAllUsers,
-  getUserProfile,
   getMoviesLikedByUser,
+  getUserProfile,
   getUserbyId,
   updateUser
 }
