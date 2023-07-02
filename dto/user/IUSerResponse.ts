@@ -1,13 +1,13 @@
-export interface IUserResponse {
-  id: number
-  createdOn: Date
-  updatedOn: Date
-  firstName: string
-  lastName: string
-  email: string
+export default interface IUserResponse {
   birthDate: Date
+  createdOn: Date
+  email: string
+  firstName: string
+  id: number
+  lastLogin: Date | null
+  lastName: string
+  profilePhoto: string
   roleId: number
   status: number
-  lastLogin: Date | null
-  profilePhoto: string
+  updatedOn: Date
 }

@@ -1,13 +1,13 @@
 import { type Request, type Response } from 'express'
 import { createUserInstanceService, createUserService, getUserbyIdService } from '../services/user'
-import { type IUserRequest } from '../dto/user/IUserRequest'
+import type IUserRequest from '../dto/user/IUserRequest'
 import Roles from '../dto/enums/roles'
 import { getRoleByIdService } from '../services/role'
 import { likedMoviesRepository, userRepository } from '../repositories'
 import { Status } from '../dto/enums/status'
 import { User } from '../models'
 import createFilter from '../services/createFilter'
-import { type IUserResponse } from '../dto/user/IUSerResponse'
+import type IUserResponse from '../dto/user/IUSerResponse'
 import errorMessageHandler from '../services/errorMessage'
 
 const getUserbyId = async (req: Request, res: Response): Promise<Response> => {

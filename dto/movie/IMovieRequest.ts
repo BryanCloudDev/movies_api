@@ -1,4 +1,4 @@
-export interface IMovieRequest {
+export default interface IMovieRequest {
   countryOrigin: string
   description: string
   director: string

@@ -1,7 +1,7 @@
 
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { type IJwtPayload } from '../../dto/auth/IJwtpayload'
+import type IJwtPayload from '../../dto/auth/IJwtpayload'
 
 const encrypt = async (text: string): Promise<string> => {
   try {

@@ -1,5 +1,5 @@
 import { type Response, type NextFunction } from 'express'
-import { type ICustomRequest } from '../dto/request/ICustomRequest'
+import type ICustomRequest from '../dto/request/ICustomRequest'
 import { movieRepository } from '../repositories'
 
 const validateIdMovie = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {

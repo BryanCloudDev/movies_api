@@ -1,9 +1,9 @@
-export interface IUserRequest {
+export default interface IUserRequest {
+  birthDate: string
+  email: string
   firstName: string
   lastName: string
-  email: string
   password: string
-  birthDate: string
-  roleId: number
   profilePhoto: string
+  roleId: number
 }

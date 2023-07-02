@@ -1,11 +1,11 @@
 import { type Request, type Response } from 'express'
-import { type IMovieRequest } from '../dto/movie/IMovieRequest'
+import type IMovieRequest from '../dto/movie/IMovieRequest'
 import { createMovieInstanceService, createMovieService, getLikeCountService } from '../services/movie'
 import { movieRepository } from '../repositories'
 import { Status } from '../dto/enums/status'
 import { Movie, type User } from '../models'
 import { createLikedMovieInstanceService, createLikedMovieService } from '../services/likedMovie'
-import { type ICustomRequest } from '../dto/request/ICustomRequest'
+import type ICustomRequest from '../dto/request/ICustomRequest'
 import createFilter from '../services/createFilter'
 import errorMessageHandler from '../services/errorMessage'
 

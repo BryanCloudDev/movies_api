@@ -1,5 +1,5 @@
 import { body } from 'express-validator'
-import { type IUserRequest } from '../../dto/user/IUserRequest'
+import type IUserRequest from '../../dto/user/IUserRequest'
 import { type Role, type User } from '../../models'
 import { userRepository } from '../../repositories'
 import { encrypt } from '../auth'

@@ -1,4 +1,4 @@
-import { type IMovieRequest } from '../../dto/movie/IMovieRequest'
+import type IMovieRequest from '../../dto/movie/IMovieRequest'
 import { type Movie } from '../../models'
 import { movieRepository } from '../../repositories'
 
