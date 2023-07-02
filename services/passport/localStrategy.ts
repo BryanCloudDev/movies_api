@@ -3,6 +3,7 @@ import { Strategy as LocalStrategy } from 'passport-local'
 import { userRepository } from '../../repositories'
 import { checkPassword } from '../auth'
 import { ExtractJwt, Strategy as JWTStrategy } from 'passport-jwt'
+import errorMessageHandler from '../errorMessage'
 
 passport.use(
   new LocalStrategy({
@@ -28,9 +29,10 @@ passport.use(
       }
 
       return done(null, user)
-    } catch (error) {
+    } catch (error: any) {
+      errorMessageHandler(error, 'Error in passport local')
       done(null, false, {
-        message: 'JWT is invalid'
+        message: 'Email or passowrd incorrect'
       })
     }
   })
@@ -50,7 +52,8 @@ passport.use(
       }
 
       done(null, user)
-    } catch (e) {
+    } catch (error: any) {
+      errorMessageHandler(error, 'Error in passport jwt')
       return done(null, false, {
         message: 'JWT is invalid'
       })
