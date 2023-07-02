@@ -107,11 +107,31 @@ const getLikeCountForMovies = async (res: Response): Promise<Response> => {
   }
 }
 
+const getMoviesLikedByUser = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id = parseInt(req.params.id)
+    const reqFilter = req.query.filter as string
+    if (reqFilter !== undefined) {
+      const movies = await createFilter(reqFilter, new Movie(), movieRepository)
+
+      return res.status(movies?.message !== undefined ? 500 : 200)
+        .json(movies)
+    }
+
+    const movies = await movieRepository.find({ where: { likes: { user: { id } } }, select: ['id', 'name', 'description', 'poster'] })
+
+    return res.status(200).json(movies)
+  } catch (error: any) {
+    return res.status(500).json(errorMessageHandler(error, 'Error in get movies liked by user'))
+  }
+}
+
 export {
   createMovie,
   deleteMovie,
   getAllMovies,
   getLikeCountForMovies,
+  getMoviesLikedByUser,
   likeAMovie,
   updateMovie
 }
