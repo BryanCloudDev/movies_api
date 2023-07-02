@@ -1,5 +1,8 @@
 const errorMessageHandler = (_error: any, message: string): { message: string } => {
-  console.log(_error.message)
+  console.log({
+    error: _error.message,
+    message
+  })
 
   return { message }
 }
