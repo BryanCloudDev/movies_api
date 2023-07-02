@@ -7,38 +7,33 @@ import { Movie, type User } from '../models'
 import { createLikedMovieInstanceService, createLikedMovieService } from '../services/likedMovie'
 import { type ICustomRequest } from '../dto/request/ICustomRequest'
 import createFilter from '../services/createFilter'
+import errorMessageHandler from '../services/errorMessage'
 
 const createMovie = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { ...movieRequest }: IMovieRequest = req.body
+    const movieRequest: IMovieRequest = req.body
 
     const movieInstance = await createMovieInstanceService(movieRequest)
     await createMovieService(movieInstance)
 
     return res.status(201).json({
-      error: 'Succesfully created'
+      message: 'Succesfully created'
     })
-  } catch (error) {
-    console.log(error.message)
-    return res.status(500).json({
-      error: 'error in create movie'
-    })
+  } catch (error: any) {
+    return res.status(500).json(errorMessageHandler(error, 'Error in create movie'))
   }
 }
 
 const updateMovie = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { ...movieRequest }: IMovieRequest = req.body
+    const movieRequest: IMovieRequest = req.body
     const id = parseInt(req.params.id)
 
     await movieRepository.update(id, { ...movieRequest })
 
     return res.status(204).json({})
-  } catch (error) {
-    console.log(error.message)
-    return res.status(500).json({
-      error: 'error in update movie'
-    })
+  } catch (error: any) {
+    return res.status(500).json(errorMessageHandler(error, 'Error in movie update'))
   }
 }
 
@@ -50,11 +45,9 @@ const deleteMovie = async (req: Request, res: Response): Promise<Response> => {
       status: Status.INACTIVE
     })
 
-    return res.status(204).json()
+    return res.status(204).json({})
   } catch (error: any) {
-    return res.status(500).json({
-      error: 'error in delete movie'
-    })
+    return res.status(500).json(errorMessageHandler(error, 'Error in delete movie'))
   }
 }
 
@@ -63,15 +56,14 @@ const getAllMovies = async (req: Request, res: Response): Promise<Response> => {
     const reqFilter = req.query.filter as string
     if (reqFilter !== undefined) {
       const movies = await createFilter(reqFilter, new Movie(), movieRepository)
-      return res.json(movies)
+      return res.status(200).json(movies)
     }
 
     const movies = await movieRepository.find()
-    return res.json(movies)
-  } catch (error) {
-    return res.status(500).json({
-      message: 'error in get all movies'
-    })
+
+    return res.status(200).json(movies)
+  } catch (error: any) {
+    return res.status(500).json(errorMessageHandler(error, 'Error in get all movies'))
   }
 }
 
@@ -84,25 +76,21 @@ const likeAMovie = async (req: ICustomRequest, res: Response): Promise<Response>
 
     await createLikedMovieService(likedMovieInstance)
 
-    return res.json({
+    return res.status(201).json({
       message: 'Successfully created'
     })
-  } catch (error) {
-    return res.json({
-      message: 'error in like movie controller'
-    })
+  } catch (error: any) {
+    return res.status(500).json(errorMessageHandler(error, 'Error in like movie'))
   }
 }
 
-const getLikeCountForMovies = async (req: ICustomRequest, res: Response): Promise<Response> => {
+const getLikeCountForMovies = async (res: Response): Promise<Response> => {
   try {
     const movies = await movieRepository.find({ relations: { likes: true } })
 
-    return res.json(getLikeCountService(movies))
-  } catch (error) {
-    return res.json({
-      message: 'error in get like count controller'
-    })
+    return res.status(200).json(getLikeCountService(movies))
+  } catch (error: any) {
+    return res.status(500).json(errorMessageHandler(error, 'Error in get likes count'))
   }
 }
 
