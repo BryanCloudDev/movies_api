@@ -8,19 +8,19 @@ const login = (req: Request, res: Response, next: NextFunction): void => {
   passport.authenticate('local', async (err: Error | null, user: User | false, info: any) => {
     try {
       if (err !== null || user === false) {
-        return res.json(info)
+        return res.status(400).json(info)
       }
 
       const status = user.status
 
       if (status === Status.INACTIVE) {
-        return res.json({
+        return res.status(403).json({
           message: 'Your account has been deleted'
         })
       }
 
       if (status === Status.BANNED) {
-        return res.json({
+        return res.status(403).json({
           message: 'Your account has been banned'
         })
       }
@@ -29,7 +29,7 @@ const login = (req: Request, res: Response, next: NextFunction): void => {
         if (err !== undefined) { next(err); return }
 
         const token = await generateJWT({ id: user.id, email: user.email, role: user.role.id })
-        return res.json({ token })
+        return res.status(200).json({ token })
       })
     } catch (e) {
       next(e)
