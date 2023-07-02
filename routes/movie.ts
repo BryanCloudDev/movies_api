@@ -1,11 +1,8 @@
 import { Router } from 'express'
 import { createMovie, deleteMovie, getAllMovies, getLikeCountForMovies, likeAMovie, updateMovie } from '../controllers/movie'
 import { body, param } from 'express-validator'
-import { validateFields } from '../middlewares/validateFields'
-import { validateJWT } from '../middlewares/validateJWT'
-import validateRole from '../middlewares/validateRole'
 import Roles from '../dto/enums/roles'
-import validateIdMovie from '../middlewares/validateIdMovie'
+import { validateJWT, validateRole, validateFields, validateIdMovie } from '../middlewares'
 
 const movieRouter = Router()
 
