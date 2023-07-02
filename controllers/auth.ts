@@ -3,6 +3,7 @@ import { passport } from '../services/passport/localStrategy'
 import { type User } from '../models'
 import { generateJWT } from '../services/auth'
 import { Status } from '../dto/enums/status'
+import errorMessageHandler from '../services/errorMessage'
 
 const login = (req: Request, res: Response, next: NextFunction): void => {
   passport.authenticate('local', async (err: Error | null, user: User | false, info: any) => {
@@ -31,8 +32,9 @@ const login = (req: Request, res: Response, next: NextFunction): void => {
         const token = await generateJWT({ id: user.id, email: user.email, role: user.role.id })
         return res.status(200).json({ token })
       })
-    } catch (e) {
-      next(e)
+    } catch (error: any) {
+      next(error)
+      return res.status(500).json(errorMessageHandler(error, 'Error in login'))
     }
   })(req, res, next)
 }
