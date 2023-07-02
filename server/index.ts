@@ -9,8 +9,8 @@ export default class Server {
     readonly _apiRouter = Router(),
     readonly _port = Number(process.env.PORT),
     readonly _apiRoute = '/api',
-    readonly _userRoute = '/user',
-    readonly _movieRoute = '/movie',
+    readonly _userRoute = '/users',
+    readonly _movieRoute = '/movies',
     readonly _loginRoute = '/login'
   ) {
     void this.connectToDB()
@@ -31,6 +31,8 @@ export default class Server {
     this._apiRouter.use(this._loginRoute, authRouter)
     this._apiRouter.use(this._movieRoute, movieRouter)
     this._apiRouter.use(this._userRoute, userRouter)
+
+    // API route
     this._app.use(this._apiRoute, this._apiRouter)
   }
 
