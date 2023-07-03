@@ -4,7 +4,7 @@ import { checkIfRoleIsSent, existsUserById, userValidationRules } from '../servi
 import { createUser, getUserbyId } from '../controllers'
 import { deleteUser, getAllUsers, getUserProfile, updateUser } from '../controllers/user'
 import Roles from '../dto/enums/roles'
-import { validateJWT, validateRole, validateFields, validateEmailInChange, validateQuery, validateRoleOnCreate } from '../middlewares'
+import { validateJWT, validateRole, validateFields, validateEmailInChange, validateQuery, validateRoleOnCreate, validateStatus } from '../middlewares'
 import { getMoviesLikedByUser } from '../controllers/movie'
 
 const userRouter = Router()
@@ -55,7 +55,8 @@ userRouter.patch('/:id',
     validateEmailInChange,
     body('roleId').isNumeric(),
     validateRoleOnCreate,
-    validateFields
+    validateFields,
+    validateStatus
   ],
   updateUser)
 
