@@ -1,4 +1,4 @@
-import { type IRoleRequest, Status } from '../dto'
+import { type ICustomRequest, type IRoleRequest, Status } from '../dto'
 import { type Request, type Response } from 'express'
 import { Role } from '../models'
 import { createFilter, createRoleInstanceService, createRoleService, errorMessageHandler } from '../services'
@@ -33,9 +33,9 @@ const deleteRole = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-const getAllRoles = async (req: Request, res: Response): Promise<Response> => {
+const getAllRoles = async (req: ICustomRequest, res: Response): Promise<Response> => {
   try {
-    const reqFilter = req.query.filter as string
+    const reqFilter = req.filter
     if (reqFilter !== undefined) {
       const roles = await createFilter(reqFilter, new Role(), roleRepository)
       return res.status(200).json(roles)
