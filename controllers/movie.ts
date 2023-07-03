@@ -73,7 +73,7 @@ const getAllMovies = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-const getLikeCountForMovies = async (res: Response): Promise<Response> => {
+const getLikeCountForMovies = async (req: Request, res: Response): Promise<Response> => {
   try {
     const movies = await movieRepository.find({ relations: { likes: true } })
 
