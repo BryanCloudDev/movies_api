@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import swaggerUi from 'swagger-ui-express'
 import swaggerDocs from '../services/swagger'
+import swaggerUi from 'swagger-ui-express'
 
 const explorerRouter = Router()
 

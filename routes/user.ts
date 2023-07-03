@@ -1,11 +1,9 @@
 import { Router } from 'express'
 import { body, param } from 'express-validator'
 import { checkIfRoleIsSent, existsUserById, userValidationRules } from '../services/user'
-import { createUser, getUserbyId } from '../controllers'
-import { deleteUser, getAllUsers, getUserProfile, updateUser } from '../controllers/user'
+import { createUser, deleteUser, getAllUsers, getMoviesLikedByUser, getUserById, getUserProfile, updateUser } from '../controllers'
+import { validateEmailInChange, validateFields, validateJWT, validateQuery, validateRole, validateRoleOnCreate, validateStatus } from '../middlewares'
 import Roles from '../dto/enums/roles'
-import { validateJWT, validateRole, validateFields, validateEmailInChange, validateQuery, validateRoleOnCreate, validateStatus } from '../middlewares'
-import { getMoviesLikedByUser } from '../controllers/movie'
 
 const userRouter = Router()
 
@@ -24,7 +22,7 @@ userRouter.get('/:id',
     param('id').custom(existsUserById),
     validateFields
   ],
-  getUserbyId)
+  getUserById)
 
 userRouter.post('/',
   [

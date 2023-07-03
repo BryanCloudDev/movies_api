@@ -1,22 +1,42 @@
-import { type Request, type Response } from 'express'
-import { createUserInstanceService, createUserService, getUserbyIdService } from '../services/user'
-import type IUserRequest from '../dto/user/IUserRequest'
-import { userRepository } from '../repositories'
-import { Status } from '../dto/enums/status'
-import createFilter from '../services/createFilter'
-import type IUserResponse from '../dto/user/IUSerResponse'
-import errorMessageHandler from '../services/errorMessage'
 import type ICustomRequest from '../dto/request/ICustomRequest'
+import type IUserRequest from '../dto/user/IUserRequest'
+import type IUserResponse from '../dto/user/IUSerResponse'
+import { type Request, type Response } from 'express'
+import { Status } from '../dto/enums/status'
 import { User } from '../models'
+import { createUserInstanceService, createUserService, getUserbyIdService } from '../services/user'
+import { userRepository } from '../repositories'
+import createFilter from '../services/createFilter'
+import errorMessageHandler from '../services/errorMessage'
 
-const getUserbyId = async (req: Request, res: Response): Promise<Response> => {
+const createUser = async (req: ICustomRequest, res: Response): Promise<Response> => {
+  try {
+    const { ...userRequest }: IUserRequest = req.body
+
+    const role = req.role
+
+    const userInstance = await createUserInstanceService(userRequest, role)
+    await createUserService(userInstance)
+
+    return res.status(201).json({
+      message: 'Successfully created'
+    })
+  } catch (error: any) {
+    return res.status(500).json(errorMessageHandler(error, 'Error in user create'))
+  }
+}
+
+const deleteUser = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id = parseInt(req.params.id)
-    const user = await getUserbyIdService(id)
 
-    return res.status(200).json(user)
+    await userRepository.update(id, {
+      status: Status.INACTIVE
+    })
+
+    return res.status(204).json({})
   } catch (error: any) {
-    return res.status(500).json(errorMessageHandler(error, 'Error in get user by id'))
+    return res.status(500).json(errorMessageHandler(error, 'Error in delete user by id'))
   }
 }
 
@@ -46,20 +66,28 @@ const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-const createUser = async (req: ICustomRequest, res: Response): Promise<Response> => {
+const getUserById = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { ...userRequest }: IUserRequest = req.body
+    const id = parseInt(req.params.id)
+    const user = await getUserbyIdService(id)
 
-    const role = req.role
+    return res.status(200).json(user)
+  } catch (error: any) {
+    return res.status(500).json(errorMessageHandler(error, 'Error in get user by id'))
+  }
+}
 
-    const userInstance = await createUserInstanceService(userRequest, role)
-    await createUserService(userInstance)
+const getUserProfile = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { lastLogin, updatedOn, password, role, ...user }: User = req.user as User
+    const { id } = role
 
-    return res.status(201).json({
-      message: 'Successfully created'
+    return res.status(200).json({
+      ...user,
+      roleId: id
     })
   } catch (error: any) {
-    return res.status(500).json(errorMessageHandler(error, 'Error in user create'))
+    return res.status(500).json(errorMessageHandler(error, 'Error in get user profile'))
   }
 }
 
@@ -81,39 +109,11 @@ const updateUser = async (req: ICustomRequest, res: Response): Promise<Response>
   }
 }
 
-const deleteUser = async (req: Request, res: Response): Promise<Response> => {
-  try {
-    const id = parseInt(req.params.id)
-
-    await userRepository.update(id, {
-      status: Status.INACTIVE
-    })
-
-    return res.status(204).json({})
-  } catch (error: any) {
-    return res.status(500).json(errorMessageHandler(error, 'Error in delete user by id'))
-  }
-}
-
-const getUserProfile = async (req: Request, res: Response): Promise<Response> => {
-  try {
-    const { lastLogin, updatedOn, password, role, ...user }: User = req.user as User
-    const { id } = role
-
-    return res.status(200).json({
-      ...user,
-      roleId: id
-    })
-  } catch (error: any) {
-    return res.status(500).json(errorMessageHandler(error, 'Error in get user profile'))
-  }
-}
-
 export {
   createUser,
   deleteUser,
   getAllUsers,
   getUserProfile,
-  getUserbyId,
+  getUserById,
   updateUser
 }

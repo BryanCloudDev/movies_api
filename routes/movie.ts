@@ -1,9 +1,8 @@
 import { Router } from 'express'
-import { createMovie, deleteMovie, getAllMovies, getLikeCountForMovies, updateMovie } from '../controllers/movie'
 import { body, param } from 'express-validator'
+import { createMovie, deleteMovie, getAllMovies, getLikeCountForMovies, likeAMovie, unlikeAMovie, updateMovie } from '../controllers'
+import { validateFields, validateIdMovie, validateJWT, validateLikedMovieonCreate, validateLikedMovieonDelete, validateRole, validateStatus } from '../middlewares'
 import Roles from '../dto/enums/roles'
-import { validateJWT, validateRole, validateFields, validateIdMovie, validateLikedMovieonDelete, validateLikedMovieonCreate, validateStatus } from '../middlewares'
-import { likeAMovie, unlikeAMovie } from '../controllers/likedMovie'
 
 const movieRouter = Router()
 

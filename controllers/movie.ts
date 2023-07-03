@@ -1,10 +1,9 @@
-import { type Request, type Response } from 'express'
 import type IMovieRequest from '../dto/movie/IMovieRequest'
+import { type Request, type Response } from 'express'
+import { Movie } from '../models'
+import { Status } from '../dto/enums/status'
 import { createMovieInstanceService, createMovieService, getLikeCountService } from '../services/movie'
 import { movieRepository } from '../repositories'
-import { Status } from '../dto/enums/status'
-import { Movie } from '../models'
-
 import createFilter from '../services/createFilter'
 import errorMessageHandler from '../services/errorMessage'
 
@@ -27,19 +26,6 @@ const createMovie = async (req: Request, res: Response): Promise<Response> => {
     })
   } catch (error: any) {
     return res.status(500).json(errorMessageHandler(error, 'Error in create movie'))
-  }
-}
-
-const updateMovie = async (req: Request, res: Response): Promise<Response> => {
-  try {
-    const movieRequest: IMovieRequest = req.body
-    const id = parseInt(req.params.id)
-
-    await movieRepository.update(id, { ...movieRequest })
-
-    return res.status(204).json({})
-  } catch (error: any) {
-    return res.status(500).json(errorMessageHandler(error, 'Error in movie update'))
   }
 }
 
@@ -99,6 +85,19 @@ const getMoviesLikedByUser = async (req: Request, res: Response): Promise<Respon
     return res.status(200).json(movies)
   } catch (error: any) {
     return res.status(500).json(errorMessageHandler(error, 'Error in get movies liked by user'))
+  }
+}
+
+const updateMovie = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const movieRequest: IMovieRequest = req.body
+    const id = parseInt(req.params.id)
+
+    await movieRepository.update(id, { ...movieRequest })
+
+    return res.status(204).json({})
+  } catch (error: any) {
+    return res.status(500).json(errorMessageHandler(error, 'Error in movie update'))
   }
 }
 

@@ -1,8 +1,8 @@
 import { type NextFunction, type Request, type Response } from 'express'
-import { passport } from '../services/passport/localStrategy'
 import { type User } from '../models'
-import { generateJWT } from '../services/auth'
 import { Status } from '../dto/enums/status'
+import { generateJWT } from '../services/auth'
+import { passport } from '../services/passport/localStrategy'
 import errorMessageHandler from '../services/errorMessage'
 
 const login = (req: Request, res: Response, next: NextFunction): void => {
@@ -28,8 +28,10 @@ const login = (req: Request, res: Response, next: NextFunction): void => {
 
       req.login(user, { session: false }, async (err: any) => {
         if (err !== undefined) { next(err); return }
+        const { id, email, role } = user
+        const { id: roleId } = role
 
-        const token = await generateJWT({ id: user.id, email: user.email, role: user.role.id })
+        const token = await generateJWT({ id, email, role: roleId })
         return res.status(200).json({ token })
       })
     } catch (error: any) {

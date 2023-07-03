@@ -1,9 +1,9 @@
-import { type Response } from 'express'
 import type ICustomRequest from '../dto/request/ICustomRequest'
-import { type User, LikedMovie } from '../models'
+import { type Response } from 'express'
+import { LikedMovie, type User } from '../models'
+import { createLikedMovieInstanceService, createLikedMovieService } from '../services/likedMovie'
 import { likedMoviesRepository } from '../repositories'
 import errorMessageHandler from '../services/errorMessage'
-import { createLikedMovieInstanceService, createLikedMovieService } from '../services/likedMovie'
 
 const likeAMovie = async (req: ICustomRequest, res: Response): Promise<Response> => {
   try {
@@ -34,7 +34,7 @@ const unlikeAMovie = async (req: ICustomRequest, res: Response): Promise<Respons
 
     await likedMoviesRepository.delete(likedMovie.id)
 
-    return res.status(200).json(likedMovie)
+    return res.status(204).json({})
   } catch (error: any) {
     return res.status(500).json(errorMessageHandler(error, 'Error in unlike movie'))
   }
