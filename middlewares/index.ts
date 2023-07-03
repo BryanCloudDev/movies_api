@@ -4,9 +4,9 @@ import validateFields from './validateFields'
 import validateIdMovie from './movie/validateIdMovie'
 import validateJWT from './user/validateJWT'
 import validateQuery from './validateQuery'
-import validateRole from './role/validateRole'
+import validateRole from './role/validateRoleAccess'
 import validateRoleId from './role/validateRoleId'
-import validateRoleOnCreate from './role/validateRoleOnCreate'
+import validateRoleOnDelete from './role/validateRole'
 import validateStatus from './validateStatus'
 import validateUserId from './user/validateUserId'
 import validateUserOnDelete from './user/validateUser'
@@ -21,7 +21,7 @@ export {
   validateQuery,
   validateRole,
   validateRoleId,
-  validateRoleOnCreate,
+  validateRoleOnDelete,
   validateStatus,
   validateUserId,
   validateUserOnDelete
