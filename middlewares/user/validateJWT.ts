@@ -1,7 +1,7 @@
 import { type NextFunction, type Request, type Response } from 'express'
-import { type User } from '../models'
-import { Status } from '../dto'
-import { errorMessageHandler, passport } from '../services'
+import { type User } from '../../models'
+import { Status } from '../../dto'
+import { errorMessageHandler, passport } from '../../services'
 
 const validateJWT = (req: Request, res: Response, next: NextFunction): void => {
   passport.authenticate('jwt', async (err: Error | null, user: User | false, info: any) => {

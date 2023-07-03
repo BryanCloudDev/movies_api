@@ -1,6 +1,6 @@
 import { type Response, type NextFunction } from 'express'
-import { type ICustomRequest, Status } from '../dto'
-import { type User } from '../models'
+import { type ICustomRequest, Status } from '../../dto'
+import { type User } from '../../models'
 
 const validateUserOnDelete = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
   const user = req.user as User

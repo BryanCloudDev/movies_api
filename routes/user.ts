@@ -7,6 +7,18 @@ import { validateEmailInChange, validateFields, validateJWT, validateQuery, vali
 
 const userRouter = Router()
 
+userRouter.delete('/:id',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN]),
+    param('id').isNumeric(),
+    validateUserId,
+    validateUserOnDelete,
+    validateFields
+  ],
+  deleteUser
+)
+
 userRouter.get('/profile',
   [
     validateJWT,
@@ -44,18 +56,6 @@ userRouter.get('/:id/movies',
     validateFields
   ],
   getMoviesLikedByUser
-)
-
-userRouter.delete('/:id',
-  [
-    validateJWT,
-    validateRole([Roles.ADMIN]),
-    param('id').isNumeric(),
-    validateUserId,
-    validateUserOnDelete,
-    validateFields
-  ],
-  deleteUser
 )
 
 userRouter.patch('/:id',

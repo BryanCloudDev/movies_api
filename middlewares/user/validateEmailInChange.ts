@@ -1,6 +1,6 @@
 import { type NextFunction, type Request, type Response } from 'express'
-import { userRepository } from '../repositories'
-import { errorMessageHandler, getUserbyIdService } from '../services'
+import { userRepository } from '../../repositories'
+import { errorMessageHandler, getUserbyIdService } from '../../services'
 
 const validateEmailInChange = async (req: Request, res: Response, next: NextFunction): Promise<Response | undefined> => {
   try {

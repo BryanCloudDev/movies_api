@@ -1,14 +1,14 @@
-import { validateLikedMovieonCreate, validateLikedMovieonDelete } from './validateLikedMovie'
-import validateEmailInChange from './validateEmailInChange'
+import { validateLikedMovieonCreate, validateLikedMovieonDelete } from './movie/validateLikedMovie'
+import validateEmailInChange from './user/validateEmailInChange'
 import validateFields from './validateFields'
-import validateIdMovie from './validateIdMovie'
-import validateJWT from './validateJWT'
+import validateIdMovie from './movie/validateIdMovie'
+import validateJWT from './user/validateJWT'
 import validateQuery from './validateQuery'
-import validateRole from './validateRole'
-import validateRoleOnCreate from './validateRoleOnCreate'
+import validateRole from './user/validateRole'
+import validateRoleOnCreate from './role/validateRoleOnCreate'
 import validateStatus from './validateStatus'
-import validateUserId from './validateUserId'
-import validateUserOnDelete from './validateUser'
+import validateUserId from './user/validateUserId'
+import validateUserOnDelete from './user/validateUser'
 
 export {
   validateEmailInChange,

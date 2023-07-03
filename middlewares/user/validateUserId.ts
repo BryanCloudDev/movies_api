@@ -1,6 +1,6 @@
 import { type NextFunction, type Response } from 'express'
-import { type ICustomRequest } from '../dto'
-import { getUserbyIdService, errorMessageHandler } from '../services'
+import { type ICustomRequest } from '../../dto'
+import { getUserbyIdService, errorMessageHandler } from '../../services'
 
 const validateUserId = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
   try {
