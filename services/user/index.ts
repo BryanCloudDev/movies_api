@@ -62,10 +62,10 @@ const getUserbyIdService = async (id: number): Promise<User | null> => {
 
 const userValidationRules = [
   body('email', 'The email is not valid').isEmail().trim().custom(emailExists),
-  body('firstName', 'The first name is mandatory').not().isEmpty().trim(),
-  body('lastName', 'The last name is mandatory').not().isEmpty().trim(),
+  body('firstName', 'The first name is mandatory').not().isEmpty().isString().isLength({ max: 30 }).trim(),
+  body('lastName', 'The last name is mandatory').not().isEmpty().isString().isLength({ max: 30 }).trim(),
   body('password', 'The password is mandatory and must have at least 6 characters').isLength({ min: 6 }).trim(),
-  body('birthDate', 'The birthdate is mandatory').not().isEmpty()
+  body('birthDate', 'The birthdate is mandatory').not().isEmpty().isISO8601()
 ]
 
 export {
