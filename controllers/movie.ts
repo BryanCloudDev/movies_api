@@ -1,7 +1,6 @@
-import type IMovieRequest from '../dto/movie/IMovieRequest'
+import { type IMovieRequest, Status } from '../dto'
 import { type Request, type Response } from 'express'
 import { Movie } from '../models'
-import { Status } from '../dto/enums/status'
 import { createMovieInstanceService, createMovieService, getLikeCountService } from '../services/movie'
 import { movieRepository } from '../repositories'
 import createFilter from '../services/createFilter'

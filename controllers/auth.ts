@@ -1,9 +1,9 @@
 import { type NextFunction, type Request, type Response } from 'express'
 import { type User } from '../models'
-import { Status } from '../dto/enums/status'
 import { generateJWT } from '../services/auth'
 import { passport } from '../services/passport/localStrategy'
 import errorMessageHandler from '../services/errorMessage'
+import { Status } from '../dto'
 
 const login = (req: Request, res: Response, next: NextFunction): void => {
   passport.authenticate('local', async (err: Error | null, user: User | false, info: any) => {

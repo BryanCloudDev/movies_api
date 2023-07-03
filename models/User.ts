@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToOne, OneToMany } from 'typeorm'
-import { Status } from '../dto/enums/status'
+import { Status } from '../dto'
 import { Role, LikedMovie } from '.'
 import BaseModel from './BaseModel'
 

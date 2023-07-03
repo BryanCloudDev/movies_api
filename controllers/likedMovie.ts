@@ -1,5 +1,5 @@
-import type ICustomRequest from '../dto/request/ICustomRequest'
 import { type Response } from 'express'
+import { type ICustomRequest } from '../dto'
 import { LikedMovie, type User } from '../models'
 import { createLikedMovieInstanceService, createLikedMovieService } from '../services/likedMovie'
 import { likedMoviesRepository } from '../repositories'

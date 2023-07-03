@@ -1,5 +1,5 @@
 import { type NextFunction, type Request, type Response } from 'express'
-import { Status } from '../dto/enums/status'
+import { Status } from '../dto'
 
 const validateStatus = (req: Request, res: Response, next: NextFunction): Response | undefined => {
   const statusId = parseInt(req.body.status)

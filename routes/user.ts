@@ -1,9 +1,9 @@
+import { Roles } from '../dto'
 import { Router } from 'express'
 import { body, param } from 'express-validator'
 import { checkIfRoleIsSent, existsUserById, userValidationRules } from '../services/user'
 import { createUser, deleteUser, getAllUsers, getMoviesLikedByUser, getUserById, getUserProfile, updateUser } from '../controllers'
 import { validateEmailInChange, validateFields, validateJWT, validateQuery, validateRole, validateRoleOnCreate, validateStatus } from '../middlewares'
-import Roles from '../dto/enums/roles'
 
 const userRouter = Router()
 

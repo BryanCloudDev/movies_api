@@ -1,8 +1,8 @@
+import { Roles } from '../dto'
 import { Router } from 'express'
 import { body, param } from 'express-validator'
 import { createMovie, deleteMovie, getAllMovies, getLikeCountForMovies, likeAMovie, unlikeAMovie, updateMovie } from '../controllers'
 import { validateFields, validateIdMovie, validateJWT, validateLikedMovieonCreate, validateLikedMovieonDelete, validateRole, validateStatus } from '../middlewares'
-import Roles from '../dto/enums/roles'
 
 const movieRouter = Router()
 
