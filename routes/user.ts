@@ -2,8 +2,8 @@ import { Roles } from '../dto'
 import { Router } from 'express'
 import { body, param } from 'express-validator'
 import { createUser, deleteUser, getAllUsers, getMoviesLikedByUser, getUserById, getUserProfile, updateUser } from '../controllers'
-import { checkIfRoleIsSent, existsUserById, userValidationRules } from '../services'
-import { validateEmailInChange, validateFields, validateJWT, validateQuery, validateRole, validateRoleOnCreate, validateStatus } from '../middlewares'
+import { checkIfRoleIsSent, userValidationRules } from '../services'
+import { validateEmailInChange, validateFields, validateJWT, validateQuery, validateRole, validateRoleOnCreate, validateStatus, validateUserId, validateUserOnDelete } from '../middlewares'
 
 const userRouter = Router()
 
@@ -20,7 +20,7 @@ userRouter.get('/:id',
     validateJWT,
     validateRole([Roles.ADMIN]),
     param('id').isNumeric(),
-    param('id').custom(existsUserById),
+    validateUserId,
     validateFields
   ],
   getUserById
@@ -40,7 +40,7 @@ userRouter.get('/:id/movies',
     validateJWT,
     validateRole([Roles.ADMIN]),
     param('id').isNumeric(),
-    param('id').custom(existsUserById),
+    validateUserId,
     validateFields
   ],
   getMoviesLikedByUser
@@ -51,7 +51,8 @@ userRouter.delete('/:id',
     validateJWT,
     validateRole([Roles.ADMIN]),
     param('id').isNumeric(),
-    param('id').custom(existsUserById),
+    validateUserId,
+    validateUserOnDelete,
     validateFields
   ],
   deleteUser
@@ -62,7 +63,7 @@ userRouter.patch('/:id',
     validateJWT,
     validateRole([Roles.ADMIN]),
     param('id').isNumeric(),
-    param('id').custom(existsUserById),
+    validateUserId,
     validateEmailInChange,
     body('roleId').isNumeric(),
     validateRoleOnCreate,
