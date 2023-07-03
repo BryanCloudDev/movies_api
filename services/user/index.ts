@@ -30,11 +30,9 @@ const createUserService = async (user: User): Promise<User> => {
 }
 
 const emailExists = async (email: string): Promise<void> => {
-  try {
-    const user = await userRepository.findOne({ where: { email } })
-    if (user !== null) throw new Error(`The email ${email} is already registered in DB`)
-  } catch (error: any) {
-    throw new Error(errorMessageHandler(error, 'Error in check if email exists service').message)
+  const user = await userRepository.findOne({ where: { email } })
+  if (user !== null) {
+    throw new Error(`The email ${email} is already registered in DB`)
   }
 }
 
