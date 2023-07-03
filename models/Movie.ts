@@ -11,28 +11,28 @@ export default class Movie extends BaseModel {
   @Column()
     description: string
 
-  @Column()
+  @Column({ nullable: true })
     director: string
 
   @Column()
     genre: string
 
-  @Column()
+  @Column({ nullable: true })
     releaseDate: Date
 
-  @Column()
+  @Column({ nullable: true })
     duration: number
 
   @Column()
     rating: number
 
-  @Column()
+  @Column({ nullable: true })
     countryOrigin: string
 
   @Column()
     language: string
 
-  @Column()
+  @Column({ nullable: true })
     poster: string
 
   @Column({ default: Status.ACTIVE })
