@@ -2,6 +2,7 @@ import { type Repository } from 'typeorm'
 import type IFilter from '../dto/filter/IFilterUser'
 import type BaseModel from '../models/BaseModel'
 import errorMessageHandler from './errorMessage'
+import { createUriComponent } from './utils/utils'
 
 const createFilter = async (reqFilter: string, model: BaseModel, repository: Repository<typeof model>): Promise<any> => {
   try {
@@ -28,22 +29,22 @@ const createFilter = async (reqFilter: string, model: BaseModel, repository: Rep
         currentPage: Math.ceil(offset / limit) + 1
       },
       links: {
-        first: encodeURIComponent(JSON.stringify({
+        first: createUriComponent({
           ...query,
           offset: 0
-        })),
-        previous: encodeURIComponent(JSON.stringify({
+        }),
+        previous: createUriComponent({
           ...query,
           offset: Math.max(offset - limit, 0)
-        })),
-        next: encodeURIComponent(JSON.stringify({
+        }),
+        next: createUriComponent({
           ...query,
           offset: offset + limit
-        })),
-        last: encodeURIComponent(JSON.stringify({
+        }),
+        last: createUriComponent({
           ...query,
           offset: Math.floor(count / limit) * limit
-        }))
+        })
       }
     }
   } catch (error) {
