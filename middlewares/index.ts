@@ -6,6 +6,7 @@ import { validateLikedMovieonCreate, validateLikedMovieonDelete } from './valida
 import validateQuery from './validateQuery'
 import validateRole from './validateRole'
 import validateRoleOnCreate from './validateRoleOnCreate'
+import validateStatus from './validateStatus'
 
 export {
   validateEmailInChange,
@@ -16,5 +17,6 @@ export {
   validateLikedMovieonDelete,
   validateQuery,
   validateRole,
-  validateRoleOnCreate
+  validateRoleOnCreate,
+  validateStatus
 }
