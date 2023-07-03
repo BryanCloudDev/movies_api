@@ -8,7 +8,7 @@ const validateJWT = (req: Request, res: Response, next: NextFunction): void => {
   passport.authenticate('jwt', async (err: Error | null, user: User | false, info: any) => {
     try {
       if (err !== null || user === false) {
-        return res.json({
+        return res.status(400).json({
           message: info.message
         })
       }
