@@ -1,3 +1,4 @@
+import FilterResponse from './FilterResponse'
 import { checkIfRoleIsSent, createUserInstanceService, createUserService, emailExists, getUserbyIdService, userValidationRules } from './user'
 import { checkPassword, encrypt, generateJWT } from './auth'
 import { createLikedMovieInstanceService, createLikedMovieService } from './likedMovie'
@@ -10,6 +11,7 @@ import passport from './passport/localStrategy'
 import swaggerDocs from './swagger'
 
 export {
+  FilterResponse,
   checkIfRoleIsSent,
   checkPassword,
   createFilter,

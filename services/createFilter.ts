@@ -1,8 +1,7 @@
 import { type IFilterResponse, type IFilter } from '../dto'
 import { type Repository } from 'typeorm'
 import type BaseModel from '../models/BaseModel'
-import { errorMessageHandler } from './'
-import { createUriComponent, getFilter } from './utils/utils'
+import { FilterResponse, errorMessageHandler } from './'
 
 const createFilter = async (reqFilter: IFilter<typeof model>, model: BaseModel, repository: Repository<typeof model>): Promise<IFilterResponse> => {
   try {
@@ -12,34 +11,7 @@ const createFilter = async (reqFilter: IFilter<typeof model>, model: BaseModel, 
     const countPromise = repository.count({ where })
     const [response, count] = await Promise.all([repositoryPromise, countPromise])
 
-    const query = getFilter(reqFilter)
-
-    return {
-      response,
-      meta: {
-        itemCount: response.length,
-        totalPages: Math.ceil(count / limit),
-        currentPage: Math.ceil(offset / limit) + 1
-      },
-      links: {
-        first: createUriComponent({
-          ...query,
-          offset: 0
-        }),
-        previous: createUriComponent({
-          ...query,
-          offset: Math.max(offset - limit, 0)
-        }),
-        next: createUriComponent({
-          ...query,
-          offset: offset + limit
-        }),
-        last: createUriComponent({
-          ...query,
-          offset: Math.floor(count / limit) * limit
-        })
-      }
-    }
+    return new FilterResponse(response, reqFilter, count).getResponse()
   } catch (error: any) {
     throw new Error(errorMessageHandler(error, `Error in filter ${model.constructor.name}`).message)
   }
