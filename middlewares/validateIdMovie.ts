@@ -1,4 +1,4 @@
-import { type Response, type NextFunction } from 'express'
+import { type NextFunction, type Response } from 'express'
 import type ICustomRequest from '../dto/request/ICustomRequest'
 import { movieRepository } from '../repositories'
 import errorMessageHandler from '../services/errorMessage'

@@ -1,6 +1,6 @@
 import { type NextFunction, type Request, type Response } from 'express'
-import { type User } from '../models'
 import { type Roles } from '../dto'
+import { type User } from '../models'
 
 const validateRole = (roles: Roles[]) => {
   return (req: Request, res: Response, next: NextFunction) => {

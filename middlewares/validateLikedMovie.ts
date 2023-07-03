@@ -1,8 +1,8 @@
-import { type Response, type NextFunction } from 'express'
+import { type ICustomRequest } from '../dto'
+import { type NextFunction, type Response } from 'express'
 import { type User } from '../models'
 import { likedMoviesRepository } from '../repositories'
 import errorMessageHandler from '../services/errorMessage'
-import { type ICustomRequest } from '../dto'
 
 const validateLikedMovieonCreate = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
   try {
@@ -41,6 +41,6 @@ const validateLikedMovieonDelete = async (req: ICustomRequest, res: Response, ne
 }
 
 export {
-  validateLikedMovieonDelete,
-  validateLikedMovieonCreate
+  validateLikedMovieonCreate,
+  validateLikedMovieonDelete
 }

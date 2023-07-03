@@ -1,7 +1,7 @@
 import { type Response, type NextFunction } from 'express'
-import { getRoleByIdService } from '../services/role'
-import { Role } from '../models'
 import { Roles, type ICustomRequest } from '../dto'
+import { Role } from '../models'
+import { getRoleByIdService } from '../services/role'
 
 const validateRoleOnCreate = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
   const roleSent: number = req.body.roleId !== undefined ? req.body.roleId : Roles.USER

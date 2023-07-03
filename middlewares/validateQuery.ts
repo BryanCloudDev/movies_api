@@ -1,4 +1,4 @@
-import { type Response, type NextFunction, type Request } from 'express'
+import { type NextFunction, type Request, type Response } from 'express'
 
 const validateQuery = (req: Request, res: Response, next: NextFunction): Response | undefined => {
   const reqFilter = req.query.filter as string
