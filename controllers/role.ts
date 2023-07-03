@@ -6,9 +6,9 @@ import { roleRepository } from '../repositories'
 
 const createRole = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const name: IRoleRequest = req.body.name
+    const { ...roleRequest }: IRoleRequest = req.body
 
-    const roleInstance = createRoleInstanceService(name)
+    const roleInstance = createRoleInstanceService(roleRequest)
     await createRoleService(roleInstance)
 
     return res.status(200).json({
