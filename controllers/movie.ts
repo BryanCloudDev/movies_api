@@ -3,9 +3,8 @@ import type IMovieRequest from '../dto/movie/IMovieRequest'
 import { createMovieInstanceService, createMovieService, getLikeCountService } from '../services/movie'
 import { movieRepository } from '../repositories'
 import { Status } from '../dto/enums/status'
-import { LikedMovie, Movie, type User } from '../models'
-import { createLikedMovieInstanceService, createLikedMovieService } from '../services/likedMovie'
-import type ICustomRequest from '../dto/request/ICustomRequest'
+import { Movie } from '../models'
+
 import createFilter from '../services/createFilter'
 import errorMessageHandler from '../services/errorMessage'
 
@@ -74,29 +73,6 @@ const getAllMovies = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-const likeAMovie = async (req: ICustomRequest, res: Response): Promise<Response> => {
-  try {
-    const user = req.user as User
-    const movie = req.movie
-
-    const likedMovieInstance = createLikedMovieInstanceService(movie, user)
-
-    if (!(likedMovieInstance instanceof LikedMovie)) {
-      return res.status(500).json({
-        message: likedMovieInstance?.message
-      })
-    }
-
-    await createLikedMovieService(likedMovieInstance)
-
-    return res.status(201).json({
-      message: 'Successfully created'
-    })
-  } catch (error: any) {
-    return res.status(500).json(errorMessageHandler(error, 'Error in like movie'))
-  }
-}
-
 const getLikeCountForMovies = async (res: Response): Promise<Response> => {
   try {
     const movies = await movieRepository.find({ relations: { likes: true } })
@@ -132,6 +108,5 @@ export {
   getAllMovies,
   getLikeCountForMovies,
   getMoviesLikedByUser,
-  likeAMovie,
   updateMovie
 }
