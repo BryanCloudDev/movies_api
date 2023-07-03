@@ -7,10 +7,7 @@ import Roles from '../dto/enums/roles'
 const validateRoleOnCreate = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
   const roleSent: number = req.body.roleId !== undefined ? req.body.roleId : Roles.USER
 
-  console.log(roleSent)
   const role = await getRoleByIdService(roleSent)
-
-  console.log(role)
 
   if (!(role instanceof Role)) {
     return res.status(role?.message !== undefined ? 500 : 404).json({
