@@ -9,8 +9,8 @@ export default interface IFilterResponse {
   }
   links: {
     first: string
-    previous: string
-    next: string
+    previous: string | null
+    next: string | null
     last: string
   }
 }
