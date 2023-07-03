@@ -1,37 +1,59 @@
-import { body } from 'express-validator'
-import { type Role, type User } from '../../models'
-import { userRepository } from '../../repositories'
-import { encrypt } from '../auth'
 import { type IUserRequest } from '../../dto'
-
-const existsUserById = async (id: number): Promise<void> => {
-  const user = await getUserbyIdService(id)
-  if (user === null) throw new Error(`The user with the id ${id} does not exist`)
-}
-
-const getUserbyIdService = async (id: number): Promise<User | null> => {
-  const user = await userRepository.findOne({ where: { id } })
-  return user
-}
-
-const createUserInstanceService = async (userRequest: IUserRequest, role: Role): Promise<User> => {
-  userRequest.password = await encrypt(userRequest.password)
-  const user = userRepository.create({ ...userRequest, role })
-  return user
-}
-
-const createUserService = async (user: User): Promise<User> => {
-  const createdUser = await userRepository.save(user)
-  return createdUser
-}
-
-const emailExists = async (email: string): Promise<void> => {
-  const user = await userRepository.findOne({ where: { email } })
-  if (user !== null) throw new Error(`The email ${email} is already registered in DB`)
-}
+import { type Role, type User } from '../../models'
+import { body } from 'express-validator'
+import { encrypt } from '../auth'
+import { userRepository } from '../../repositories'
+import errorMessageHandler from '../errorMessage'
 
 const checkIfRoleIsSent = async (role: number): Promise<void> => {
   if (role !== undefined) throw new Error('You are not allowed to perform this action')
+}
+
+const createUserInstanceService = async (userRequest: IUserRequest, role: Role): Promise<User> => {
+  try {
+    userRequest.password = await encrypt(userRequest.password)
+    const user = userRepository.create({ ...userRequest, role })
+
+    return user
+  } catch (error) {
+    throw new Error(errorMessageHandler(error, 'Error in create user instance').message)
+  }
+}
+
+const createUserService = async (user: User): Promise<User> => {
+  try {
+    const createdUser = await userRepository.save(user)
+    return createdUser
+  } catch (error: any) {
+    throw new Error(errorMessageHandler(error, 'Error in create user service').message)
+  }
+}
+
+const emailExists = async (email: string): Promise<void> => {
+  try {
+    const user = await userRepository.findOne({ where: { email } })
+    if (user !== null) throw new Error(`The email ${email} is already registered in DB`)
+  } catch (error: any) {
+    throw new Error(errorMessageHandler(error, 'Error in check if email exists service').message)
+  }
+}
+
+const existsUserById = async (id: number): Promise<void> => {
+  try {
+    const user = await getUserbyIdService(id)
+    if (user === null) throw new Error(`The user with the id ${id} does not exist`)
+  } catch (error: any) {
+    throw new Error(errorMessageHandler(error, 'Error in exists user by id service').message)
+  }
+}
+
+const getUserbyIdService = async (id: number): Promise<User | null> => {
+  try {
+    const user = await userRepository.findOne({ where: { id } })
+    return user
+  } catch (error: any) {
+    throw new Error(errorMessageHandler(error, 'Error in get user by id service').message)
+  }
 }
 
 const userValidationRules = [
@@ -43,11 +65,11 @@ const userValidationRules = [
 ]
 
 export {
-  existsUserById,
-  getUserbyIdService,
+  checkIfRoleIsSent,
   createUserInstanceService,
   createUserService,
   emailExists,
-  userValidationRules,
-  checkIfRoleIsSent
+  existsUserById,
+  getUserbyIdService,
+  userValidationRules
 }

@@ -1,9 +1,9 @@
-import passport from 'passport'
-import { Strategy as LocalStrategy } from 'passport-local'
-import { userRepository } from '../../repositories'
-import { checkPassword } from '../auth'
 import { ExtractJwt, Strategy as JWTStrategy } from 'passport-jwt'
+import { Strategy as LocalStrategy } from 'passport-local'
+import { checkPassword } from '../auth'
+import { userRepository } from '../../repositories'
 import errorMessageHandler from '../errorMessage'
+import passport from 'passport'
 
 passport.use(
   new LocalStrategy({
@@ -22,7 +22,7 @@ passport.use(
 
       const isPasswordCorrect = await checkPassword(password, user.password)
 
-      if (isPasswordCorrect === false) {
+      if (!isPasswordCorrect) {
         return done(null, false, {
           message: 'Email or passowrd incorrect'
         })
@@ -31,6 +31,7 @@ passport.use(
       return done(null, user)
     } catch (error: any) {
       errorMessageHandler(error, 'Error in passport local')
+
       done(null, false, {
         message: 'Email or passowrd incorrect'
       })
@@ -42,9 +43,11 @@ passport.use(
   new JWTStrategy({
     secretOrKey: process.env.JWT_KEY,
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
-  }, async (token: any, done: any) => {
+  },
+  async (token: any, done: any) => {
     try {
       const user = await userRepository.findOne({ where: { id: token.id }, relations: { role: true } })
+
       if (user === null) {
         return done(null, false, {
           message: 'JWT is invalid'
@@ -54,6 +57,7 @@ passport.use(
       done(null, user)
     } catch (error: any) {
       errorMessageHandler(error, 'Error in passport jwt')
+
       return done(null, false, {
         message: 'JWT is invalid'
       })
@@ -61,6 +65,4 @@ passport.use(
   })
 )
 
-export {
-  passport
-}
+export default passport

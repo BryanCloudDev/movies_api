@@ -1,8 +1,17 @@
 
-import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
-import errorMessageHandler from '../errorMessage'
 import { type IJwtPayload } from '../../dto'
+import bcrypt from 'bcryptjs'
+import errorMessageHandler from '../errorMessage'
+import jwt from 'jsonwebtoken'
+
+const checkPassword = async (password: string, hash: string): Promise<boolean> => {
+  try {
+    const isCorrect = await bcrypt.compare(password, hash)
+    return isCorrect
+  } catch (error: any) {
+    throw new Error(errorMessageHandler(error, 'Error in password verification').message)
+  }
+}
 
 const encrypt = async (text: string): Promise<string> => {
   try {
@@ -10,17 +19,7 @@ const encrypt = async (text: string): Promise<string> => {
     const password = await bcrypt.hash(text, salt)
     return password
   } catch (error: any) {
-    errorMessageHandler(error, 'Error in password encryption')
-    return ''
-  }
-}
-
-const checkPassword = async (password: string, hash: string): Promise<boolean | undefined> => {
-  try {
-    const isCorrect = await bcrypt.compare(password, hash)
-    return isCorrect
-  } catch (error: any) {
-    errorMessageHandler(error, 'Error in password verification')
+    throw new Error(errorMessageHandler(error, 'Error in password encryption').message)
   }
 }
 
@@ -41,7 +40,7 @@ const generateJWT = (data: IJwtPayload): any => {
 }
 
 export {
-  encrypt,
   checkPassword,
+  encrypt,
   generateJWT
 }

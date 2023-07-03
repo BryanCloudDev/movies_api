@@ -1,10 +1,11 @@
 import { type Repository } from 'typeorm'
-import type IFilter from '../dto/filter/IFilterUser'
 import type BaseModel from '../models/BaseModel'
-import errorMessageHandler from './errorMessage'
+import type IFilter from '../dto/filter/IFilterUser'
 import { createUriComponent } from './utils/utils'
+import errorMessageHandler from './errorMessage'
+import { type IFilterResponse } from '../dto'
 
-const createFilter = async (reqFilter: string, model: BaseModel, repository: Repository<typeof model>): Promise<any> => {
+const createFilter = async (reqFilter: string, model: BaseModel, repository: Repository<typeof model>): Promise<IFilterResponse> => {
   try {
     const { where, limit, offset, select, order, relations }: IFilter<typeof model> = JSON.parse(reqFilter)
 
@@ -47,8 +48,8 @@ const createFilter = async (reqFilter: string, model: BaseModel, repository: Rep
         })
       }
     }
-  } catch (error) {
-    return errorMessageHandler(error, `Error in filter ${model.constructor.name}`)
+  } catch (error: any) {
+    throw new Error(errorMessageHandler(error, `Error in filter ${model.constructor.name}`).message)
   }
 }
 

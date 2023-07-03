@@ -1,29 +1,30 @@
-import type IMovieRequest from '../../dto/movie/IMovieRequest'
+import { type IMovieLikeCount, type IMovieRequest } from '../../dto'
 import { type Movie } from '../../models'
 import { movieRepository } from '../../repositories'
 import errorMessageHandler from '../errorMessage'
 
-const createMovieInstanceService = async (movieRequest: IMovieRequest): Promise<Movie | undefined | { message: string }> => {
+const createMovieInstanceService = (movieRequest: IMovieRequest): Movie => {
   try {
     const movie = movieRepository.create({ ...movieRequest })
     return movie
   } catch (error: any) {
-    return errorMessageHandler(error, 'Error in create movie instance')
+    throw new Error(errorMessageHandler(error, 'Error in create movie instance').message)
   }
 }
 
-const createMovieService = async (movie: Movie): Promise<Movie | undefined> => {
+const createMovieService = async (movie: Movie): Promise<Movie> => {
   try {
     const createdUser = await movieRepository.save(movie)
     return createdUser
   } catch (error: any) {
-    errorMessageHandler(error, 'Error in save movie')
+    throw new Error(errorMessageHandler(error, 'Error in save movie').message)
   }
 }
 
-const getLikeCountService = (movies: Movie[]): Array<{ id: number, likes: number, name: string }> => {
+const getLikeCountService = (movies: Movie[]): IMovieLikeCount[] => {
   const likedMovies = movies.map(movie => {
     const { id, name, likes } = movie
+
     return {
       id,
       name,
