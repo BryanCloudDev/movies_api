@@ -66,7 +66,6 @@ const getMoviesLikedByUser = async (req: ICustomRequest, res: Response): Promise
     const reqFilter = req.filter
     if (reqFilter !== undefined) {
       const movies = await createFilter(reqFilter, new Movie(), movieRepository)
-
       return res.status(200).json(movies)
     }
 
