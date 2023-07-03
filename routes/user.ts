@@ -3,7 +3,7 @@ import { Router } from 'express'
 import { body, param } from 'express-validator'
 import { createUser, deleteUser, getAllUsers, getMoviesLikedByUser, getUserById, getUserProfile, updateUser } from '../controllers'
 import { checkIfRoleIsSent, userValidationRules } from '../services'
-import { validateEmailInChange, validateFields, validateJWT, validateQuery, validateRole, validateRoleOnCreate, validateStatus, validateUserId, validateUserOnDelete } from '../middlewares'
+import { validateEmailInChange, validateFields, validateJWT, validateQuery, validateRole, validateRoleId, validateStatus, validateUserId, validateUserOnDelete } from '../middlewares'
 
 const userRouter = Router()
 
@@ -66,7 +66,7 @@ userRouter.patch('/:id',
     validateUserId,
     validateEmailInChange,
     body('roleId').isNumeric(),
-    validateRoleOnCreate,
+    validateRoleId,
     validateFields,
     validateStatus
   ],
@@ -78,7 +78,7 @@ userRouter.post('/',
     ...userValidationRules,
     body('roleId').custom(checkIfRoleIsSent),
     validateFields,
-    validateRoleOnCreate
+    validateRoleId
   ],
   createUser
 )
@@ -89,7 +89,7 @@ userRouter.post('/admin',
     validateRole([Roles.ADMIN]),
     ...userValidationRules,
     body('roleId').isNumeric(),
-    validateRoleOnCreate,
+    validateRoleId,
     validateFields
   ],
   createUser
