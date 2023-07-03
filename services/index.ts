@@ -7,6 +7,7 @@ import { createRoleInstanceService, createRoleService, getRoleByIdService } from
 import { createUriComponent, getFilter } from './utils/utils'
 import createFilter from './createFilter'
 import errorMessageHandler from './errorMessage'
+import makeLog from './logger'
 import passport from './passport/localStrategy'
 import swaggerDocs from './swagger'
 
@@ -32,6 +33,7 @@ export {
   getLikeCountService,
   getRoleByIdService,
   getUserbyIdService,
+  makeLog,
   passport,
   swaggerDocs,
   userValidationRules

@@ -1,5 +1,7 @@
+import { makeLog } from './'
+
 const errorMessageHandler = (_error: any, message: string): { message: string } => {
-  console.log({
+  makeLog({
     error: _error.message,
     message
   })
