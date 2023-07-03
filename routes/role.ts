@@ -2,7 +2,7 @@ import { Roles } from '../dto'
 import { Router } from 'express'
 import { body, param } from 'express-validator'
 import { createRole, deleteRole, getAllRoles } from '../controllers'
-import { validateFields, validateJWT, validateRole, validateRoleId } from '../middlewares'
+import { validateFields, validateJWT, validateQuery, validateRole, validateRoleId } from '../middlewares'
 
 const roleRouter = Router()
 
@@ -20,7 +20,8 @@ roleRouter.delete('/:id',
 roleRouter.get('/',
   [
     validateJWT,
-    validateRole([Roles.ADMIN])
+    validateRole([Roles.ADMIN]),
+    validateQuery
   ],
   getAllRoles
 )
