@@ -34,4 +34,9 @@ export default class User extends BaseModel {
 
   @OneToMany(() => LikedMovie, (likedMovie) => likedMovie.user)
     likes: LikedMovie[]
+
+  toJSON (): Omit<this, 'password' | 'toJSON'> {
+    const { password, ...rest } = this
+    return rest
+  }
 }
