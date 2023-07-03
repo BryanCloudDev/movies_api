@@ -4,9 +4,9 @@ import type BaseModel from '../models/BaseModel'
 import { errorMessageHandler } from './'
 import { createUriComponent } from './utils/utils'
 
-const createFilter = async (reqFilter: string, model: BaseModel, repository: Repository<typeof model>): Promise<IFilterResponse> => {
+const createFilter = async (reqFilter: IFilter<typeof model>, model: BaseModel, repository: Repository<typeof model>): Promise<IFilterResponse> => {
   try {
-    const { where, limit, offset, select, order, relations }: IFilter<typeof model> = JSON.parse(reqFilter)
+    const { where, limit, offset, select, order, relations }: IFilter<typeof model> = reqFilter
 
     const repositoryPromise = repository.find({ where, skip: offset, take: limit, select, order, relations })
     const countPromise = repository.count({ where })
