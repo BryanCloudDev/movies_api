@@ -1,8 +1,8 @@
 import { type IRoleRequest, Status } from '../dto'
 import { type Request, type Response } from 'express'
+import { Role } from '../models'
 import { createFilter, createRoleInstanceService, createRoleService, errorMessageHandler } from '../services'
 import { roleRepository } from '../repositories'
-import { Role } from '../models'
 
 const createRole = async (req: Request, res: Response): Promise<Response> => {
   try {
