@@ -1,14 +1,41 @@
-import { type NextFunction, type Request, type Response } from 'express'
+import { type Response, type NextFunction } from 'express'
+import { type ICustomRequest, type IFilter } from '../dto'
+import type BaseModel from '../models/BaseModel'
 
-const validateQuery = (req: Request, res: Response, next: NextFunction): Response | undefined => {
+const validateQuery = (req: ICustomRequest, res: Response, next: NextFunction): Response | undefined => {
   const reqFilter = req.query.filter as string
   if (reqFilter !== undefined) {
-    const { limit, offset, where, select } = JSON.parse(reqFilter)
+    let { where, limit, offset, select, order, relations }: IFilter<BaseModel> = JSON.parse(reqFilter)
 
-    if (limit === undefined || offset === undefined || where === undefined || select === undefined) {
+    if (isNaN(limit) || isNaN(offset)) {
       return res.status(400).json({
-        message: 'In order to paginate you need to send limit, select, where and offset'
+        message: 'In order to paginate you need to send at least limit and offset'
       })
+    }
+
+    if (where === undefined) {
+      where = {}
+    }
+
+    if (select === undefined) {
+      select = {}
+    }
+
+    if (order === undefined) {
+      order = {}
+    }
+
+    if (relations === undefined) {
+      relations = {}
+    }
+
+    req.filter = {
+      limit,
+      offset,
+      where,
+      select,
+      order,
+      relations
     }
   }
 
