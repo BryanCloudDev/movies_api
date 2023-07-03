@@ -2,7 +2,7 @@ import validateEmailInChange from './validateEmailInChange'
 import validateFields from './validateFields'
 import validateIdMovie from './validateIdMovie'
 import validateJWT from './validateJWT'
-import validateLikedMovie from './validateLikedMovie'
+import { validateLikedMovieonCreate, validateLikedMovieonDelete } from './validateLikedMovie'
 import validateQuery from './validateQuery'
 import validateRole from './validateRole'
 import validateRoleOnCreate from './validateRoleOnCreate'
@@ -12,8 +12,9 @@ export {
   validateFields,
   validateIdMovie,
   validateJWT,
+  validateLikedMovieonCreate,
+  validateLikedMovieonDelete,
   validateQuery,
   validateRole,
-  validateRoleOnCreate,
-  validateLikedMovie
+  validateRoleOnCreate
 }
