@@ -1,5 +1,5 @@
 import { type NextFunction, type Response } from 'express'
-import { Roles, type ICustomRequest } from '../../dto'
+import { type ICustomRequest, Roles, Status } from '../../dto'
 import { errorMessageHandler, getRoleByIdService } from '../../services'
 
 const validateRoleId = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
@@ -12,6 +12,12 @@ const validateRoleId = async (req: ICustomRequest, res: Response, next: NextFunc
     if (role === null) {
       return res.status(404).json({
         message: `The role with id ${id} is not registered in DB`
+      })
+    }
+
+    if (role.status === Status.INACTIVE) {
+      return res.status(400).json({
+        message: 'The role has been marked already as inactive'
       })
     }
 

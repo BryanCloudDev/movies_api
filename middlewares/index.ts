@@ -6,7 +6,6 @@ import validateJWT from './user/validateJWT'
 import validateQuery from './validateQuery'
 import validateRole from './role/validateRoleAccess'
 import validateRoleId from './role/validateRoleId'
-import validateRoleOnDelete from './role/validateRole'
 import validateStatus from './validateStatus'
 import validateUserId from './user/validateUserId'
 import validateUserOnDelete from './user/validateUser'
@@ -21,7 +20,6 @@ export {
   validateQuery,
   validateRole,
   validateRoleId,
-  validateRoleOnDelete,
   validateStatus,
   validateUserId,
   validateUserOnDelete
