@@ -1,3 +1,4 @@
+import moment from 'moment'
 import passport from 'passport'
 import { ExtractJwt, Strategy as JWTStrategy } from 'passport-jwt'
 import { Strategy as LocalStrategy } from 'passport-local'
@@ -27,6 +28,10 @@ passport.use(
           message: 'Email or passowrd incorrect'
         })
       }
+
+      await userRepository.update(user.id, {
+        lastLogin: moment().toISOString()
+      })
 
       return done(null, user)
     } catch (error: any) {
