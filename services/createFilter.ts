@@ -2,8 +2,7 @@ import { type IFilterResponse, type IFilter } from '../dto'
 import { type Repository } from 'typeorm'
 import type BaseModel from '../models/BaseModel'
 import { errorMessageHandler } from './'
-import { createUriComponent } from './utils/utils'
-import getFilter from './utils/getfilter'
+import { createUriComponent, getFilter } from './utils/utils'
 
 const createFilter = async (reqFilter: IFilter<typeof model>, model: BaseModel, repository: Repository<typeof model>): Promise<IFilterResponse> => {
   try {

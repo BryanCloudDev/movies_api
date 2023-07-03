@@ -1,9 +1,9 @@
-import { checkIfRoleIsSent, createUserInstanceService, createUserService, emailExists, getUserbyIdService, userValidationRules } from './user'
+import { checkIfRoleIsSent, createUserInstanceService, createUserService, emailExists, getUserbyIdService, getUserResponseFiltered, userValidationRules } from './user'
 import { checkPassword, encrypt, generateJWT } from './auth'
 import { createLikedMovieInstanceService, createLikedMovieService } from './likedMovie'
 import { createMovieInstanceService, createMovieService, getLikeCountService } from './movie'
 import { createRoleInstanceService, createRoleService, getRoleByIdService } from './role'
-import { createUriComponent } from './utils/utils'
+import { createUriComponent, getFilter } from './utils/utils'
 import createFilter from './createFilter'
 import errorMessageHandler from './errorMessage'
 import passport from './passport/localStrategy'
@@ -11,7 +11,11 @@ import swaggerDocs from './swagger'
 
 export {
   checkIfRoleIsSent,
+  checkPassword,
   createFilter,
+  createLikedMovieInstanceService,
+  createLikedMovieService,
+  createMovieInstanceService,
   createMovieService,
   createRoleInstanceService,
   createRoleService,
@@ -19,17 +23,15 @@ export {
   createUserInstanceService,
   createUserService,
   emailExists,
+  encrypt,
   errorMessageHandler,
+  generateJWT,
+  getFilter,
   getLikeCountService,
   getRoleByIdService,
+  getUserResponseFiltered,
   getUserbyIdService,
   passport,
   swaggerDocs,
-  userValidationRules,
-  checkPassword,
-  createLikedMovieInstanceService,
-  createLikedMovieService,
-  createMovieInstanceService,
-  encrypt,
-  generateJWT
+  userValidationRules
 }
