@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany } from 'typeorm'
+import { Column, Entity, OneToMany } from 'typeorm'
 import BaseModel from './BaseModel'
 import User from './User'
 

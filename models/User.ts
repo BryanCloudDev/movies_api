@@ -1,6 +1,6 @@
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm'
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
+import { LikedMovie, Role } from '.'
 import { Status } from '../dto'
-import { Role, LikedMovie } from '.'
 import BaseModel from './BaseModel'
 
 @Entity()
