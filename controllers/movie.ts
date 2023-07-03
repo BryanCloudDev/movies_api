@@ -1,4 +1,4 @@
-import { type IMovieRequest, Status } from '../dto'
+import { type ICustomRequest, type IMovieRequest, Status } from '../dto'
 import { type Request, type Response } from 'express'
 import { Movie } from '../models'
 import { createFilter, createMovieInstanceService, createMovieService, errorMessageHandler, getLikeCountService } from '../services'
@@ -34,9 +34,9 @@ const deleteMovie = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-const getAllMovies = async (req: Request, res: Response): Promise<Response> => {
+const getAllMovies = async (req: ICustomRequest, res: Response): Promise<Response> => {
   try {
-    const reqFilter = req.query.filter as string
+    const reqFilter = req.filter
     if (reqFilter !== undefined) {
       const movies = await createFilter(reqFilter, new Movie(), movieRepository)
       return res.status(200).json(movies)
@@ -60,10 +60,10 @@ const getLikeCountForMovies = async (req: Request, res: Response): Promise<Respo
   }
 }
 
-const getMoviesLikedByUser = async (req: Request, res: Response): Promise<Response> => {
+const getMoviesLikedByUser = async (req: ICustomRequest, res: Response): Promise<Response> => {
   try {
     const id = parseInt(req.params.id)
-    const reqFilter = req.query.filter as string
+    const reqFilter = req.filter
     if (reqFilter !== undefined) {
       const movies = await createFilter(reqFilter, new Movie(), movieRepository)
 
