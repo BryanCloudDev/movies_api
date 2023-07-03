@@ -1,4 +1,4 @@
-import { checkIfRoleIsSent, createUserInstanceService, createUserService, emailExists, existsUserById, getUserbyIdService, userValidationRules } from './user'
+import { checkIfRoleIsSent, createUserInstanceService, createUserService, emailExists, getUserbyIdService, userValidationRules } from './user'
 import { checkPassword, encrypt, generateJWT } from './auth'
 import { createLikedMovieInstanceService, createLikedMovieService } from './likedMovie'
 import { createMovieInstanceService, createMovieService, getLikeCountService } from './movie'
@@ -20,7 +20,6 @@ export {
   createUserService,
   emailExists,
   errorMessageHandler,
-  existsUserById,
   getLikeCountService,
   getRoleByIdService,
   getUserbyIdService,
