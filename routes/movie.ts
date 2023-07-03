@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import { createMovie, deleteMovie, getAllMovies, getLikeCountForMovies, likeAMovie, updateMovie } from '../controllers/movie'
+import { createMovie, deleteMovie, getAllMovies, getLikeCountForMovies, updateMovie } from '../controllers/movie'
 import { body, param } from 'express-validator'
 import Roles from '../dto/enums/roles'
-import { validateJWT, validateRole, validateFields, validateIdMovie } from '../middlewares'
+import { validateJWT, validateRole, validateFields, validateIdMovie, validateLikedMovie } from '../middlewares'
+import { likeAMovie, unlikeAMovie } from '../controllers/likedMovie'
 
 const movieRouter = Router()
 
@@ -65,6 +66,19 @@ movieRouter.post('/like',
     validateFields
   ],
   likeAMovie
+)
+
+movieRouter.delete('/like/:id',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN, Roles.USER]),
+    param('id', 'The id of the movie is mandatory').notEmpty(),
+    param('id').isNumeric(),
+    validateFields,
+    validateIdMovie,
+    validateLikedMovie
+  ],
+  unlikeAMovie
 )
 
 movieRouter.get('/like/count',
