@@ -3,6 +3,7 @@ import { type Request, type Response } from 'express'
 import { Movie } from '../models'
 import { createFilter, createMovieInstanceService, createMovieService, errorMessageHandler, getLikeCountService } from '../services'
 import { movieRepository } from '../repositories'
+import { type FindOptionsWhere } from 'typeorm'
 
 const createMovie = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -65,6 +66,9 @@ const getMoviesLikedByUser = async (req: ICustomRequest, res: Response): Promise
     const id = parseInt(req.params.id)
     const reqFilter = req.filter
     if (reqFilter !== undefined) {
+      const whereFilter: FindOptionsWhere<Movie> | undefined = { likes: { user: { id } } }
+      reqFilter.where = whereFilter
+
       const movies = await createFilter(reqFilter, new Movie(), movieRepository)
       return res.status(200).json(movies)
     }
