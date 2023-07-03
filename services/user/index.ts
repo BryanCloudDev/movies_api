@@ -1,9 +1,9 @@
+import { body } from 'express-validator'
 import { type IUserRequest } from '../../dto'
 import { type Role, type User } from '../../models'
-import { body } from 'express-validator'
 import { encrypt } from '../auth'
+import { errorMessageHandler } from '../'
 import { userRepository } from '../../repositories'
-import errorMessageHandler from '../errorMessage'
 
 const checkIfRoleIsSent = async (role: number): Promise<void> => {
   if (role !== undefined) throw new Error('You are not allowed to perform this action')

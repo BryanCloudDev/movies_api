@@ -1,7 +1,7 @@
 import { type NextFunction, type Response } from 'express'
 import type ICustomRequest from '../dto/request/ICustomRequest'
+import { errorMessageHandler } from '../services'
 import { movieRepository } from '../repositories'
-import errorMessageHandler from '../services/errorMessage'
 
 const validateIdMovie = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
   try {

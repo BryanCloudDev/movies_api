@@ -1,9 +1,8 @@
+import { type IFilterResponse, type IFilter } from '../dto'
 import { type Repository } from 'typeorm'
 import type BaseModel from '../models/BaseModel'
-import type IFilter from '../dto/filter/IFilterUser'
+import { errorMessageHandler } from './'
 import { createUriComponent } from './utils/utils'
-import errorMessageHandler from './errorMessage'
-import { type IFilterResponse } from '../dto'
 
 const createFilter = async (reqFilter: string, model: BaseModel, repository: Repository<typeof model>): Promise<IFilterResponse> => {
   try {

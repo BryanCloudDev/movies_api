@@ -1,6 +1,6 @@
 import { type LikedMovie, type Movie, type User } from '../../models'
 import { likedMoviesRepository } from '../../repositories'
-import errorMessageHandler from '../errorMessage'
+import { errorMessageHandler } from '../'
 
 const createLikedMovieInstanceService = (movie: Movie, user: User): LikedMovie => {
   try {

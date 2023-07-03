@@ -1,8 +1,6 @@
 import { type NextFunction, type Request, type Response } from 'express'
 import { type User } from '../models'
-import { generateJWT } from '../services/auth'
-import { passport } from '../services/passport/localStrategy'
-import errorMessageHandler from '../services/errorMessage'
+import { errorMessageHandler, generateJWT, passport } from '../services'
 import { Status } from '../dto'
 
 const login = (req: Request, res: Response, next: NextFunction): void => {

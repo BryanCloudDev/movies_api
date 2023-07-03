@@ -1,8 +1,8 @@
 
-import { type IJwtPayload } from '../../dto'
 import bcrypt from 'bcryptjs'
-import errorMessageHandler from '../errorMessage'
 import jwt from 'jsonwebtoken'
+import { type IJwtPayload } from '../../dto'
+import { errorMessageHandler } from '../'
 
 const checkPassword = async (password: string, hash: string): Promise<boolean> => {
   try {

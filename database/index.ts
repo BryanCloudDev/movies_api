@@ -1,7 +1,7 @@
-import 'reflect-metadata'
-import { DataSource } from 'typeorm'
 import 'dotenv/config'
+import 'reflect-metadata'
 import * as models from '../models'
+import { DataSource } from 'typeorm'
 import errorMessageHandler from '../services/errorMessage'
 
 const modelsArray = Object.values(models)
@@ -23,7 +23,7 @@ export const AppDataSource = new DataSource({
 export async function makeDBConnection (): Promise<void> {
   try {
     await AppDataSource.initialize()
-    console.log('Successfully connected to DB')
+    console.log('Successfully connected to Database')
   } catch (error: any) {
     errorMessageHandler(error, 'Error in database connection')
   }

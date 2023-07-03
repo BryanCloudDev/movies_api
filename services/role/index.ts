@@ -1,7 +1,7 @@
 import { type IRoleRequest } from '../../dto'
 import { type Role } from '../../models'
+import { errorMessageHandler } from '../'
 import { roleRepository } from '../../repositories'
-import errorMessageHandler from '../errorMessage'
 
 const getRoleByIdService = async (id: number): Promise<Role | null> => {
   try {

@@ -1,22 +1,14 @@
 import { type IMovieRequest, Status } from '../dto'
 import { type Request, type Response } from 'express'
 import { Movie } from '../models'
-import { createMovieInstanceService, createMovieService, getLikeCountService } from '../services/movie'
+import { createFilter, createMovieInstanceService, createMovieService, errorMessageHandler, getLikeCountService } from '../services'
 import { movieRepository } from '../repositories'
-import createFilter from '../services/createFilter'
-import errorMessageHandler from '../services/errorMessage'
 
 const createMovie = async (req: Request, res: Response): Promise<Response> => {
   try {
     const movieRequest: IMovieRequest = req.body
 
-    const movieInstance = await createMovieInstanceService(movieRequest)
-
-    if (!(movieInstance instanceof Movie)) {
-      return res.status(500).json({
-        message: movieInstance?.message
-      })
-    }
+    const movieInstance = createMovieInstanceService(movieRequest)
 
     await createMovieService(movieInstance)
 
@@ -75,8 +67,7 @@ const getMoviesLikedByUser = async (req: Request, res: Response): Promise<Respon
     if (reqFilter !== undefined) {
       const movies = await createFilter(reqFilter, new Movie(), movieRepository)
 
-      return res.status(movies?.message !== undefined ? 500 : 200)
-        .json(movies)
+      return res.status(200).json(movies)
     }
 
     const movies = await movieRepository.find({ where: { likes: { user: { id } } }, select: ['id', 'name', 'description', 'poster'] })

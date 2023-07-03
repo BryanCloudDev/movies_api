@@ -1,9 +1,8 @@
 import { type Response } from 'express'
 import { type ICustomRequest } from '../dto'
 import { type User } from '../models'
-import { createLikedMovieInstanceService, createLikedMovieService } from '../services/likedMovie'
+import { createLikedMovieInstanceService, createLikedMovieService, errorMessageHandler } from '../services'
 import { likedMoviesRepository } from '../repositories'
-import errorMessageHandler from '../services/errorMessage'
 
 const likeAMovie = async (req: ICustomRequest, res: Response): Promise<Response> => {
   try {

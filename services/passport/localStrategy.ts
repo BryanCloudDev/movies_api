@@ -1,9 +1,9 @@
+import passport from 'passport'
 import { ExtractJwt, Strategy as JWTStrategy } from 'passport-jwt'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { checkPassword } from '../auth'
+import { errorMessageHandler } from '../'
 import { userRepository } from '../../repositories'
-import errorMessageHandler from '../errorMessage'
-import passport from 'passport'
 
 passport.use(
   new LocalStrategy({

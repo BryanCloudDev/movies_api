@@ -1,7 +1,7 @@
 import { type IMovieLikeCount, type IMovieRequest } from '../../dto'
 import { type Movie } from '../../models'
+import { errorMessageHandler } from '../'
 import { movieRepository } from '../../repositories'
-import errorMessageHandler from '../errorMessage'
 
 const createMovieInstanceService = (movieRequest: IMovieRequest): Movie => {
   try {
