@@ -1,7 +1,9 @@
 import { type IFilter } from '../../dto'
 import type BaseModel from '../../models/BaseModel'
 
-const createUriComponent = (object: any): string => encodeURIComponent(JSON.stringify(object))
+const createUriComponent = (object: any): string => {
+  return `?filter=${encodeURIComponent(JSON.stringify(object))}`
+}
 
 const getFilter = ({ where, limit, select, order, relations }: IFilter<BaseModel>): any => {
   const query: {
