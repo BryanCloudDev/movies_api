@@ -38,15 +38,6 @@ const emailExists = async (email: string): Promise<void> => {
   }
 }
 
-const existsUserById = async (id: number): Promise<void> => {
-  try {
-    const user = await getUserbyIdService(id)
-    if (user === null) throw new Error(`The user with the id ${id} does not exist`)
-  } catch (error: any) {
-    throw new Error(errorMessageHandler(error, 'Error in exists user by id service').message)
-  }
-}
-
 const getUserbyIdService = async (id: number): Promise<User | null> => {
   try {
     const user = await userRepository.findOne({ where: { id } })
@@ -69,7 +60,6 @@ export {
   createUserInstanceService,
   createUserService,
   emailExists,
-  existsUserById,
   getUserbyIdService,
   userValidationRules
 }
