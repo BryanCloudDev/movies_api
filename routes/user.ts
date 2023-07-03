@@ -53,7 +53,8 @@ userRouter.get('/:id/movies',
     validateRole([Roles.ADMIN]),
     param('id').isNumeric(),
     validateUserId,
-    validateFields
+    validateFields,
+    validateQuery
   ],
   getMoviesLikedByUser
 )
