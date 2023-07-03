@@ -29,7 +29,7 @@ roleRouter.post('/',
   [
     validateJWT,
     validateRole([Roles.ADMIN]),
-    body('name').notEmpty().trim(),
+    body('name').notEmpty().isString().trim(),
     validateFields
   ],
   createRole
