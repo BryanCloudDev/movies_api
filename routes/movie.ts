@@ -6,6 +6,58 @@ import { validateFields, validateIdMovie, validateJWT, validateLikedMovieonCreat
 
 const movieRouter = Router()
 
+movieRouter.get('/',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN, Roles.USER])
+  ],
+  getAllMovies
+)
+
+movieRouter.get('/like/count',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN, Roles.USER])
+  ],
+  getLikeCountForMovies
+)
+
+movieRouter.delete('/:id',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN]),
+    param('id').isNumeric(),
+    validateFields,
+    validateIdMovie
+  ],
+  deleteMovie
+)
+
+movieRouter.delete('/like/:id',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN, Roles.USER]),
+    param('id', 'The id of the movie is mandatory').notEmpty(),
+    param('id').isNumeric(),
+    validateFields,
+    validateIdMovie,
+    validateLikedMovieonDelete
+  ],
+  unlikeAMovie
+)
+
+movieRouter.patch('/:id',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN]),
+    param('id').isNumeric(),
+    validateFields,
+    validateIdMovie,
+    validateStatus
+  ],
+  updateMovie
+)
+
 movieRouter.post('/',
   [
     validateJWT,
@@ -25,37 +77,6 @@ movieRouter.post('/',
   createMovie
 )
 
-movieRouter.patch('/:id',
-  [
-    validateJWT,
-    validateRole([Roles.ADMIN]),
-    param('id').isNumeric(),
-    validateFields,
-    validateIdMovie,
-    validateStatus
-  ],
-  updateMovie
-)
-
-movieRouter.delete('/:id',
-  [
-    validateJWT,
-    validateRole([Roles.ADMIN]),
-    param('id').isNumeric(),
-    validateFields,
-    validateIdMovie
-  ],
-  deleteMovie
-)
-
-movieRouter.get('/',
-  [
-    validateJWT,
-    validateRole([Roles.ADMIN, Roles.USER])
-  ],
-  getAllMovies
-)
-
 movieRouter.post('/like',
   [
     validateJWT,
@@ -67,27 +88,6 @@ movieRouter.post('/like',
     validateLikedMovieonCreate
   ],
   likeAMovie
-)
-
-movieRouter.delete('/like/:id',
-  [
-    validateJWT,
-    validateRole([Roles.ADMIN, Roles.USER]),
-    param('id', 'The id of the movie is mandatory').notEmpty(),
-    param('id').isNumeric(),
-    validateFields,
-    validateIdMovie,
-    validateLikedMovieonDelete
-  ],
-  unlikeAMovie
-)
-
-movieRouter.get('/like/count',
-  [
-    validateJWT,
-    validateRole([Roles.ADMIN, Roles.USER])
-  ],
-  getLikeCountForMovies
 )
 
 export default movieRouter

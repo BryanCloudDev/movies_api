@@ -12,7 +12,8 @@ userRouter.get('/profile',
     validateJWT,
     validateRole([Roles.ADMIN, Roles.USER])
   ],
-  getUserProfile)
+  getUserProfile
+)
 
 userRouter.get('/:id',
   [
@@ -22,27 +23,39 @@ userRouter.get('/:id',
     param('id').custom(existsUserById),
     validateFields
   ],
-  getUserById)
+  getUserById
+)
 
-userRouter.post('/',
-  [
-    ...userValidationRules,
-    body('roleId').custom(checkIfRoleIsSent),
-    validateFields,
-    validateRoleOnCreate
-  ],
-  createUser)
-
-userRouter.post('/admin',
+userRouter.get('/',
   [
     validateJWT,
     validateRole([Roles.ADMIN]),
-    ...userValidationRules,
-    body('roleId').isNumeric(),
-    validateRoleOnCreate,
+    validateQuery
+  ],
+  getAllUsers
+)
+
+userRouter.get('/:id/movies',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN]),
+    param('id').isNumeric(),
+    param('id').custom(existsUserById),
     validateFields
   ],
-  createUser)
+  getMoviesLikedByUser
+)
+
+userRouter.delete('/:id',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN]),
+    param('id').isNumeric(),
+    param('id').custom(existsUserById),
+    validateFields
+  ],
+  deleteUser
+)
 
 userRouter.patch('/:id',
   [
@@ -56,34 +69,29 @@ userRouter.patch('/:id',
     validateFields,
     validateStatus
   ],
-  updateUser)
+  updateUser
+)
 
-userRouter.delete('/:id',
+userRouter.post('/',
+  [
+    ...userValidationRules,
+    body('roleId').custom(checkIfRoleIsSent),
+    validateFields,
+    validateRoleOnCreate
+  ],
+  createUser
+)
+
+userRouter.post('/admin',
   [
     validateJWT,
     validateRole([Roles.ADMIN]),
-    param('id').isNumeric(),
-    param('id').custom(existsUserById),
+    ...userValidationRules,
+    body('roleId').isNumeric(),
+    validateRoleOnCreate,
     validateFields
   ],
-  deleteUser)
-
-userRouter.get('/',
-  [
-    validateJWT,
-    validateRole([Roles.ADMIN]),
-    validateQuery
-  ],
-  getAllUsers)
-
-userRouter.get('/:id/movies',
-  [
-    validateJWT,
-    validateRole([Roles.ADMIN]),
-    param('id').isNumeric(),
-    param('id').custom(existsUserById),
-    validateFields
-  ],
-  getMoviesLikedByUser)
+  createUser
+)
 
 export default userRouter
