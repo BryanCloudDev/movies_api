@@ -3,7 +3,6 @@ import { type Request, type Response } from 'express'
 import { User } from '../models'
 import { createFilter, createUserInstanceService, createUserService, errorMessageHandler, getUserbyIdService } from '../services'
 import { userRepository } from '../repositories'
-import { getUserResponseFiltered } from '../services/user'
 
 const createUser = async (req: ICustomRequest, res: Response): Promise<Response> => {
   try {
@@ -44,9 +43,9 @@ const getAllUsers = async (req: ICustomRequest, res: Response): Promise<Response
       return res.status(200).json(users)
     }
 
-    const users = await userRepository.find({ relations: { role: true } })
+    const users = await userRepository.find()
 
-    return res.status(200).json(getUserResponseFiltered(users))
+    return res.status(200).json(users)
   } catch (error: any) {
     return res.status(500).json(errorMessageHandler(error, 'Error in get all users'))
   }

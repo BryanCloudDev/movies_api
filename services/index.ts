@@ -1,4 +1,4 @@
-import { checkIfRoleIsSent, createUserInstanceService, createUserService, emailExists, getUserbyIdService, getUserResponseFiltered, userValidationRules } from './user'
+import { checkIfRoleIsSent, createUserInstanceService, createUserService, emailExists, getUserbyIdService, userValidationRules } from './user'
 import { checkPassword, encrypt, generateJWT } from './auth'
 import { createLikedMovieInstanceService, createLikedMovieService } from './likedMovie'
 import { createMovieInstanceService, createMovieService, getLikeCountService } from './movie'
@@ -29,7 +29,6 @@ export {
   getFilter,
   getLikeCountService,
   getRoleByIdService,
-  getUserResponseFiltered,
   getUserbyIdService,
   passport,
   swaggerDocs,

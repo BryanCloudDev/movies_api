@@ -1,5 +1,5 @@
 import { body } from 'express-validator'
-import { type IUserResponse, type IUserRequest } from '../../dto'
+import { type IUserRequest } from '../../dto'
 import { type Role, type User } from '../../models'
 import { encrypt } from '../auth'
 import { errorMessageHandler } from '../'
@@ -45,20 +45,20 @@ const getUserbyIdService = async (id: number): Promise<User | null> => {
   }
 }
 
-const getUserResponseFiltered = (users: User[]): IUserResponse[] => {
-  const usersFiltered = users.map(user => {
-    const { password, role, ...userResponse } = user
+// const getUserResponseFiltered = (users: User[]): IUserResponse[] => {
+//   const usersFiltered = users.map(user => {
+//     const { role, ...userResponse } = user
 
-    const result: IUserResponse = {
-      ...userResponse,
-      roleId: role.id
-    }
+//     const result: IUserResponse = {
+//       ...userResponse,
+//       roleId: role.id
+//     }
 
-    return result
-  })
+//     return result
+//   })
 
-  return usersFiltered
-}
+//   return usersFiltered
+// }
 
 const userValidationRules = [
   body('email', 'The email is not valid').isEmail().trim().custom(emailExists),
@@ -73,7 +73,7 @@ export {
   createUserInstanceService,
   createUserService,
   emailExists,
-  getUserResponseFiltered,
+  // getUserResponseFiltered,
   getUserbyIdService,
   userValidationRules
 }
