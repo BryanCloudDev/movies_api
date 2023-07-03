@@ -4,6 +4,8 @@ import type BaseModel from '../models/BaseModel'
 
 const validateQuery = (req: ICustomRequest, res: Response, next: NextFunction): Response | undefined => {
   const reqFilter = req.query.filter as string
+  req.filter = undefined
+
   if (reqFilter !== undefined) {
     let { where, limit, offset, select, order, relations }: IFilter<BaseModel> = JSON.parse(reqFilter)
 
