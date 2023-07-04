@@ -43,7 +43,8 @@ movieRouter.get('/',
 movieRouter.get('/like/count',
   [
     validateJWT,
-    validateRole([Roles.ADMIN, Roles.USER])
+    validateRole([Roles.ADMIN, Roles.USER]),
+    validateQuery
   ],
   getLikeCountForMovies
 )

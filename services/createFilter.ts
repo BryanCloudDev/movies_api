@@ -3,7 +3,7 @@ import { type Repository } from 'typeorm'
 import type BaseModel from '../models/BaseModel'
 import { FilterResponse, errorMessageHandler } from './'
 
-const createFilter = async (reqFilter: IFilter<typeof model>, model: BaseModel, repository: Repository<typeof model>): Promise<IFilterResponse> => {
+const createFilter = async <T extends BaseModel>(reqFilter: IFilter<T>, model: T, repository: Repository<T>): Promise<IFilterResponse> => {
   try {
     const { where, limit, offset, select, order, relations }: IFilter<typeof model> = reqFilter
 

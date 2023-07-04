@@ -1,9 +1,9 @@
+import { type FindOptionsRelations, type FindOptionsWhere } from 'typeorm'
 import { type ICustomRequest, type IMovieRequest, Status } from '../dto'
 import { type Request, type Response } from 'express'
 import { Movie } from '../models'
 import { createFilter, createMovieInstanceService, createMovieService, errorMessageHandler, getLikeCountService } from '../services'
 import { movieRepository } from '../repositories'
-import { type FindOptionsWhere } from 'typeorm'
 
 const createMovie = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -51,8 +51,23 @@ const getAllMovies = async (req: ICustomRequest, res: Response): Promise<Respons
   }
 }
 
-const getLikeCountForMovies = async (req: Request, res: Response): Promise<Response> => {
+const getLikeCountForMovies = async (req: ICustomRequest, res: Response): Promise<Response> => {
   try {
+    const reqFilter = req.filter
+    if (reqFilter !== undefined) {
+      const relationsFilter: FindOptionsRelations<Movie> | undefined = { likes: true }
+      reqFilter.relations = relationsFilter
+
+      const { response: movies, links, meta } = await createFilter(reqFilter, new Movie(), movieRepository)
+      const transformedMovies = getLikeCountService(movies as Movie[])
+
+      return res.status(200).json({
+        response: transformedMovies,
+        meta,
+        links
+      })
+    }
+
     const movies = await movieRepository.find({ relations: { likes: true } })
 
     return res.status(200).json(getLikeCountService(movies))
