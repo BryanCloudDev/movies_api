@@ -65,29 +65,18 @@ userRouter.delete('/:id',
 /**
  * @swagger
  *
- * /users/{id}:
+ * /users/profile:
  *  get:
  *    tags:
  *    - User
- *    summary: Get a user by id.
- *    parameters:
- *      - name: id
- *        in: path
- *        required: true
- *        description: User id to be retrieved.
- *        schema:
- *          type: integer
- *          format: int64
- *          minimum: 1
+ *    summary: Get user profile using bearer token.
  *    responses:
  *      200:
  *        description: No content
- *      400:
- *        description: Bad request
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/UserAlreadyInactive'
+ *              $ref: '#/components/schemas/UserResponse'
  *      403:
  *        description: Forbidden
  *        content:
@@ -97,13 +86,6 @@ userRouter.delete('/:id',
  *              - $ref: '#/components/schemas/UserDeleted'
  *              - $ref: '#/components/schemas/UserBanned'
  *              - $ref: '#/components/schemas/UserUnauthorized'
- *              - $ref: '#/components/schemas/UnprocessableEntity'
- *      404:
- *        description: User not found
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/UserNotFound'
  */
 userRouter.get('/profile',
   [
@@ -136,7 +118,7 @@ userRouter.get('/profile',
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/UserResponse'
+ *              $ref: '#/components/schemas/UserResponseAdmin'
  *      403:
  *        description: Forbidden
  *        content:
@@ -168,41 +150,42 @@ userRouter.get('/:id',
 /**
  * @swagger
  *
-  * /users:
-  *  get:
-  *    tags:
-  *    - User
-  *    summary: Deletes a user by id.
-  *    parameters:
-  *      - name: id
-  *        in: path
-  *        required: true
-  *        description: User id to be deleted.
-  *        schema:
-  *          type: integer
-  *          format: int64
-  *          minimum: 1
-  *    responses:
-  *      '204':
-  *        description: No content.
-  *        content:
-  *          application/json:
-  *            schema:
-  *              type: object
-  *              properties:
-  *                id:
-  *                  type: integer
-  *                  format: int64
-  *                  example: 4
-  *                name:
-  *                  type: string
-  *                  example: Jessica Smith
-  *      '400':
-  *        description: The specified user ID is invalid (not a number).
-  *      '404':
-  *        description: A user with the specified ID was not found.
-  *      default:
-  *        description: Unexpected error
+ * /users:
+ *  get:
+ *    tags:
+ *    - User
+ *    summary: Get all users.
+ *    parameters:
+ *      - in: query
+ *        name: filter
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/FilterRespose'
+ *    responses:
+ *      200:
+ *        description: No content
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/UserResponseAdminArray'
+ *              - $ref: '#/components/schemas/FilterResponseUser'
+ *      400:
+ *        description: Bad request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/PaginationError'
+ *      403:
+ *        description: Forbidden
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/UserDeleted'
+ *              - $ref: '#/components/schemas/UserBanned'
+ *              - $ref: '#/components/schemas/UserUnauthorized'
  */
 userRouter.get('/',
   [
@@ -213,45 +196,6 @@ userRouter.get('/',
   getAllUsers
 )
 
-/**
- * @swagger
- *
-  * /users/{id}/movies:
-  *  get:
-  *    tags:
-  *    - User
-  *    summary: Deletes a user by id.
-  *    parameters:
-  *      - name: id
-  *        in: path
-  *        required: true
-  *        description: User id to be deleted.
-  *        schema:
-  *          type: integer
-  *          format: int64
-  *          minimum: 1
-  *    responses:
-  *      '204':
-  *        description: No content.
-  *        content:
-  *          application/json:
-  *            schema:
-  *              type: object
-  *              properties:
-  *                id:
-  *                  type: integer
-  *                  format: int64
-  *                  example: 4
-  *                name:
-  *                  type: string
-  *                  example: Jessica Smith
-  *      '400':
-  *        description: The specified user ID is invalid (not a number).
-  *      '404':
-  *        description: A user with the specified ID was not found.
-  *      default:
-  *        description: Unexpected error
- */
 userRouter.get('/:id/movies',
   [
     validateJWT,
@@ -264,45 +208,6 @@ userRouter.get('/:id/movies',
   getMoviesLikedByUser
 )
 
-/**
- * @swagger
- *
-  * /users/{id}:
-  *  patch:
-  *    tags:
-  *    - User
-  *    summary: Deletes a user by id.
-  *    parameters:
-  *      - name: id
-  *        in: path
-  *        required: true
-  *        description: User id to be deleted.
-  *        schema:
-  *          type: integer
-  *          format: int64
-  *          minimum: 1
-  *    responses:
-  *      '204':
-  *        description: No content.
-  *        content:
-  *          application/json:
-  *            schema:
-  *              type: object
-  *              properties:
-  *                id:
-  *                  type: integer
-  *                  format: int64
-  *                  example: 4
-  *                name:
-  *                  type: string
-  *                  example: Jessica Smith
-  *      '400':
-  *        description: The specified user ID is invalid (not a number).
-  *      '404':
-  *        description: A user with the specified ID was not found.
-  *      default:
-  *        description: Unexpected error
- */
 userRouter.patch('/:id',
   [
     validateJWT,
@@ -318,45 +223,6 @@ userRouter.patch('/:id',
   updateUser
 )
 
-/**
- * @swagger
- *
-  * /users:
-  *  post:
-  *    tags:
-  *    - User
-  *    summary: Deletes a user by id.
-  *    parameters:
-  *      - name: id
-  *        in: path
-  *        required: true
-  *        description: User id to be deleted.
-  *        schema:
-  *          type: integer
-  *          format: int64
-  *          minimum: 1
-  *    responses:
-  *      '204':
-  *        description: No content.
-  *        content:
-  *          application/json:
-  *            schema:
-  *              type: object
-  *              properties:
-  *                id:
-  *                  type: integer
-  *                  format: int64
-  *                  example: 4
-  *                name:
-  *                  type: string
-  *                  example: Jessica Smith
-  *      '400':
-  *        description: The specified user ID is invalid (not a number).
-  *      '404':
-  *        description: A user with the specified ID was not found.
-  *      default:
-  *        description: Unexpected error
- */
 userRouter.post('/',
   [
     ...userValidationRules,
@@ -367,45 +233,6 @@ userRouter.post('/',
   createUser
 )
 
-/**
- * @swagger
- *
-  * /users/admin:
-  *  post:
-  *    tags:
-  *    - User
-  *    summary: Deletes a user by id.
-  *    parameters:
-  *      - name: id
-  *        in: path
-  *        required: true
-  *        description: User id to be deleted.
-  *        schema:
-  *          type: integer
-  *          format: int64
-  *          minimum: 1
-  *    responses:
-  *      '204':
-  *        description: No content.
-  *        content:
-  *          application/json:
-  *            schema:
-  *              type: object
-  *              properties:
-  *                id:
-  *                  type: integer
-  *                  format: int64
-  *                  example: 4
-  *                name:
-  *                  type: string
-  *                  example: Jessica Smith
-  *      '400':
-  *        description: The specified user ID is invalid (not a number).
-  *      '404':
-  *        description: A user with the specified ID was not found.
-  *      default:
-  *        description: Unexpected error
- */
 userRouter.post('/admin',
   [
     validateJWT,
@@ -475,7 +302,7 @@ userRouter.post('/admin',
  *                location:
  *                  type: string
  *                  example: params
- *     UserResponse:
+ *     UserResponseAdmin:
  *       type: object
  *       properties:
  *         id:
@@ -513,6 +340,87 @@ userRouter.post('/admin',
  *           type: string
  *           format: uri
  *           example: "https://avatars.githubusercontent.com/u/2693364"
+ *     UserResponse:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *          example: 18
+ *        createdOn:
+ *          type: string
+ *          format: date-time
+ *          example: "2023-07-02T08:04:10.000Z"
+ *        firstName:
+ *          type: string
+ *          example: "John"
+ *        lastName:
+ *          type: string
+ *          example: "Doe"
+ *        email:
+ *          type: string
+ *          example: "example@example.com"
+ *        birthDate:
+ *          type: string
+ *          format: date-time
+ *          example: "2023-06-29T08:28:06.000Z"
+ *        status:
+ *          type: integer
+ *          example: 1
+ *        profilePhoto:
+ *          type: string
+ *          format: uri
+ *          example: "https://avatars.githubusercontent.com/u/2693364"
+ *        roleId:
+ *          type: integer
+ *          example: 1
+ *     PaginationError:
+ *       type: string
+ *       example: In order to paginate you need to send at least limit and offset
+ *     MetaSchema:
+ *       type: object
+ *       properties:
+ *         itemCount:
+ *           type: integer
+ *         totalPages:
+ *           type: integer
+ *         currentPage:
+ *           type: integer
+ *     LinksSchema:
+ *       type: object
+ *       properties:
+ *         first:
+ *           type: string
+ *           format: uri
+ *         previous:
+ *           type: string
+ *           format: uri
+ *           nullable: true
+ *         next:
+ *           type: string
+ *           format: uri
+ *           nullable: true
+ *         last:
+ *           type: string
+ *           format: uri
+ *     FilterResponseUser:
+ *       type: object
+ *       properties:
+ *         response:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/UserResponseAdmin'
+ *         meta:
+ *           $ref: '#/components/schemas/MetaSchema'
+ *         links:
+ *           $ref: '#/components/schemas/LinksSchema'
+ *       required:
+ *         - response
+ *         - meta
+ *         - links
+ *     UserResponseAdminArray:
+ *       type: array
+ *       items:
+ *         $ref: '#/components/schemas/UserResponseAdmin'
  */
 
 export default userRouter
