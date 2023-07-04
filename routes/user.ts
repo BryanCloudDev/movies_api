@@ -169,7 +169,7 @@ userRouter.get('/:id',
  *          application/json:
  *            schema:
  *              oneOf:
- *              - $ref: '#/components/schemas/UserResponseAdminArray'
+ *              - $ref: '#/components/schemas/UserArray'
  *              - $ref: '#/components/schemas/FilterResponseUser'
  *      400:
  *        description: Bad request
@@ -196,6 +196,48 @@ userRouter.get('/',
   getAllUsers
 )
 
+/**
+ * @swagger
+ *
+ * /users/{id}/movies:
+ *  get:
+ *    tags:
+ *    - User
+ *    summary: Get all movies liked by user id.
+ *    parameters:
+ *     - name: id
+ *       in: path
+ *       required: true
+ *       description: User id to be searched.
+ *       schema:
+ *         type: integer
+ *         format: int64
+ *         minimum: 1
+ *    responses:
+ *      200:
+ *        description: No content
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/MovieArray'
+ *              - $ref: '#/components/schemas/FilterResponseMovie'
+ *      400:
+ *        description: Bad request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/PaginationError'
+ *      403:
+ *        description: Forbidden
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/UserDeleted'
+ *              - $ref: '#/components/schemas/UserBanned'
+ *              - $ref: '#/components/schemas/UserUnauthorized'
+ */
 userRouter.get('/:id/movies',
   [
     validateJWT,
@@ -374,8 +416,10 @@ userRouter.post('/admin',
  *          type: integer
  *          example: 1
  *     PaginationError:
- *       type: string
- *       example: In order to paginate you need to send at least limit and offset
+ *       properties:
+ *         message:
+ *          type: string
+ *          example: In order to paginate you need to send at least limit and offset
  *     MetaSchema:
  *       type: object
  *       properties:
@@ -406,9 +450,7 @@ userRouter.post('/admin',
  *       type: object
  *       properties:
  *         response:
- *           type: array
- *           items:
- *             $ref: '#/components/schemas/UserResponseAdmin'
+ *           $ref: '#/components/schemas/UserArray'
  *         meta:
  *           $ref: '#/components/schemas/MetaSchema'
  *         links:
@@ -417,10 +459,62 @@ userRouter.post('/admin',
  *         - response
  *         - meta
  *         - links
- *     UserResponseAdminArray:
+ *     UserArray:
  *       type: array
  *       items:
  *         $ref: '#/components/schemas/UserResponseAdmin'
+ *     Movie:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         createdOn:
+ *           type: string
+ *           format: date-time
+ *         updatedOn:
+ *           type: string
+ *           format: date-time
+ *         name:
+ *           type: string
+ *         description:
+ *           type: string
+ *         director:
+ *           type: string
+ *         genre:
+ *           type: string
+ *         releaseDate:
+ *           type: string
+ *           format: date-time
+ *         duration:
+ *           type: integer
+ *         rating:
+ *           type: integer
+ *         countryOrigin:
+ *           type: string
+ *         language:
+ *           type: string
+ *         poster:
+ *           type: string
+ *           format: uri
+ *         status:
+ *           type: integer
+ *     MovieArray:
+ *       type: array
+ *       items:
+ *         $ref: '#/components/schemas/Movie'
+ *     FilterResponseMovie:
+ *       type: object
+ *       properties:
+ *         response:
+ *           $ref: '#/components/schemas/MovieArray'
+ *         meta:
+ *           $ref: '#/components/schemas/MetaSchema'
+ *         links:
+ *           $ref: '#/components/schemas/LinksSchema'
+ *       required:
+ *         - response
+ *         - meta
+ *         - links
  */
 
 export default userRouter
