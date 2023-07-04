@@ -66,6 +66,42 @@ roleRouter.delete('/:id',
   deleteRole
 )
 
+/**
+ * @swagger
+ *
+ * /roles:
+ *  get:
+ *    tags:
+ *    - Role
+ *    summary: Get all roles.
+ *    parameters:
+ *      - in: query
+ *        name: filter
+ *        schema:
+ *          $ref: '#/components/schemas/Filter'
+ *    responses:
+ *      200:
+ *        description: List of roles
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/RoleResponseArray'
+ *      400:
+ *        description: Bad request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/PaginationError'
+ *      403:
+ *        description: Forbidden
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/UserDeleted'
+ *              - $ref: '#/components/schemas/UserBanned'
+ *              - $ref: '#/components/schemas/UserUnauthorized'
+ */
 roleRouter.get('/',
   [
     validateJWT,
@@ -75,6 +111,41 @@ roleRouter.get('/',
   getAllRoles
 )
 
+/**
+ * @swagger
+ *
+ * /roles:
+ *  post:
+ *    tags:
+ *    - Role
+ *    summary: Create role.
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Role'
+ *    responses:
+ *      200:
+ *        content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/SuccessMessage'
+ *      403:
+ *        description: Forbidden
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/UserDeleted'
+ *              - $ref: '#/components/schemas/UserBanned'
+ *              - $ref: '#/components/schemas/UserUnauthorized'
+ *      422:
+ *        description: Unprocessable entity
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UnprocessableEntity'
+ */
 roleRouter.post('/',
   [
     validateJWT,
@@ -101,12 +172,30 @@ roleRouter.post('/',
  *         message:
  *           type: string
  *           example: The role the id 5 does not exist
- *     FailedLogin:
+ *     Role:
  *       type: object
  *       properties:
- *         message:
+ *         name:
  *           type: string
- *           example: Email or passowrd incorrect
+ *     RoleResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/Role'
+ *         - type: object
+ *           properties:
+ *             id:
+ *               type: integer
+ *             createdOn:
+ *               type: string
+ *               format: date-time
+ *             updatedOn:
+ *               type: string
+ *               format: date-time
+ *             status:
+ *               type: integer
+ *     RoleResponseArray:
+ *       type: array
+ *       items:
+ *         $ref: '#/components/schemas/RoleResponse'
  */
 
 export default roleRouter
