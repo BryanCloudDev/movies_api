@@ -244,7 +244,7 @@ userRouter.get('/',
  *          application/json:
  *            schema:
  *              oneOf:
- *              - $ref: '#/components/schemas/MovieArray'
+ *              - $ref: '#/components/schemas/MovieResponseArray'
  *              - $ref: '#/components/schemas/FilterResponseMovie'
  *      400:
  *        description: Bad request
@@ -607,58 +607,6 @@ userRouter.post('/admin',
  *       type: array
  *       items:
  *         $ref: '#/components/schemas/UserResponseAdmin'
- *     Movie:
- *       type: object
- *       properties:
- *         id:
- *           type: integer
- *         createdOn:
- *           type: string
- *           format: date-time
- *         updatedOn:
- *           type: string
- *           format: date-time
- *         name:
- *           type: string
- *         description:
- *           type: string
- *         director:
- *           type: string
- *         genre:
- *           type: string
- *         releaseDate:
- *           type: string
- *           format: date-time
- *         duration:
- *           type: integer
- *         rating:
- *           type: integer
- *         countryOrigin:
- *           type: string
- *         language:
- *           type: string
- *         poster:
- *           type: string
- *           format: uri
- *         status:
- *           type: integer
- *     MovieArray:
- *       type: array
- *       items:
- *         $ref: '#/components/schemas/Movie'
- *     FilterResponseMovie:
- *       type: object
- *       properties:
- *         response:
- *           $ref: '#/components/schemas/MovieArray'
- *         meta:
- *           $ref: '#/components/schemas/MetaSchema'
- *         links:
- *           $ref: '#/components/schemas/LinksSchema'
- *       required:
- *         - response
- *         - meta
- *         - links
  *     UserPatch:
  *      type: object
  *      properties:
