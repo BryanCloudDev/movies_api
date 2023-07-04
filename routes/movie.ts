@@ -67,6 +67,55 @@ movieRouter.delete('/:id',
   deleteMovie
 )
 
+/**
+ * @swagger
+ *
+ * /movies/like/{id}:
+ *  delete:
+ *    tags:
+ *    - Movie
+ *    summary: Deletes a movie like by id.
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        description: Movie like id to be deleted.
+ *        schema:
+ *          type: integer
+ *          format: int64
+ *          minimum: 1
+ *    responses:
+ *      204:
+ *        description: No content
+ *      400:
+ *        description: Bad request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/MovieAlreadyInactive'
+ *      403:
+ *        description: Forbidden
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/UserDeleted'
+ *              - $ref: '#/components/schemas/UserBanned'
+ *              - $ref: '#/components/schemas/UserUnauthorized'
+ *              - $ref: '#/components/schemas/UnprocessableEntity'
+ *      404:
+ *        description: User not found
+ *        content:
+ *          application/json:
+ *            schema:
+*               $ref: '#/components/schemas/MovieLikeNotFound'
+ *      422:
+ *        description: Unprocessable entity
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UnprocessableEntity'
+ */
 movieRouter.delete('/like/:id',
   [
     validateJWT,
@@ -80,6 +129,55 @@ movieRouter.delete('/like/:id',
   unlikeAMovie
 )
 
+/**
+ * @swagger
+ *
+ * /movies:
+ *  get:
+ *    tags:
+ *    - Movie
+ *    summary: Deletes a movie like by id.
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        description: Movie like id to be deleted.
+ *        schema:
+ *          type: integer
+ *          format: int64
+ *          minimum: 1
+ *    responses:
+ *      204:
+ *        description: No content
+ *      400:
+ *        description: Bad request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/MovieAlreadyInactive'
+ *      403:
+ *        description: Forbidden
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/UserDeleted'
+ *              - $ref: '#/components/schemas/UserBanned'
+ *              - $ref: '#/components/schemas/UserUnauthorized'
+ *              - $ref: '#/components/schemas/UnprocessableEntity'
+ *      404:
+ *        description: User not found
+ *        content:
+ *          application/json:
+ *            schema:
+*               $ref: '#/components/schemas/MovieNotFound'
+ *      422:
+ *        description: Unprocessable entity
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UnprocessableEntity'
+ */
 movieRouter.get('/',
   [
     validateJWT,
@@ -147,6 +245,12 @@ movieRouter.post('/like',
  *         message:
  *           type: string
  *           example: The movie the id 5 does not exist
+ *     MovieLikeNotFound:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *           example: The movie with the id 5 has not received a like from you
  */
 
 export default movieRouter
