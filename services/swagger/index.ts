@@ -26,7 +26,7 @@ const swaggerOptions: swaggerJsdoc.Options = {
       url: 'http://localhost:3000/api'
     }]
   },
-  apis: ['./routes/*.ts']
+  apis: ['./routes/swaggerDocumentation/*.ts']
 }
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions)
