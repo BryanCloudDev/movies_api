@@ -97,7 +97,7 @@
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/UserResponseAdmin'
+ *              $ref: '#/components/schemas/UserResponseArray'
  *      403:
  *        description: Forbidden
  *        content:
@@ -143,9 +143,7 @@
  *        content:
  *          application/json:
  *            schema:
- *              oneOf:
- *              - $ref: '#/components/schemas/UserArray'
- *              - $ref: '#/components/schemas/FilterResponseUser'
+ *              $ref: '#/components/schemas/UserResponseArray'
  *      400:
  *        description: Bad request
  *        content:
@@ -198,9 +196,7 @@
  *        content:
  *          application/json:
  *            schema:
- *              oneOf:
- *              - $ref: '#/components/schemas/MovieResponseArray'
- *              - $ref: '#/components/schemas/FilterResponseMovie'
+ *              $ref: '#/components/schemas/MovieResponseArray'
  *      400:
  *        description: Bad request
  *        content:
@@ -291,7 +287,7 @@
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/UserPost'
+ *            $ref: '#/components/schemas/User'
  *    responses:
  *      200:
  *        content:
@@ -317,7 +313,7 @@
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/UserPostAdmin'
+ *            $ref: '#/components/schemas/UserAdmin'
  *    responses:
  *      200:
  *        content:
@@ -345,6 +341,74 @@
  * @swagger
  * components:
  *   schemas:
+ *     UserBase:
+ *         type: object
+ *         properties:
+ *           firstName:
+ *             type: string
+ *           lastName:
+ *             type: string
+ *           email:
+ *             type: string
+ *             format: email
+ *           birthDate:
+ *             type: string
+ *             format: date-time
+ *           profilePhoto:
+ *             type: string
+ *             format: uri
+ *     User:
+ *       allOf:
+ *         - $ref: '#/components/schemas/UserBase'
+ *         - type: object
+ *           properties:
+ *             password:
+ *               type: string
+ *     UserAdmin:
+ *       allOf:
+ *         - $ref: '#/components/schemas/User'
+ *         - type: object
+ *           properties:
+ *             role:
+ *               type: integer
+ *               example: 1
+ *     UserPatch:
+ *       allOf:
+ *         - $ref: '#/components/schemas/UserBase'
+ *         - type: object
+ *           properties:
+ *             roleId:
+ *               type: integer
+ *             status:
+ *               type: integer
+ *     UserResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/UserBase'
+ *         - type: object
+ *           properties:
+ *             id:
+ *               type: integer
+ *               example: 1
+ *             createdOn:
+ *               type: string
+ *               format: date-time
+ *               example: "2023-07-02T08:04:10.000Z"
+ *             status:
+ *               type: integer
+ *               example: 1
+ *     UserResponseAdmin:
+ *       allOf:
+ *         - $ref: '#/components/schemas/UserResponse'
+ *         - type: object
+ *           properties:
+ *             updatedOn:
+ *               type: string
+ *               format: date-time
+ *               example: "2023-07-04T01:09:01.000Z"
+ *             lastLogin:
+ *               type: string
+ *               format: date-time
+ *               example: "2023-07-04T01:09:02.000Z"
  *     UserDeleted:
  *       type: object
  *       properties:
@@ -375,131 +439,6 @@
  *         message:
  *           type: string
  *           example: The user has been marked already as inactive
- *     UnprocessableEntity:
- *        type: object
- *        properties:
- *          errors:
- *            type: array
- *            items:
- *              type: object
- *              properties:
- *                type:
- *                  type: string
- *                  example: field
- *                value:
- *                  type: string
- *                  example: a string
- *                msg:
- *                  type: string
- *                  example: id must be a numeric value
- *                path:
- *                  type: string
- *                  example: id
- *                location:
- *                  type: string
- *                  example: params
- *     UserResponseAdmin:
- *       type: object
- *       properties:
- *         id:
- *           type: integer
- *           example: 18
- *         createdOn:
- *           type: string
- *           format: date-time
- *           example: "2023-07-02T08:04:10.000Z"
- *         updatedOn:
- *           type: string
- *           format: date-time
- *           example: "2023-07-04T01:09:01.000Z"
- *         firstName:
- *           type: string
- *           example: "John"
- *         lastName:
- *           type: string
- *           example: "Doe"
- *         email:
- *           type: string
- *           example: "example@example.com"
- *         birthDate:
- *           type: string
- *           format: date-time
- *           example: "2023-06-29T08:28:06.000Z"
- *         status:
- *           type: integer
- *           example: 1
- *         lastLogin:
- *           type: string
- *           format: date-time
- *           example: "2023-07-04T01:09:02.000Z"
- *         profilePhoto:
- *           type: string
- *           format: uri
- *           example: "https://avatars.githubusercontent.com/u/2693364"
- *     UserResponse:
- *      type: object
- *      properties:
- *        id:
- *          type: integer
- *          example: 18
- *        createdOn:
- *          type: string
- *          format: date-time
- *          example: "2023-07-02T08:04:10.000Z"
- *        firstName:
- *          type: string
- *          example: "John"
- *        lastName:
- *          type: string
- *          example: "Doe"
- *        email:
- *          type: string
- *          example: "example@example.com"
- *        birthDate:
- *          type: string
- *          format: date-time
- *          example: "2023-06-29T08:28:06.000Z"
- *        status:
- *          type: integer
- *          example: 1
- *        profilePhoto:
- *          type: string
- *          format: uri
- *          example: "https://avatars.githubusercontent.com/u/2693364"
- *        roleId:
- *          type: integer
- *          example: 1
- *     PaginationError:
- *       properties:
- *         message:
- *          type: string
- *          example: In order to paginate you need to send at least limit and offset
- *     MetaSchema:
- *       type: object
- *       properties:
- *         itemCount:
- *           type: integer
- *         totalPages:
- *           type: integer
- *         currentPage:
- *           type: integer
- *     LinksSchema:
- *       type: object
- *       properties:
- *         first:
- *           type: string
- *           format: uri
- *         previous:
- *           type: string
- *           format: uri
- *           nullable: true
- *         next:
- *           type: string
- *           format: uri
- *           nullable: true
- *         last:
- *           type: string
- *           format: uri
  *     FilterResponseUser:
  *       type: object
  *       properties:
@@ -513,81 +452,8 @@
  *         - response
  *         - meta
  *         - links
- *     UserArray:
+ *     UserResponseArray:
  *       type: array
  *       items:
  *         $ref: '#/components/schemas/UserResponseAdmin'
- *     UserPatch:
- *      type: object
- *      properties:
- *        firstName:
- *          type: string
- *        lastName:
- *          type: string
- *        email:
- *          type: string
- *          format: email
- *        birthDate:
- *          type: string
- *          format: date-time
- *        profilePhoto:
- *          type: string
- *          format: uri
- *        roleId:
- *          type: integer
- *        status:
- *          type: integer
- *     UserPost:
- *         type: object
- *         properties:
- *           firstName:
- *             type: string
- *           lastName:
- *             type: string
- *           email:
- *             type: string
- *             format: email
- *           password:
- *             type: string
- *           birthDate:
- *             type: string
- *             format: date-time
- *           profilePhoto:
- *             type: string
- *             format: uri
- *     SuccessMessage:
- *         type: object
- *         properties:
- *           message:
- *             type: string
- *             example: Successfully created
- *     UserPostAdmin:
- *       allOf:
- *         - $ref: '#/components/schemas/UserPost'
- *         - type: object
- *           properties:
- *             role:
- *               type: integer
- *               example: 1
- *     Filter:
- *       type: object
- *       properties:
- *         where:
- *           type: object
- *           properties:
- *             id:
- *               type: integer
- *         limit:
- *           type: integer
- *         select:
- *           type: array
- *           items:
- *             type: string
- *         order:
- *           type: object
- *           properties:
- *             createdOn:
- *               type: string
- *         offset:
- *           type: integer
  */

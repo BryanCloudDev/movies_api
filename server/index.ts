@@ -3,6 +3,9 @@ import { makeDBConnection } from '../database'
 import 'dotenv/config'
 import { authRouter, explorerRouter, movieRouter, roleRouter, userRouter } from '../routes'
 import cors from 'cors'
+import { UserFactory } from '../services/seeder/user'
+import { roleRepository } from '../repositories'
+import { Roles } from '../dto'
 
 export default class Server {
   constructor (
@@ -19,6 +22,7 @@ export default class Server {
     void this.connectToDB()
     this.middleware()
     this.routes()
+    // void this.runSeeder()
   }
 
   private async connectToDB (): Promise<void> {
@@ -50,4 +54,19 @@ export default class Server {
       console.log(`⚡️[server]: Server is running at http://localhost:${this._port}`)
     })
   }
+
+  // public async runSeeder (): Promise<void> {
+  //   const role = await roleRepository.findOne({ where: { id: Roles.USER } })
+
+  //   console.log(role)
+    
+
+  //   if (role === null) {
+  //     throw new Error('Role not found')
+  //   }
+
+  //   const userFactory = new UserFactory(role)
+
+  //   console.log(userFactory.createDummyUser())
+  // }
 }

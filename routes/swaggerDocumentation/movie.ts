@@ -117,7 +117,7 @@
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/MovieArray'
+ *              $ref: '#/components/schemas/MovieResponseArray'
  *      400:
  *        description: Bad request
  *        content:
