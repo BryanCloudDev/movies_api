@@ -65,7 +65,18 @@ const userValidationRules = [
   body('firstName', 'The first name is mandatory').not().isEmpty().isString().isLength({ max: 30 }).trim(),
   body('lastName', 'The last name is mandatory').not().isEmpty().isString().isLength({ max: 30 }).trim(),
   body('password', 'The password is mandatory and must have at least 6 characters').isLength({ min: 6 }).trim(),
-  body('birthDate', 'The birthdate is mandatory').not().isEmpty().isISO8601()
+  body('birthDate', 'The birthdate is mandatory').not().isEmpty().isISO8601(),
+  body('profilePhoto', 'The profilePhoto must be a valid URL').optional().isURL().trim()
+]
+
+const userOptionsValidations = [
+  body('firstName', 'The first name must have a valid value').optional().not().isEmpty().isString().trim(),
+  body('lastName', 'The last name must have a valid value').optional().not().isEmpty().isString().trim(),
+  body('email', 'The email must have a valid value').optional().not().isEmpty().isEmail().trim(),
+  body('birthDate', 'The birthdate must have a valid value').optional().not().isEmpty().isISO8601().trim(),
+  body('profilePhoto', 'The profile photo must have a valid value').optional().isURL().trim(),
+  body('roleId', 'The role id must have a valid value').optional().not().isEmpty().isInt().trim(),
+  body('status', 'The status must have a valid value').optional().not().isEmpty().isInt().trim()
 ]
 
 export {
@@ -75,5 +86,6 @@ export {
   emailExists,
   // getUserResponseFiltered,
   getUserbyIdService,
-  userValidationRules
+  userValidationRules,
+  userOptionsValidations
 }

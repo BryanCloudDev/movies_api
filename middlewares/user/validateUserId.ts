@@ -10,7 +10,7 @@ const validateUserId = async (req: ICustomRequest, res: Response, next: NextFunc
 
     if (user === null) {
       return res.status(404).json({
-        message: `The user the id ${id} does not exist`
+        message: `The user with the id ${id} does not exist`
       })
     }
 

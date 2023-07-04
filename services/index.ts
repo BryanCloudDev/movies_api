@@ -1,5 +1,5 @@
 import FilterResponse from './FilterResponse'
-import { checkIfRoleIsSent, createUserInstanceService, createUserService, emailExists, getUserbyIdService, userValidationRules } from './user'
+import { checkIfRoleIsSent, createUserInstanceService, createUserService, emailExists, getUserbyIdService, userOptionsValidations, userValidationRules } from './user'
 import { checkPassword, encrypt, generateJWT } from './auth'
 import { createLikedMovieInstanceService, createLikedMovieService } from './likedMovie'
 import { createMovieInstanceService, createMovieService, getLikeCountService } from './movie'
@@ -36,5 +36,6 @@ export {
   makeLog,
   passport,
   swaggerDocs,
+  userOptionsValidations,
   userValidationRules
 }

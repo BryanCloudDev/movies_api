@@ -2,7 +2,7 @@ import { Roles } from '../dto'
 import { Router } from 'express'
 import { body, param } from 'express-validator'
 import { createUser, deleteUser, getAllUsers, getMoviesLikedByUser, getUserById, getUserProfile, updateUser } from '../controllers'
-import { checkIfRoleIsSent, userValidationRules } from '../services'
+import { checkIfRoleIsSent, userOptionsValidations, userValidationRules } from '../services'
 import { validateEmailInChange, validateFields, validateJWT, validateQuery, validateRole, validateRoleId, validateStatus, validateUserId, validateUserOnDelete } from '../middlewares'
 
 const userRouter = Router()
@@ -31,9 +31,9 @@ userRouter.get('/:id',
   [
     validateJWT,
     validateRole([Roles.ADMIN]),
-    param('id').isNumeric(),
-    validateUserId,
-    validateFields
+    param('id', 'User id must be an integer').isNumeric(),
+    validateFields,
+    validateUserId
   ],
   getUserById
 )
@@ -63,12 +63,13 @@ userRouter.patch('/:id',
   [
     validateJWT,
     validateRole([Roles.ADMIN]),
-    param('id').isNumeric(),
+    ...userOptionsValidations,
+    param('id', 'User id must be an integer').isNumeric(),
+    body('roleId').isNumeric(),
+    validateFields,
     validateUserId,
     validateEmailInChange,
-    body('roleId').isNumeric(),
     validateRoleId,
-    validateFields,
     validateStatus
   ],
   updateUser
@@ -90,8 +91,8 @@ userRouter.post('/admin',
     validateRole([Roles.ADMIN]),
     ...userValidationRules,
     body('roleId').isNumeric(),
-    validateRoleId,
-    validateFields
+    validateFields,
+    validateRoleId
   ],
   createUser
 )
