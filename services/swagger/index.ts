@@ -4,7 +4,7 @@ const swaggerOptions: swaggerJsdoc.Options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      version: '0.0.1',
+      version: '1.0.0',
       title: 'Movies API',
       description: 'Movie API documentation for use',
       contact: {
