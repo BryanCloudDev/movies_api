@@ -1,5 +1,6 @@
 import { validateLikedMovieonCreate, validateLikedMovieonDelete } from './movie/validateLikedMovie'
 import validateEmailInChange from './user/validateEmailInChange'
+import validateEnvForDocs from './validateEnvForDocs'
 import validateFields from './validateFields'
 import validateIdMovie from './movie/validateIdMovie'
 import validateJSON from './validateJSON'
@@ -13,6 +14,7 @@ import validateUserOnDelete from './user/validateUser'
 
 export {
   validateEmailInChange,
+  validateEnvForDocs,
   validateFields,
   validateIdMovie,
   validateJSON,
