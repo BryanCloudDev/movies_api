@@ -1,47 +1,57 @@
-import { faker } from '@faker-js/faker'
+
 import { createUserInstanceService } from '../user'
 import moment from 'moment'
 import { type Role, type User } from '../../models'
 import { userRepository } from '../../repositories'
+import { faker } from '@faker-js/faker'
+import { getRoleByIdService } from '../role'
 
-export class UserFactory {
-  constructor (
-    private readonly role: Role
-  ) {}
+const createDummyUser = async (role: Role): Promise<User> => {
+  const firstName = faker.person.firstName()
+  const lastName = faker.person.lastName()
+  const password = faker.internet.password()
+  let email: string
+  const birthDate = moment(faker.date.birthdate()).toISOString()
+  const profilePhoto = faker.image.avatar()
 
-  async createDummyUser (): Promise<User> {
-    const firstName = faker.person.firstName()
-    const lastName = faker.person.lastName()
-    const password = faker.internet.password()
-    let email: string
-    const birthDate = moment(faker.date.birthdate()).toISOString()
-    const profilePhoto = faker.image.avatar()
-    const roleId = this.role.id
+  const roleId = role.id
 
-    let emailNotUsed = false
+  let emailNotUsed = false
 
-    do {
-      email = faker.internet.email()
+  do {
+    email = faker.internet.email()
 
-      const foundEmail = await userRepository.findOne({ where: { email } })
-      if (foundEmail === null) {
-        emailNotUsed = true
-      }
-    } while (!emailNotUsed)
+    const foundEmail = await userRepository.findOne({ where: { email } })
+    if (foundEmail === null) {
+      emailNotUsed = true
+    }
+  } while (!emailNotUsed)
 
-    const userInstance = await createUserInstanceService({
-      firstName, lastName, email, password, birthDate, profilePhoto, roleId
-    }, this.role)
+  const userInstance = await createUserInstanceService({
+    firstName, lastName, email, password, birthDate, profilePhoto, roleId
+  }, role)
 
-    return userInstance
+  return userInstance
+}
+
+const createMultipleDummyUsers = async (count: number, roleId: number): Promise<undefined> => {
+  const role = await getRoleByIdService(roleId)
+
+  if (role === null) {
+    return
   }
 
-  // createMultipleDummyUsers (count: number): User[] {
-  //   const users: User[] = []
-  //   for (let i = 0; i < count; i++) {
-  //     const user = this.createDummyUser()
-  //     users.push(user)
-  //   }
-  //   return users
-  // }
+  const userPromises: Array<Promise<User>> = []
+
+  for (let i = 0; i < count; i++) {
+    const user = await createDummyUser(role)
+    userPromises.push(userRepository.save(user))
+  }
+
+  await Promise.all(userPromises)
+}
+
+export {
+  createDummyUser,
+  createMultipleDummyUsers
 }

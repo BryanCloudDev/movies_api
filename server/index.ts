@@ -3,8 +3,7 @@ import { makeDBConnection } from '../database'
 import 'dotenv/config'
 import { authRouter, explorerRouter, movieRouter, roleRouter, userRouter } from '../routes'
 import cors from 'cors'
-import { UserFactory } from '../services/seeder/user'
-import { roleRepository } from '../repositories'
+import { createMultipleDummyUsers } from '../services/seeder/user'
 import { Roles } from '../dto'
 import { validateJSON } from '../middlewares'
 
@@ -23,11 +22,11 @@ export default class Server {
     void this.connectToDB()
     this.middleware()
     this.routes()
-    // void this.runSeeder()
   }
 
   private async connectToDB (): Promise<void> {
     await makeDBConnection()
+    void this.runSeeder()
   }
 
   private middleware (): void {
@@ -59,18 +58,10 @@ export default class Server {
     })
   }
 
-  // public async runSeeder (): Promise<void> {
-  //   const role = await roleRepository.findOne({ where: { id: Roles.USER } })
-
-  //   console.log(role)
-    
-
-  //   if (role === null) {
-  //     throw new Error('Role not found')
-  //   }
-
-  //   const userFactory = new UserFactory(role)
-
-  //   console.log(userFactory.createDummyUser())
-  // }
+  public async runSeeder (): Promise<void> {
+    const enviroment = process.env.NODE_ENV
+    if (enviroment !== undefined && enviroment !== 'development') {
+      await createMultipleDummyUsers(10, Roles.USER)
+    }
+  }
 }
