@@ -1,6 +1,6 @@
 {
   "name": "movies",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "This is the code challenge using NodeJS",
   "main": "app.js",
   "scripts": {
