@@ -49,6 +49,12 @@ const userRouter = Router()
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/UserNotFound'
+ *      422:
+ *        description: Unprocessable entity
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UnprocessableEntity'
  */
 userRouter.delete('/:id',
   [
@@ -135,6 +141,12 @@ userRouter.get('/profile',
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/UserNotFound'
+ *      422:
+ *        description: Unprocessable entity
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UnprocessableEntity'
  */
 userRouter.get('/:id',
   [
@@ -186,6 +198,12 @@ userRouter.get('/:id',
  *              - $ref: '#/components/schemas/UserDeleted'
  *              - $ref: '#/components/schemas/UserBanned'
  *              - $ref: '#/components/schemas/UserUnauthorized'
+ *      422:
+ *        description: Unprocessable entity
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UnprocessableEntity'
  */
 userRouter.get('/',
   [
@@ -213,6 +231,12 @@ userRouter.get('/',
  *         type: integer
  *         format: int64
  *         minimum: 1
+ *     - in: query
+ *       name: filter
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/FilterRespose'
  *    responses:
  *      200:
  *        description: No content
@@ -237,6 +261,12 @@ userRouter.get('/',
  *              - $ref: '#/components/schemas/UserDeleted'
  *              - $ref: '#/components/schemas/UserBanned'
  *              - $ref: '#/components/schemas/UserUnauthorized'
+ *      422:
+ *        description: Unprocessable entity
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UnprocessableEntity'
  */
 userRouter.get('/:id/movies',
   [
@@ -297,6 +327,12 @@ userRouter.get('/:id/movies',
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/UserNotFound'
+ *      422:
+ *        description: Unprocessable entity
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UnprocessableEntity'
  */
 userRouter.patch('/:id',
   [
