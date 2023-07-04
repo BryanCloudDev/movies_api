@@ -6,6 +6,7 @@ import cors from 'cors'
 import { UserFactory } from '../services/seeder/user'
 import { roleRepository } from '../repositories'
 import { Roles } from '../dto'
+import { validateJSON } from '../middlewares'
 
 export default class Server {
   constructor (
@@ -31,7 +32,10 @@ export default class Server {
 
   private middleware (): void {
     // JSON PARSER
+
     this._app.use(express.json())
+
+    this._app.use(validateJSON)
 
     this._app.use(cors({
       origin: 'http://127.0.0.1:5500'
