@@ -2,6 +2,7 @@ import { type NextFunction, type Response } from 'express'
 import type ICustomRequest from '../../dto/request/ICustomRequest'
 import { errorMessageHandler } from '../../services'
 import { movieRepository } from '../../repositories'
+import { Status } from '../../dto'
 
 const validateIdMovie = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
   try {
@@ -12,6 +13,12 @@ const validateIdMovie = async (req: ICustomRequest, res: Response, next: NextFun
     if (movie === null) {
       return res.status(404).json({
         message: `The movie with the id ${id} does not exist`
+      })
+    }
+
+    if (movie.status === Status.INACTIVE) {
+      return res.status(400).json({
+        message: 'The movie has been marked already as inactive'
       })
     }
 
