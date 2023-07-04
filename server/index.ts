@@ -8,6 +8,7 @@ import { Roles } from '../dto'
 import { validateJSON } from '../middlewares'
 import { roleRepository } from '../repositories'
 import createInitialRoles from '../services/seeder/role'
+import { createMultipleDummyMovies } from '../services/seeder/movie'
 
 export default class Server {
   constructor (
@@ -61,12 +62,14 @@ export default class Server {
   }
 
   public async runSeeder (): Promise<void> {
+    console.log()
     const enviroment = process.env.NODE_ENV
     if (enviroment !== undefined && enviroment !== 'development') {
       const roles = await roleRepository.count()
       if (roles === 0) {
         await createInitialRoles(['ADMINISTRATOR', 'USER'])
         await createMultipleDummyUsers(10, Roles.USER)
+        await createMultipleDummyMovies(20)
       }
     }
   }
