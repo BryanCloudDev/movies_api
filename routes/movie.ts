@@ -174,6 +174,31 @@ movieRouter.get('/',
   getAllMovies
 )
 
+/**
+ * @swagger
+ *
+ * /movies/like/count:
+ *  get:
+ *    tags:
+ *    - Movie
+ *    summary: Get movie like count.
+ *    responses:
+ *      200:
+ *        description: List of movies with likes
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/MovieLikeArray'
+ *      403:
+ *        description: Forbidden
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/UserDeleted'
+ *              - $ref: '#/components/schemas/UserBanned'
+ *              - $ref: '#/components/schemas/UserUnauthorized'
+ */
 movieRouter.get('/like/count',
   [
     validateJWT,
@@ -239,6 +264,22 @@ movieRouter.post('/like',
  *         message:
  *           type: string
  *           example: The movie with the id 5 has not received a like from you
+ *     MovieLike:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 10
+ *         name:
+ *           type: string
+ *           example: Interestellar
+ *         likes:
+ *           type: integer
+ *           example: 45
+ *     MovieLikeArray:
+ *       type: array
+ *       items:
+ *         $ref: '#/components/schemas/MovieLike'
  */
 
 export default movieRouter
