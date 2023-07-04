@@ -44,7 +44,7 @@ const movieRouter = Router()
  *              - $ref: '#/components/schemas/UserUnauthorized'
  *              - $ref: '#/components/schemas/UnprocessableEntity'
  *      404:
- *        description: User not found
+ *        description: Movie not found
  *        content:
  *          application/json:
  *            schema:
@@ -104,7 +104,7 @@ movieRouter.delete('/:id',
  *              - $ref: '#/components/schemas/UserUnauthorized'
  *              - $ref: '#/components/schemas/UnprocessableEntity'
  *      404:
- *        description: User not found
+ *        description: Movie not found
  *        content:
  *          application/json:
  *            schema:
@@ -207,6 +207,45 @@ movieRouter.get('/like/count',
   getLikeCountForMovies
 )
 
+/**
+ * @swagger
+ *
+ * /movies/{id}:
+ *  patch:
+ *    tags:
+ *    - Movie
+ *    summary: Edit movie by id.
+ *    responses:
+ *      204:
+ *        description: No content
+ *      400:
+ *        description: Bad request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/StatusError'
+ *      403:
+ *        description: Forbidden
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/UserDeleted'
+ *              - $ref: '#/components/schemas/UserBanned'
+ *              - $ref: '#/components/schemas/UserUnauthorized'
+ *      404:
+ *        description: Movie not found
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/MovieNotFound'
+ *      422:
+ *        description: Unprocessable entity
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UnprocessableEntity'
+ */
 movieRouter.patch('/:id',
   [
     validateJWT,
@@ -219,6 +258,42 @@ movieRouter.patch('/:id',
   updateMovie
 )
 
+/**
+ * @swagger
+ *
+ * /movies:
+ *  post:
+ *    tags:
+ *    - Movie
+ *    summary: Create movie.
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Movie'
+ *    responses:
+ *      200:
+ *        description: No content
+ *        content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/SuccessMessage'
+ *      403:
+ *        description: Forbidden
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/UserDeleted'
+ *              - $ref: '#/components/schemas/UserBanned'
+ *              - $ref: '#/components/schemas/UserUnauthorized'
+ *      422:
+ *        description: Unprocessable entity
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UnprocessableEntity'
+ */
 movieRouter.post('/',
   [
     validateJWT,
@@ -280,6 +355,69 @@ movieRouter.post('/like',
  *       type: array
  *       items:
  *         $ref: '#/components/schemas/MovieLike'
+ *     StatusError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *           example: Status with id 10 is not valid
+ *     Movie:
+ *       type: object
+ *       properties:
+ *         countryOrigin:
+ *           type: string
+ *         description:
+ *           type: string
+ *         director:
+ *           type: string
+ *         duration:
+ *           type: integer
+ *         genre:
+ *           type: string
+ *         language:
+ *           type: string
+ *         name:
+ *           type: string
+ *         poster:
+ *           type: string
+ *           format: uri
+ *         rating:
+ *           type: integer
+ *         releaseDate:
+ *           type: string
+ *           format: date-time
+ *     MovieResponse:
+ *        allOf:
+ *          - $ref: '#/components/schemas/Movie'
+ *          - type: object
+ *            properties:
+ *              id:
+ *                type: integer
+ *              createdOn:
+ *                type: string
+ *                format: date-time
+ *              updatedOn:
+ *                type: string
+ *                format: date-time
+ *              status:
+ *                type: integer
+ *     MovieResponseArray:
+ *       type: array
+ *       items:
+ *         $ref: '#/components/schemas/MovieResponse'
+ *     FilterResponseMovie:
+ *       type: object
+ *       properties:
+ *         response:
+ *           $ref: '#/components/schemas/MovieResponseArray'
+ *         meta:
+ *           $ref: '#/components/schemas/MetaSchema'
+ *         links:
+ *           $ref: '#/components/schemas/LinksSchema'
+ *       required:
+ *         - response
+ *         - meta
+ *         - links
  */
 
 export default movieRouter
