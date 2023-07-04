@@ -106,6 +106,58 @@ npm start
 
 This will start a new server where you can see the app running on port 3000 or the port of your choice. You can modify the port as needed. If you set the environment variable to 'production', it will automatically populate the database. Please note that this should only be done when the database is empty. Keeping the variable set to 'development' will display internal server errors, which can be helpful for the development team to identify and address any issues.
 
+The admin user is automatically added, the credentials are:
+```
+email: example@example.com
+password: secretpassword
+```
+
+You can go from there to login and create admin users and access the admin endpoints such as:
+
+### Users
+```
+GET
+{base-url}/users/{id}
+
+PATCH
+{base-url}/users/{id}
+
+DELETE
+{base-url}/users/{id}
+
+GET
+{base-url}/users
+
+POST
+{base-url}/users/admin
+
+GET
+{base-url}/users/{id}/movies
+```
+### Movies
+```
+POST
+{base-url}/movies
+
+PATCH
+{base-url}/movies/{id}
+
+DELETE
+{base-url}/movies/{id}
+```
+### Roles
+```
+POST
+{base-url}/roles
+
+GET
+{base-url}/roles
+
+DELETE
+{base-url}/roles/{id}
+```
+The rest of endpoints are available for the admin role and regular user.
+
 You are all set now. You can refer to the Postman collection file that I have shared to see the available endpoints. In the 'development' environment, you can also visit the route {base-url}/api:3000 to access the Swagger documentation.
 
 It was a pleasure working on this project.
