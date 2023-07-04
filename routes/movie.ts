@@ -7,22 +7,55 @@ import { moviePatchValidations, moviePostValidations } from '../services/movie'
 
 const movieRouter = Router()
 
-movieRouter.get('/',
-  [
-    validateJWT,
-    validateRole([Roles.ADMIN, Roles.USER])
-  ],
-  getAllMovies
-)
-
-movieRouter.get('/like/count',
-  [
-    validateJWT,
-    validateRole([Roles.ADMIN, Roles.USER])
-  ],
-  getLikeCountForMovies
-)
-
+/**
+ * @swagger
+ *
+ * /movies/{id}:
+ *  delete:
+ *    tags:
+ *    - Movie
+ *    summary: Deletes a movie by id.
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        description: Movie id to be deleted.
+ *        schema:
+ *          type: integer
+ *          format: int64
+ *          minimum: 1
+ *    responses:
+ *      204:
+ *        description: No content
+ *      400:
+ *        description: Bad request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/MovieAlreadyInactive'
+ *      403:
+ *        description: Forbidden
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/UserDeleted'
+ *              - $ref: '#/components/schemas/UserBanned'
+ *              - $ref: '#/components/schemas/UserUnauthorized'
+ *              - $ref: '#/components/schemas/UnprocessableEntity'
+ *      404:
+ *        description: User not found
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/MovieNotFound'
+ *      422:
+ *        description: Unprocessable entity
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UnprocessableEntity'
+ */
 movieRouter.delete('/:id',
   [
     validateJWT,
@@ -45,6 +78,22 @@ movieRouter.delete('/like/:id',
     validateLikedMovieonDelete
   ],
   unlikeAMovie
+)
+
+movieRouter.get('/',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN, Roles.USER])
+  ],
+  getAllMovies
+)
+
+movieRouter.get('/like/count',
+  [
+    validateJWT,
+    validateRole([Roles.ADMIN, Roles.USER])
+  ],
+  getLikeCountForMovies
 )
 
 movieRouter.patch('/:id',
@@ -81,5 +130,23 @@ movieRouter.post('/like',
   ],
   likeAMovie
 )
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     MovieAlreadyInactive:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *           example: The movie has been marked already as inactive
+ *     MovieNotFound:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *           example: The movie the id 5 does not exist
+ */
 
 export default movieRouter
