@@ -250,6 +250,54 @@ userRouter.get('/:id/movies',
   getMoviesLikedByUser
 )
 
+/**
+ * @swagger
+ *
+ * /users/{id}:
+ *  patch:
+ *    tags:
+ *    - User
+ *    summary: Edit user by id.
+ *    parameters:
+ *     - name: id
+ *       in: path
+ *       required: true
+ *       description: User id to be searched.
+ *       schema:
+ *         type: integer
+ *         format: int64
+ *         minimum: 1
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/UserPatch'
+ *    responses:
+ *      204:
+ *        description: No content
+ *      400:
+ *        description: Bad request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UserAlreadyInactive'
+ *      403:
+ *        description: Forbidden
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/UserDeleted'
+ *              - $ref: '#/components/schemas/UserBanned'
+ *              - $ref: '#/components/schemas/UserUnauthorized'
+ *              - $ref: '#/components/schemas/UnprocessableEntity'
+ *      404:
+ *        description: User not found
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UserNotFound'
+ */
 userRouter.patch('/:id',
   [
     validateJWT,
@@ -265,6 +313,31 @@ userRouter.patch('/:id',
   updateUser
 )
 
+/**
+ * @swagger
+ *
+ * /users/:
+ *  post:
+ *    tags:
+ *    - User
+ *    summary: Register for regular user.
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/UserPost'
+ *    responses:
+ *      200:
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/SuccessMessage'
+ *      422:
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UnprocessableEntity'
+ */
 userRouter.post('/',
   [
     ...userValidationRules,
@@ -275,6 +348,41 @@ userRouter.post('/',
   createUser
 )
 
+/**
+ * @swagger
+ *
+ * /users/admin:
+ *  post:
+ *    tags:
+ *    - User
+ *    summary: Register for admin user.
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/UserPostAdmin'
+ *    responses:
+ *      200:
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/SuccessMessage'
+ *      403:
+ *        description: Forbidden
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/UserDeleted'
+ *              - $ref: '#/components/schemas/UserBanned'
+ *              - $ref: '#/components/schemas/UserUnauthorized'
+ *              - $ref: '#/components/schemas/UnprocessableEntity'
+ *      422:
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UnprocessableEntity'
+ */
 userRouter.post('/admin',
   [
     validateJWT,
@@ -515,6 +623,58 @@ userRouter.post('/admin',
  *         - response
  *         - meta
  *         - links
+ *     UserPatch:
+ *      type: object
+ *      properties:
+ *        firstName:
+ *          type: string
+ *        lastName:
+ *          type: string
+ *        email:
+ *          type: string
+ *          format: email
+ *        birthDate:
+ *          type: string
+ *          format: date-time
+ *        profilePhoto:
+ *          type: string
+ *          format: uri
+ *        roleId:
+ *          type: integer
+ *        status:
+ *          type: integer
+ *     UserPost:
+ *         type: object
+ *         properties:
+ *           firstName:
+ *             type: string
+ *           lastName:
+ *             type: string
+ *           email:
+ *             type: string
+ *             format: email
+ *           password:
+ *             type: string
+ *           birthDate:
+ *             type: string
+ *             format: date-time
+ *           profilePhoto:
+ *             type: string
+ *             format: uri
+ *     SuccessMessage:
+ *         type: object
+ *         properties:
+ *           message:
+ *             type: string
+ *             example: Successfully created
+ *     UserPostAdmin:
+ *       allOf:
+ *         - $ref: '#/components/schemas/UserPost'
+ *         - type: object
+ *           properties:
+ *             role:
+ *               type: integer
+ *               example: 1
  */
 
 export default userRouter
