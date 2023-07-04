@@ -273,7 +273,6 @@ movieRouter.patch('/:id',
  *            $ref: '#/components/schemas/Movie'
  *    responses:
  *      200:
- *        description: No content
  *        content:
  *           application/json:
  *             schema:
@@ -304,6 +303,41 @@ movieRouter.post('/',
   createMovie
 )
 
+/**
+ * @swagger
+ *
+ * /movies/like:
+ *  post:
+ *    tags:
+ *    - Movie
+ *    summary: Create movie like.
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Movielike'
+ *    responses:
+ *      200:
+ *        content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/SuccessMessage'
+ *      403:
+ *        description: Forbidden
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *              - $ref: '#/components/schemas/UserDeleted'
+ *              - $ref: '#/components/schemas/UserBanned'
+ *              - $ref: '#/components/schemas/UserUnauthorized'
+ *      422:
+ *        description: Unprocessable entity
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UnprocessableEntity'
+ */
 movieRouter.post('/like',
   [
     validateJWT,
@@ -418,6 +452,12 @@ movieRouter.post('/like',
  *         - response
  *         - meta
  *         - links
+ *     Movielike:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 1
  */
 
 export default movieRouter
