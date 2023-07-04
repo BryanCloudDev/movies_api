@@ -11,7 +11,7 @@ const loggerHandler = (): winston.Logger => {
   })
 }
 
-const makeLog = (message: { error: string, message: string }): void => {
+const makeLog = (message: { error: string, location: string }): void => {
   const logger = loggerHandler()
   logger.error(message)
 }

@@ -1,10 +1,15 @@
 import { makeLog } from './'
 
-const errorMessageHandler = (_error: any, message: string): { message: string } => {
+const errorMessageHandler = (_error: any, location: string): { message: string } => {
+  const enviroment = process.env.NODE_ENV
   makeLog({
     error: _error.message,
-    message
+    location
   })
+
+  const message = enviroment !== undefined && enviroment !== 'development'
+    ? 'Internal server error, please contact the administrator'
+    : location
 
   return { message }
 }
