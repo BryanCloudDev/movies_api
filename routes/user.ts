@@ -173,7 +173,7 @@ userRouter.get('/:id',
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/FilterRespose'
+ *              $ref: '#/components/schemas/Filter'
  *    responses:
  *      200:
  *        description: No content
@@ -236,7 +236,7 @@ userRouter.get('/',
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/FilterRespose'
+ *             $ref: '#/components/schemas/Filter'
  *    responses:
  *      200:
  *        description: No content
@@ -711,6 +711,27 @@ userRouter.post('/admin',
  *             role:
  *               type: integer
  *               example: 1
+ *     Filter:
+ *       type: object
+ *       properties:
+ *         where:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: integer
+ *         limit:
+ *           type: integer
+ *         select:
+ *           type: array
+ *           items:
+ *             type: string
+ *         order:
+ *           type: object
+ *           properties:
+ *             createdOn:
+ *               type: string
+ *         offset:
+ *           type: integer
  */
 
 export default userRouter
