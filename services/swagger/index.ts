@@ -17,6 +17,9 @@ const swaggerOptions: swaggerJsdoc.Options = {
       securitySchemes: {
         bearerAuth: {
           type: 'http',
+          in: 'header',
+          name: 'Authorization',
+          description: 'Bearer token to access these api endpoints',
           scheme: 'bearer',
           bearerFormat: 'JWT'
         }
@@ -24,7 +27,12 @@ const swaggerOptions: swaggerJsdoc.Options = {
     },
     servers: [{
       url: 'http://localhost:3000/api'
-    }]
+    }],
+    security: [
+      {
+        bearerAuth: []
+      }
+    ]
   },
   apis: ['./routes/swaggerDocumentation/*.ts']
 }
