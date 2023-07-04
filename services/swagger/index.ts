@@ -13,11 +13,20 @@ const swaggerOptions: swaggerJsdoc.Options = {
         url: 'https://bryancloud.dev'
       }
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
+      }
+    },
     servers: [{
       url: 'http://localhost:3000/api'
     }]
   },
-  apis: ['./src/routes*.js']
+  apis: ['./routes/*.ts']
 }
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions)
