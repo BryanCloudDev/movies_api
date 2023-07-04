@@ -2,7 +2,7 @@ import { Roles } from '../dto'
 import { Router } from 'express'
 import { body, param } from 'express-validator'
 import { createMovie, deleteMovie, getAllMovies, getLikeCountForMovies, likeAMovie, unlikeAMovie, updateMovie } from '../controllers'
-import { validateFields, validateIdMovie, validateJWT, validateLikedMovieonCreate, validateLikedMovieonDelete, validateRole, validateStatus } from '../middlewares'
+import { validateFields, validateIdMovie, validateJWT, validateLikedMovieonCreate, validateLikedMovieonDelete, validateQuery, validateRole, validateStatus } from '../middlewares'
 import { moviePatchValidations, moviePostValidations } from '../services/movie'
 
 const movieRouter = Router()
@@ -136,25 +136,25 @@ movieRouter.delete('/like/:id',
  *  get:
  *    tags:
  *    - Movie
- *    summary: Deletes a movie like by id.
+ *    summary: Get all movies.
  *    parameters:
- *      - name: id
- *        in: path
- *        required: true
- *        description: Movie like id to be deleted.
+ *      - in: query
+ *        name: filter
  *        schema:
- *          type: integer
- *          format: int64
- *          minimum: 1
+ *          $ref: '#/components/schemas/Filter'
  *    responses:
- *      204:
- *        description: No content
+ *      200:
+ *        description: List of movies
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/MovieArray'
  *      400:
  *        description: Bad request
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/MovieAlreadyInactive'
+ *              $ref: '#/components/schemas/PaginationError'
  *      403:
  *        description: Forbidden
  *        content:
@@ -164,24 +164,12 @@ movieRouter.delete('/like/:id',
  *              - $ref: '#/components/schemas/UserDeleted'
  *              - $ref: '#/components/schemas/UserBanned'
  *              - $ref: '#/components/schemas/UserUnauthorized'
- *              - $ref: '#/components/schemas/UnprocessableEntity'
- *      404:
- *        description: User not found
- *        content:
- *          application/json:
- *            schema:
-*               $ref: '#/components/schemas/MovieNotFound'
- *      422:
- *        description: Unprocessable entity
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/UnprocessableEntity'
  */
 movieRouter.get('/',
   [
     validateJWT,
-    validateRole([Roles.ADMIN, Roles.USER])
+    validateRole([Roles.ADMIN, Roles.USER]),
+    validateQuery
   ],
   getAllMovies
 )
