@@ -131,8 +131,9 @@
  *    - User
  *    summary: Get all users.
  *    parameters:
- *      - in: query
- *        name: filter
+ *      - name: filter
+ *        in: query
+ *        required: false
  *        content:
  *          application/json:
  *            schema:
@@ -278,7 +279,7 @@
 /**
  * @swagger
  *
- * /users/:
+ * /users:
  *  post:
  *    tags:
  *    - User

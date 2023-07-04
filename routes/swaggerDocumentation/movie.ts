@@ -107,10 +107,13 @@
  *    - Movie
  *    summary: Get all movies.
  *    parameters:
- *      - in: query
- *        name: filter
- *        schema:
- *          $ref: '#/components/schemas/Filter'
+ *      - name: filter
+ *        in: query
+ *        required: false
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Filter'
  *    responses:
  *      200:
  *        description: List of movies
