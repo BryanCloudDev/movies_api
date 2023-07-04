@@ -2,9 +2,10 @@
 import { createUserInstanceService } from '../user'
 import moment from 'moment'
 import { type Role, type User } from '../../models'
-import { userRepository } from '../../repositories'
+import { roleRepository, userRepository } from '../../repositories'
 import { faker } from '@faker-js/faker'
 import { getRoleByIdService } from '../role'
+import { Roles } from '../../dto'
 
 const createDummyUser = async (role: Role): Promise<User> => {
   const firstName = faker.person.firstName()
@@ -49,6 +50,27 @@ const createMultipleDummyUsers = async (count: number, roleId: number): Promise<
   }
 
   await Promise.all(userPromises)
+  await createInitialAdminUser()
+}
+
+const createInitialAdminUser = async (): Promise<undefined> => {
+  const role = await roleRepository.findOne({ where: { id: Roles.ADMIN } })
+
+  if (role === null) {
+    return
+  }
+
+  const userInstance = await createUserInstanceService({
+    firstName: 'User',
+    lastName: 'Admin',
+    birthDate: moment().toISOString(),
+    email: 'example@example.com',
+    password: 'secretpassword',
+    profilePhoto: faker.image.avatar(),
+    roleId: Roles.ADMIN
+  }, role)
+
+  await userRepository.save(userInstance)
 }
 
 export {
