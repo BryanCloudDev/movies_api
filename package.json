@@ -38,8 +38,9 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.3",
     "typeorm": "^0.3.17",
-    "typescript": "^5.1.5",
-    "winston": "^3.9.0",
+    "winston": "^3.9.0"
+  },
+  "devDependencies": {
     "@faker-js/faker": "^8.0.2",
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.13",
@@ -57,7 +58,7 @@
     "eslint-config-standard-with-typescript": "^35.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.7.0",
-    "eslint-plugin-promise": "^6.1.1"
-  },
-  "devDependencies": {}
+    "eslint-plugin-promise": "^6.1.1",
+    "typescript": "^5.1.5"
+  }
 }
